@@ -284,6 +284,67 @@ publicApi.get('/:slug/details', async (c) => {
       return c.json({ success: false, error: 'Agent not found' }, 404);
     }
     
+    // Get features
+    const features = await DB.prepare(`
+      SELECT * FROM features WHERE agent_id = ? ORDER BY display_order ASC
+    `).bind(agent.id).all();
+    
+    // Get use cases
+    const useCases = await DB.prepare(`
+      SELECT * FROM use_cases WHERE agent_id = ? ORDER BY display_order ASC
+    `).bind(agent.id).all();
+    
+    // Get FAQs
+    const faqs = await DB.prepare(`
+      SELECT * FROM agent_faqs WHERE agent_id = ? ORDER BY display_order ASC
+    `).bind(agent.id).all();
+    
+    // Get pricing plans
+    const pricingPlans = await DB.prepare(`
+      SELECT * FROM pricing_plans WHERE agent_id = ? ORDER BY display_order ASC
+    `).bind(agent.id).all();
+    
+    // Get screenshots
+    const screenshots = await DB.prepare(`
+      SELECT * FROM agent_screenshots WHERE agent_id = ? ORDER BY display_order ASC
+    `).bind(agent.id).all();
+    
+    // Get pros and cons
+    const pros = await DB.prepare(`
+      SELECT * FROM agent_pros_cons WHERE agent_id = ? AND type = 'PRO' ORDER BY display_order ASC
+    `).bind(agent.id).all();
+    
+    const cons = await DB.prepare(`
+      SELECT * FROM agent_pros_cons WHERE agent_id = ? AND type = 'CON' ORDER BY display_order ASC
+    `).bind(agent.id).all();
+    
+    // Get reviews with user info
+    const reviews = await DB.prepare(`
+      SELECT 
+        r.*,
+        u.name as user_name,
+        u.image as user_image
+      FROM reviews r
+      JOIN users u ON r.user_id = u.id
+      WHERE r.agent_id = ? AND r.status = 'APPROVED'
+      ORDER BY r.created_at DESC
+      LIMIT 10
+    `).bind(agent.id).all();
+    
+    // Get review statistics
+    const reviewStats = await DB.prepare(`
+      SELECT 
+        COUNT(*) as total_reviews,
+        AVG(rating) as average_rating,
+        SUM(CASE WHEN rating = 5 THEN 1 ELSE 0 END) as five_star,
+        SUM(CASE WHEN rating = 4 THEN 1 ELSE 0 END) as four_star,
+        SUM(CASE WHEN rating = 3 THEN 1 ELSE 0 END) as three_star,
+        SUM(CASE WHEN rating = 2 THEN 1 ELSE 0 END) as two_star,
+        SUM(CASE WHEN rating = 1 THEN 1 ELSE 0 END) as one_star
+      FROM reviews
+      WHERE agent_id = ? AND status = 'APPROVED'
+    `).bind(agent.id).first();
+    
     // Get first category ID for similar agents
     const firstCategoryId = agent.category_ids ? agent.category_ids.split(',')[0] : null;
     
@@ -300,14 +361,47 @@ publicApi.get('/:slug/details', async (c) => {
         AND a.status = 'APPROVED'
       GROUP BY a.id
       ORDER BY a.upvote_count DESC
-      LIMIT 4
+      LIMIT 6
     `).bind(firstCategoryId, agent.id).all();
+    
+    // Get alternatives (if agent has alternatives defined)
+    let alternatives = [];
+    if (agent.alternatives) {
+      try {
+        const alternativeIds = JSON.parse(agent.alternatives);
+        if (alternativeIds && alternativeIds.length > 0) {
+          const placeholders = alternativeIds.map(() => '?').join(',');
+          alternatives = await DB.prepare(`
+            SELECT 
+              a.*,
+              GROUP_CONCAT(DISTINCT c.name) as category_names
+            FROM agents a
+            LEFT JOIN agent_categories ac ON a.id = ac.agent_id
+            LEFT JOIN categories c ON ac.category_id = c.id
+            WHERE a.id IN (${placeholders}) AND a.status = 'APPROVED'
+            GROUP BY a.id
+          `).bind(...alternativeIds).all();
+        }
+      } catch (e) {
+        console.error('Error parsing alternatives:', e);
+      }
+    }
     
     return c.json({
       success: true,
       data: {
         agent,
-        similar: similar.results || []
+        features: features.results || [],
+        useCases: useCases.results || [],
+        faqs: faqs.results || [],
+        pricingPlans: pricingPlans.results || [],
+        screenshots: screenshots.results || [],
+        pros: pros.results || [],
+        cons: cons.results || [],
+        reviews: reviews.results || [],
+        reviewStats: reviewStats || {},
+        similar: similar.results || [],
+        alternatives: alternatives.results || []
       }
     });
   } catch (error) {

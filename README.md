@@ -148,11 +148,27 @@ AI Agents Directory is a lightweight, edge-deployed platform that allows users t
 - **Agent Management**: 
   - Complete admin panel with ZERO 404 errors
   - Create new agents with full form
-  - Edit existing agents
+  - Edit existing agents with ALL enhanced fields
   - Approve/reject submissions
   - Delete agents (admin only)
-- **Category Management**: Organize agents into categories
-- **User Management**: View user profiles and activity
+  - Enhanced agent editing with 40+ fields (YouTube, pricing, company info, social media, etc.)
+- **Category Management**: 
+  - ✅ Create new categories (FIXED)
+  - ✅ Edit existing categories (FIXED)
+  - ✅ Delete categories with validation (FIXED)
+  - View all categories with pagination
+- **User Management**: 
+  - ✅ View user profiles with statistics (FIXED)
+  - ✅ List all users with search and filtering (FIXED)
+  - ✅ Edit user roles and details (FIXED)
+  - View user submissions, reviews, and upvotes
+- **Agent Sub-Resources Management**:
+  - Features: Add, edit, delete agent features
+  - Use Cases: Manage real-world application examples
+  - FAQs: Create comprehensive FAQ sections
+  - Pricing Plans: Define multiple pricing tiers with features
+  - Screenshots: Upload and manage agent screenshots gallery
+  - Pros & Cons: Add balanced product reviews
 - **Review Moderation**: Approve or reject user reviews
 - **Audit Logs**: Track all admin actions
 - **Analytics**: View detailed statistics
@@ -186,13 +202,20 @@ AI Agents Directory is a lightweight, edge-deployed platform that allows users t
 - Email-based authentication
 - Profile information and timestamps
 
-#### Agents Table
-- Core agent information (name, description, tagline)
+#### Agents Table (Enhanced - Phase 6)
+- Core agent information (name, description, tagline, long_description)
 - Pricing models (FREE, PAID, FREEMIUM, CONTACT)
+- **NEW**: Detailed pricing (pricing_starts_at, free_plan_available, free_trial_days)
 - Status workflow (PENDING → APPROVED/REJECTED)
 - Featured tiers (NONE, SEO_BOOST, PREMIUM, BANNER)
 - Statistics (views, upvotes, clicks, reviews)
-- SEO metadata
+- SEO metadata (meta_title, meta_description, keywords)
+- **NEW**: Media fields (youtube_url, demo_video_url, video_thumbnail)
+- **NEW**: Company information (company_name, company_website, founded_year, headquarters)
+- **NEW**: Social media links (Twitter, LinkedIn, Facebook, Discord, GitHub)
+- **NEW**: Technical details (API availability, supported platforms/languages/integrations)
+- **NEW**: Trust indicators (verified status, trust_score, uptime_percentage)
+- **NEW**: Alternatives/competitors (JSON array of related agent IDs)
 
 #### Categories Table
 - Hierarchical category structure
@@ -207,6 +230,28 @@ AI Agents Directory is a lightweight, edge-deployed platform that allows users t
 #### Features & Use Cases Tables
 - Bullet points for agent capabilities
 - Real-world application examples
+
+#### Agent FAQs Table (NEW - Phase 6)
+- Question and answer pairs for common inquiries
+- Display ordering for organized presentation
+- Fully manageable by admin
+
+#### Pricing Plans Table (NEW - Phase 6)
+- Multiple pricing tiers per agent (Free, Pro, Enterprise)
+- Features list per plan (JSON array)
+- Billing periods (monthly, yearly, one-time)
+- CTA buttons with custom text and URLs
+- Popular plan highlighting
+
+#### Agent Screenshots Table (NEW - Phase 6)
+- Image gallery for agent showcases
+- Titles and descriptions for each screenshot
+- Display ordering for organized presentation
+
+#### Agent Pros & Cons Table (NEW - Phase 6)
+- Balanced product reviews
+- Separate PRO and CON lists
+- Display ordering for prioritization
 
 #### Upvotes Table
 - User-agent voting relationships
@@ -277,7 +322,18 @@ webapp/
 - `GET /api/public/newly-added?limit=10` - Get recently added agents (last 30 days)
 - `GET /api/public/trending?limit=10` - Get trending agents (last 7 days by views)
 - `GET /api/public/categories/popular?limit=12` - Get popular categories with agent counts
-- `GET /api/public/:slug/details` - Get agent details with similar recommendations
+- `GET /api/public/:slug/details` - Get comprehensive agent details including:
+  - Agent basic info with all enhanced fields
+  - Features list
+  - Use cases list
+  - FAQ section
+  - Pricing plans with features
+  - Screenshots gallery
+  - Pros and cons lists
+  - Reviews with user info (top 10)
+  - Review statistics (average rating, star distribution)
+  - Similar agents (6 from same category)
+  - Alternative/competitor agents
 - `POST /api/public/:id/upvote` - Toggle upvote (guest or authenticated)
 - `POST /api/public/:id/click` - Track website click and increment count
 - `POST /api/public/newsletter/subscribe` - Subscribe to newsletter with email
@@ -321,14 +377,62 @@ webapp/
 - `PATCH /api/user/email-preferences` - Update email preferences
 - `DELETE /api/user/account` - Delete user account (with cascade)
 
-### Admin Endpoints (Requires Auth)
+### Admin Endpoints (Requires Auth) - Enhanced Phase 6
+
+#### Agent Management
 - `GET /api/admin/stats` - Admin dashboard statistics
 - `GET /api/admin/agents/pending` - List pending submissions
+- `GET /api/admin/agents/all` - List all agents with pagination and filters
 - `GET /api/admin/agents/:id` - Get agent for review
 - `PUT /api/admin/agents/:id/approve` - Approve agent
 - `PUT /api/admin/agents/:id/reject` - Reject agent
-- `PUT /api/admin/agents/:id` - Update agent details
+- `PUT /api/admin/agents/:id` - Update agent details (40+ fields supported)
 - `DELETE /api/admin/agents/:id` - Delete agent (admin only)
+
+#### Category Management (NEW)
+- `GET /api/admin/categories` - List all categories with pagination
+- `GET /api/admin/categories/:id` - Get single category details
+- `POST /api/admin/categories` - Create new category
+- `PUT /api/admin/categories/:id` - Update category
+- `DELETE /api/admin/categories/:id` - Delete category (with validation)
+
+#### User Management (NEW)
+- `GET /api/admin/users` - List all users with pagination and search
+- `GET /api/admin/users/:id` - Get user profile with statistics
+- `PUT /api/admin/users/:id` - Update user details (role, email, etc.)
+- `DELETE /api/admin/users/:id` - Delete user (admin only)
+
+#### Agent Sub-Resources (NEW - All require admin auth)
+
+**Features:**
+- `POST /api/admin/agents/:id/features` - Add feature
+- `PUT /api/admin/agents/:agentId/features/:featureId` - Update feature
+- `DELETE /api/admin/agents/:agentId/features/:featureId` - Delete feature
+
+**Use Cases:**
+- `POST /api/admin/agents/:id/use-cases` - Add use case
+- `PUT /api/admin/agents/:agentId/use-cases/:useCaseId` - Update use case
+- `DELETE /api/admin/agents/:agentId/use-cases/:useCaseId` - Delete use case
+
+**FAQs:**
+- `POST /api/admin/agents/:id/faqs` - Add FAQ
+- `PUT /api/admin/agents/:agentId/faqs/:faqId` - Update FAQ
+- `DELETE /api/admin/agents/:agentId/faqs/:faqId` - Delete FAQ
+
+**Pricing Plans:**
+- `POST /api/admin/agents/:id/pricing-plans` - Add pricing plan
+- `PUT /api/admin/agents/:agentId/pricing-plans/:planId` - Update pricing plan
+- `DELETE /api/admin/agents/:agentId/pricing-plans/:planId` - Delete pricing plan
+
+**Screenshots:**
+- `POST /api/admin/agents/:id/screenshots` - Add screenshot
+- `PUT /api/admin/agents/:agentId/screenshots/:screenshotId` - Update screenshot
+- `DELETE /api/admin/agents/:agentId/screenshots/:screenshotId` - Delete screenshot
+
+**Pros & Cons:**
+- `POST /api/admin/agents/:id/pros-cons` - Add pro/con
+- `PUT /api/admin/agents/:agentId/pros-cons/:id` - Update pro/con
+- `DELETE /api/admin/agents/:agentId/pros-cons/:id` - Delete pro/con
 
 ## 🚀 Getting Started
 
@@ -497,7 +601,7 @@ npx wrangler pages secret put JWT_SECRET --project-name webapp
 
 ## 📈 Current Status
 
-### ✅ Completed Features (Phase 1-5)
+### ✅ Completed Features (Phase 1-6)
 
 #### Phase 1-2: Core Platform
 - [x] Database schema with comprehensive relationships
@@ -550,6 +654,38 @@ npx wrangler pages secret put JWT_SECRET --project-name webapp
 - [x] Protected routes with authentication check
 - [x] User profile API endpoints (11 new endpoints)
 - [x] Responsive design for all auth/dashboard pages
+
+#### Phase 6: Enhanced Agent Details & Admin Management (NEW)
+- [x] **Admin Category Management** - Full CRUD operations for categories (FIXED)
+- [x] **Admin User Management** - View profiles, edit roles, manage users (FIXED)
+- [x] **Voting System Database Integration** - Real-time vote tracking (VERIFIED)
+- [x] **Enhanced Agent Schema** - 40+ new fields:
+  - [x] YouTube and video URLs with thumbnails
+  - [x] Detailed pricing information (starts at, free plan, trial days)
+  - [x] Company information (name, website, founded year, size, headquarters)
+  - [x] Social media links (Twitter, LinkedIn, Facebook, Discord, GitHub)
+  - [x] Technical details (API docs, supported platforms/languages/integrations)
+  - [x] Trust indicators (verified status, trust score, uptime percentage)
+  - [x] Alternatives/competitors list
+- [x] **Agent FAQs System** - Create and manage FAQ sections
+- [x] **Pricing Plans Table** - Multiple tiers with features and CTAs
+- [x] **Screenshots Gallery** - Image management system
+- [x] **Pros & Cons Lists** - Balanced product reviews
+- [x] **Comprehensive Agent Detail API** - Single endpoint returns:
+  - Agent with all enhanced fields
+  - Features, use cases, FAQs
+  - Pricing plans, screenshots, pros/cons
+  - Reviews with statistics and star distribution
+  - Similar agents (6) and alternatives
+- [x] **Admin Sub-Resource Management** - 18 new endpoints:
+  - Features: Add/Edit/Delete
+  - Use Cases: Add/Edit/Delete
+  - FAQs: Add/Edit/Delete
+  - Pricing Plans: Add/Edit/Delete
+  - Screenshots: Add/Edit/Delete
+  - Pros & Cons: Add/Edit/Delete
+- [x] **Migration System** - Database migrations applied successfully
+- [x] **Documentation Updated** - README reflects all new features
 
 ### 🚧 Recommended Next Steps (Phase 6)
 
