@@ -21,8 +21,9 @@ A comprehensive directory platform for discovering, submitting, and managing AI 
 **Working Pages**:
 - ✅ Homepage with statistics
 - ✅ Agents listing page
-- ✅ Agent detail pages (all 11 agents)
+- ✅ **Enhanced Agent Detail Pages** (NEW - with YouTube embed, comprehensive sections)
 - ✅ Categories page (real database counts via junction tables)
+- ✅ **Statistics Page** (NEW - /allstats with real-time charts)
 - ✅ Login/Signup/Dashboard
 - ✅ Admin panel with full functionality (Categories, Users, Agents)
 
@@ -72,16 +73,23 @@ AI Agents Directory is a lightweight, edge-deployed platform that allows users t
   - Skeleton loaders for better UX
   - Responsive design with hamburger menu
   
-- **Individual Agent Detail** (`/agents/[slug]`):
-  - Tabbed interface: Overview, Features, Pricing, Reviews
-  - Large emoji logo display (6xl size)
-  - Upvote button with optimistic UI updates
-  - View count and click tracking
-  - Review system with 5-star rating UI
-  - Share functionality: Twitter, LinkedIn, Copy Link
-  - Similar agents recommendations
-  - Sticky sidebar with quick info
-  - Toast notifications for user feedback
+- **Enhanced Agent Detail** (`/agents/[slug]`) - **NEW COMPREHENSIVE VERSION**:
+  - **Hero Section**: Agent info (left) + YouTube video embed (right, 16:9 responsive)
+  - **YouTube Integration**: Automatic video ID extraction and iframe embedding
+  - **Badge System**: Verified, Featured, Open Source status badges
+  - **Overview Section**: Long description with rich formatting
+  - **Key Features Grid**: Dynamic loading from features table
+  - **Use Cases Section**: Real-world application examples
+  - **Pricing Section**: Multiple pricing plans with features comparison
+  - **Screenshots Gallery**: Image showcase from agent_screenshots table
+  - **Pros & Cons**: Two-column balanced review layout
+  - **FAQ Accordion**: Expandable Q&A with toggle functionality
+  - **Company Information**: Company details grid (name, founded year, HQ, size)
+  - **Similar Agents**: Recommendations from same category
+  - **Real-time Updates**: Vote count polling every 3 seconds
+  - **Dark Mode Support**: Full theme toggle with persistence
+  - **Share Functionality**: Twitter, LinkedIn, Copy Link with toast feedback
+  - **Old Version**: Kept at `/agents-old/:slug` for reference
   
 - **Categories Browsing** (`/categories`):
   - Grid layout with all categories
@@ -97,6 +105,18 @@ AI Agents Directory is a lightweight, edge-deployed platform that allows users t
   - Sort options: Popular, Newest, Name, Upvotes
   - Related categories section
   - Breadcrumb navigation
+
+- **Comprehensive Statistics Page** (`/allstats`) - **NEW**:
+  - **Quick Stats Cards**: Total agents, categories, reviews, upvotes with gradient backgrounds
+  - **Monthly Growth Trend**: Line chart showing agent growth over time (Chart.js)
+  - **AI Agents by Category**: Horizontal bar chart with TOP 10 categories
+  - **Pricing Distribution**: Doughnut chart showing FREE/PAID/FREEMIUM breakdown
+  - **Open Source vs Commercial**: Pie chart comparison
+  - **Top 10 Categories**: Ranked list with medal emojis (🥇🥈🥉)
+  - **Recently Added Agents**: Grid of latest submissions
+  - **Auto-refresh**: Statistics update every 30 seconds automatically
+  - **LIVE Badge**: Pulsing animation indicator for real-time data
+  - **Responsive Design**: Mobile-optimized charts and layouts
 
 ### User Authentication & Dashboard (NEW - Phase 5)
 - **Login Page** (`/login`):
@@ -288,27 +308,38 @@ AI Agents Directory is a lightweight, edge-deployed platform that allows users t
 ```
 webapp/
 ├── src/
-│   ├── index.tsx              # Main application entry point
-│   ├── types.ts               # TypeScript type definitions
+│   ├── index.tsx                # Main application entry point
+│   ├── types.ts                 # TypeScript type definitions
+│   ├── components/
+│   │   └── footer.tsx           # Reusable footer component (NEW)
 │   ├── lib/
-│   │   ├── auth.ts            # JWT authentication utilities
-│   │   └── db.ts              # Database helper functions
+│   │   ├── auth.ts              # JWT authentication utilities
+│   │   ├── middleware.ts        # Rate limiting and auth middleware
+│   │   └── db.ts                # Database helper functions
 │   ├── routes/
-│   │   ├── auth.ts            # Authentication endpoints (enhanced)
-│   │   ├── agents.ts          # Agent CRUD operations
-│   │   ├── categories.ts      # Category endpoints
-│   │   ├── admin.ts           # Admin panel endpoints
-│   │   └── users.ts           # User profile endpoints (enhanced)
-│   ├── auth-pages.tsx         # Login, Signup, Forgot Password (NEW)
-│   ├── submit-form.tsx        # Multi-step agent submission (NEW)
-│   ├── dashboard-page.tsx     # User dashboard with 4 sections (NEW)
-│   ├── public-pages.tsx       # Enhanced homepage
-│   ├── agents-pages.tsx       # Agent listing and detail pages
-│   ├── categories-pages.tsx   # Categories pages
-│   ├── enhanced-pages.tsx     # Leaderboard, Landscape pages
-│   ├── admin-ui.tsx           # Admin dashboard UI
-│   ├── admin-pages.tsx        # Admin sub-pages
-│   └── admin-agent-forms.tsx  # Admin create/edit forms
+│   │   ├── auth.ts              # Authentication endpoints (enhanced)
+│   │   ├── agents.ts            # Agent CRUD operations
+│   │   ├── categories.ts        # Category endpoints
+│   │   ├── admin.ts             # Admin panel endpoints
+│   │   ├── admin-enhanced.ts    # Enhanced admin endpoints (sub-resources)
+│   │   ├── users.ts             # User profile endpoints (enhanced)
+│   │   ├── public-api.ts        # Public API endpoints
+│   │   ├── leaderboard-api.ts   # Leaderboard data endpoints
+│   │   ├── landscape-api.ts     # Landscape view endpoints
+│   │   ├── submit.ts            # Agent submission endpoints
+│   │   └── upload.ts            # File upload endpoints
+│   ├── auth-pages.tsx           # Login, Signup, Forgot Password
+│   ├── submit-form.tsx          # Multi-step agent submission (enhanced with real-time data)
+│   ├── dashboard-page.tsx       # User dashboard with 4 sections
+│   ├── public-pages.tsx         # Enhanced homepage
+│   ├── agents-pages.tsx         # Agent listing and detail pages
+│   ├── enhanced-agent-page.tsx  # Comprehensive agent detail (NEW - YouTube + sections)
+│   ├── categories-pages.tsx     # Categories pages
+│   ├── enhanced-pages.tsx       # Leaderboard, Landscape pages
+│   ├── stats-page.tsx           # Comprehensive statistics page (NEW)
+│   ├── admin-ui.tsx             # Admin dashboard UI
+│   ├── admin-pages.tsx          # Admin sub-pages (Categories, Users, Analytics)
+│   └── admin-agent-forms.tsx    # Admin create/edit forms
 ├── migrations/
 │   └── 0001_initial_schema.sql  # Database schema
 ├── public/                    # Static assets (if needed)
@@ -662,9 +693,12 @@ npx wrangler pages secret put JWT_SECRET --project-name webapp
 - [x] User profile API endpoints (11 new endpoints)
 - [x] Responsive design for all auth/dashboard pages
 
-#### Phase 6: Enhanced Agent Details & Admin Management (NEW)
+#### Phase 6: Enhanced Agent Details & Admin Management
 - [x] **Admin Category Management** - Full CRUD operations for categories (FIXED)
 - [x] **Admin User Management** - View profiles, edit roles, manage users (FIXED)
+- [x] **Rate Limit Removal** - Removed 5/day submission limit for demo (FIXED)
+- [x] **Universal Footer** - Reusable footer component on all pages (FIXED)
+- [x] **Submit Form Real-time Data** - Categories and tags loaded from database (FIXED)
 - [x] **Voting System Database Integration** - Real-time vote tracking (VERIFIED)
 - [x] **Enhanced Agent Schema** - 40+ new fields:
   - [x] YouTube and video URLs with thumbnails
@@ -693,6 +727,15 @@ npx wrangler pages secret put JWT_SECRET --project-name webapp
   - Pros & Cons: Add/Edit/Delete
 - [x] **Migration System** - Database migrations applied successfully
 - [x] **Documentation Updated** - README reflects all new features
+- [x] **Comprehensive Statistics Page** (/allstats) - Real-time charts and analytics (NEW)
+- [x] **Enhanced Agent Detail Page** - YouTube embed with comprehensive sections (NEW)
+  - [x] Hero section with video on right, agent info on left
+  - [x] YouTube video ID extraction and 16:9 responsive iframe
+  - [x] Overview, Features, Use Cases, Pricing, Screenshots
+  - [x] Pros & Cons, FAQ accordion, Company Information
+  - [x] Real-time vote polling (3 seconds)
+  - [x] Dark mode support with theme toggle
+  - [x] Share functionality with toast notifications
 
 ### 🚧 Recommended Next Steps (Phase 6)
 
