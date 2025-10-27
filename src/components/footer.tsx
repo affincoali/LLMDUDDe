@@ -27,6 +27,7 @@ export const getFooter = () => `
                     <h3 class="font-bold mb-4">Resources</h3>
                     <ul class="space-y-2 text-gray-400">
                         <li><a href="/submit" class="hover:text-white transition">Submit Agent</a></li>
+                        <li><a href="/allstats" class="hover:text-white transition"><i class="fas fa-chart-line mr-1"></i>Statistics</a></li>
                         <li><a href="/login" class="hover:text-white transition">Login</a></li>
                         <li><a href="/signup" class="hover:text-white transition">Sign Up</a></li>
                         <li><a href="/dashboard" class="hover:text-white transition">Dashboard</a></li>

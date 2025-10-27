@@ -31,6 +31,7 @@ import { enhancedCategoriesPage, leaderboardPage, landscapePage } from './enhanc
 import { loginPage, signupPage, forgotPasswordPage } from './auth-pages';
 import { submitAgentForm } from './submit-form';
 import { userDashboard } from './dashboard-page';
+import { comprehensiveStatsPage } from './stats-page';
 
 const app = new Hono<{ Bindings: Bindings }>();
 
@@ -377,6 +378,11 @@ app.get('/submit', (c) => {
 // User Dashboard (protected route)
 app.get('/dashboard', (c) => {
   return c.html(userDashboard());
+});
+
+// Statistics Page (public)
+app.get('/allstats', (c) => {
+  return c.html(comprehensiveStatsPage());
 });
 
 // Admin pages

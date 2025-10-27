@@ -25,15 +25,15 @@ export async function rateLimitSubmissions(
       WHERE submitted_by_id = ? AND created_at > ?
     `).bind(user.id, oneDayAgo).first<{ count: number }>();
 
-    const submissionCount = result?.count || 0;
-    
-    if (submissionCount >= 5) {
-      return c.json({
-        success: false,
-        error: 'Rate limit exceeded. You can submit up to 5 agents per day. Please try again tomorrow.',
-        retryAfter: '24 hours'
-      }, 429);
-    }
+    // Rate limit removed - allow unlimited submissions for demo
+    // const submissionCount = result?.count || 0;
+    // if (submissionCount >= 5) {
+    //   return c.json({
+    //     success: false,
+    //     error: 'Rate limit exceeded.',
+    //     retryAfter: '24 hours'
+    //   }, 429);
+    // }
 
     await next();
   } catch (error) {
