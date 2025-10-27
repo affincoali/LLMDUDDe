@@ -67,6 +67,73 @@ admin.get('/agents/pending', async (c) => {
 });
 
 /**
+ * GET /api/admin/agents/all
+ * Get all agents with filters and pagination
+ */
+admin.get('/agents/all', async (c) => {
+  try {
+    const { DB } = c.env;
+    
+    const page = parseInt(c.req.query('page') || '1');
+    const limit = parseInt(c.req.query('limit') || '20');
+    const status = c.req.query('status');
+    const search = c.req.query('search');
+    
+    const offset = (page - 1) * limit;
+    
+    let whereConditions = ['1=1'];
+    let params: any[] = [];
+    
+    if (status) {
+      whereConditions.push('a.status = ?');
+      params.push(status);
+    }
+    
+    if (search) {
+      whereConditions.push('(a.name LIKE ? OR a.tagline LIKE ?)');
+      const searchTerm = `%${search}%`;
+      params.push(searchTerm, searchTerm);
+    }
+    
+    const whereClause = whereConditions.join(' AND ');
+    
+    // Get total count
+    const countResult = await DB.prepare(`
+      SELECT COUNT(*) as count FROM agents a WHERE ${whereClause}
+    `).bind(...params).first<{ count: number }>();
+    
+    const total = countResult?.count || 0;
+    
+    // Get agents with submitter info
+    const agents = await DB.prepare(`
+      SELECT 
+        a.*,
+        u.name as submitter_name,
+        u.email as submitter_email
+      FROM agents a
+      LEFT JOIN users u ON a.submitted_by_id = u.id
+      WHERE ${whereClause}
+      ORDER BY a.submitted_at DESC
+      LIMIT ? OFFSET ?
+    `).bind(...params, limit, offset).all();
+    
+    return c.json({
+      success: true,
+      data: agents.results || [],
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit)
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching agents:', error);
+    return c.json({ success: false, error: 'Failed to fetch agents' }, 500);
+  }
+});
+
+/**
  * GET /api/admin/agents/:id
  * Get agent by ID for admin review
  */

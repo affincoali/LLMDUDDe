@@ -7,6 +7,17 @@ A comprehensive directory platform for discovering, submitting, and managing AI 
 - **Development**: https://3000-izrhvxrc8y0zaw0u52v89-2e1b9533.sandbox.novita.ai
 - **Production**: (Deploy to Cloudflare Pages)
 
+### 🔑 Admin Credentials
+
+To access the admin panel, login with these credentials:
+
+- **Login URL**: https://3000-izrhvxrc8y0zaw0u52v89-2e1b9533.sandbox.novita.ai/login
+- **Email**: `admin@aiagents.directory`
+- **Password**: `admin123`
+- **Admin Panel**: https://3000-izrhvxrc8y0zaw0u52v89-2e1b9533.sandbox.novita.ai/admin/agents-all
+
+**Note**: After logging in, you'll be automatically redirected to the admin dashboard.
+
 ## 🎯 Project Overview
 
 AI Agents Directory is a lightweight, edge-deployed platform that allows users to:
@@ -360,6 +371,27 @@ npm run dev:sandbox
 **User Account:**
 - Email: `user@example.com`
 - Password: `user123`
+
+### Demo Data
+
+The database includes **11 test agents** for demonstration:
+
+**Approved Agents (9):**
+1. **ChatGPT** - Conversational AI (FREEMIUM)
+2. **Claude** - AI Assistant (FREEMIUM)
+3. **GitHub Copilot** - AI Pair Programmer (PAID)
+4. **Midjourney** - AI Art Generation (PAID)
+5. **Perplexity AI** - AI Search Engine (FREEMIUM)
+6. **Jasper AI** - Content Writing (PAID, SEO_BOOST featured)
+7. **Runway ML** - Video Editing AI (FREEMIUM, PREMIUM featured)
+8. **Hugging Face** - Open-Source NLP Models (FREE, Open Source)
+9. **Replicate** - Cloud ML API (PAID)
+
+**Pending Agents (2):**
+- **Pending Agent** - Generic test agent (FREE)
+- **Synthesia** - AI Video Creation (PAID)
+
+These agents demonstrate various pricing models, featured tiers, and approval statuses for testing the admin panel functionality.
 
 ## 📦 Available Scripts
 
