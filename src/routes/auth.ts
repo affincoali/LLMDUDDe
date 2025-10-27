@@ -1,6 +1,8 @@
 import { Hono } from 'hono';
 import type { Bindings, User } from '../types';
 import { generateToken, hashPassword, verifyPassword } from '../lib/auth';
+import { signupSchema, loginSchema, forgotPasswordSchema, resetPasswordSchema, validateData } from '../lib/validation';
+import { sendEmail, getWelcomeEmail, getPasswordResetEmail } from '../lib/email';
 
 const auth = new Hono<{ Bindings: Bindings }>();
 
@@ -10,12 +12,19 @@ const auth = new Hono<{ Bindings: Bindings }>();
  */
 auth.post('/register', async (c) => {
   try {
-    const { email, name, password } = await c.req.json();
+    const body = await c.req.json();
     
-    if (!email || !name || !password) {
-      return c.json({ success: false, error: 'Missing required fields' }, 400);
+    // Validate with Zod schema
+    const validation = validateData(signupSchema, body);
+    if (!validation.success) {
+      return c.json({
+        success: false,
+        error: 'Validation failed',
+        errors: validation.errors
+      }, 400);
     }
     
+    const { email, name, password } = validation.data!;
     const { DB } = c.env;
     
     // Check if user exists
@@ -47,6 +56,16 @@ auth.post('/register', async (c) => {
     
     if (!user) {
       return c.json({ success: false, error: 'User creation failed' }, 500);
+    }
+    
+    // Send welcome email (if Resend API key is configured)
+    const resendApiKey = c.env.RESEND_API_KEY;
+    if (resendApiKey) {
+      await sendEmail(resendApiKey, {
+        to: email,
+        subject: 'Welcome to AI Agents Directory!',
+        html: getWelcomeEmail(name)
+      }).catch(err => console.error('Welcome email failed:', err));
     }
     
     // Generate token
@@ -172,12 +191,19 @@ auth.get('/me', async (c) => {
  */
 auth.post('/forgot-password', async (c) => {
   try {
-    const { email } = await c.req.json();
+    const body = await c.req.json();
     
-    if (!email) {
-      return c.json({ success: false, error: 'Email is required' }, 400);
+    // Validate with Zod schema
+    const validation = validateData(forgotPasswordSchema, body);
+    if (!validation.success) {
+      return c.json({
+        success: false,
+        error: 'Validation failed',
+        errors: validation.errors
+      }, 400);
     }
     
+    const { email } = validation.data!;
     const { DB } = c.env;
     
     // Check if user exists
@@ -203,20 +229,24 @@ auth.post('/forgot-password', async (c) => {
       VALUES (?, ?, ?)
     `).bind(user.id, resetToken, expiresAt).run();
     
-    // TODO: Send email with reset link
-    // const resetLink = `https://yourdomain.com/reset-password?token=${resetToken}`;
-    // await sendPasswordResetEmail(user.email, user.name, resetLink);
-    
-    console.log(`Password reset requested for ${email}. Token: ${resetToken}`);
+    // Send password reset email (if Resend API key is configured)
+    const resendApiKey = c.env.RESEND_API_KEY;
+    if (resendApiKey) {
+      await sendEmail(resendApiKey, {
+        to: user.email,
+        subject: 'Reset Your Password - AI Agents Directory',
+        html: getPasswordResetEmail(user.name, resetToken)
+      }).catch(err => console.error('Password reset email failed:', err));
+    }
     
     return c.json({
       success: true,
       message: 'If an account exists with this email, you will receive a password reset link.',
       // For demo purposes only - remove in production
-      debug: {
+      debug: process.env.NODE_ENV === 'development' ? {
         resetToken,
         resetLink: `/reset-password?token=${resetToken}`
-      }
+      } : undefined
     });
   } catch (error) {
     console.error('Forgot password error:', error);
