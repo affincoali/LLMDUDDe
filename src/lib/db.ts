@@ -164,31 +164,35 @@ export async function updateReviewStats(db: D1Database, agentId: number) {
 /**
  * Update category agent count
  */
-export async function updateCategoryCount(db: D1Database, categoryId: number) {
-  const result = await db.prepare(`
-    SELECT COUNT(DISTINCT ac.agent_id) as count 
-    FROM agent_categories ac
-    INNER JOIN agents a ON ac.agent_id = a.id
-    WHERE ac.category_id = ? AND a.status = 'APPROVED'
-  `).bind(categoryId).first<{ count: number }>();
-  
-  await db.prepare(
-    'UPDATE categories SET agent_count = ? WHERE id = ?'
-  ).bind(result?.count || 0, categoryId).run();
+export async function updateCategoryCount(db: D1Database, ...categoryIds: number[]) {
+  for (const categoryId of categoryIds) {
+    const result = await db.prepare(`
+      SELECT COUNT(DISTINCT ac.agent_id) as count 
+      FROM agent_categories ac
+      INNER JOIN agents a ON ac.agent_id = a.id
+      WHERE ac.category_id = ? AND a.status = 'APPROVED'
+    `).bind(categoryId).first<{ count: number }>();
+    
+    await db.prepare(
+      'UPDATE categories SET agent_count = ? WHERE id = ?'
+    ).bind(result?.count || 0, categoryId).run();
+  }
 }
 
 /**
  * Update tag agent count
  */
-export async function updateTagCount(db: D1Database, tagId: number) {
-  const result = await db.prepare(`
-    SELECT COUNT(DISTINCT at.agent_id) as count 
-    FROM agent_tags at
-    INNER JOIN agents a ON at.agent_id = a.id
-    WHERE at.tag_id = ? AND a.status = 'APPROVED'
-  `).bind(tagId).first<{ count: number }>();
-  
-  await db.prepare(
-    'UPDATE tags SET agent_count = ? WHERE id = ?'
-  ).bind(result?.count || 0, tagId).run();
+export async function updateTagCount(db: D1Database, ...tagIds: number[]) {
+  for (const tagId of tagIds) {
+    const result = await db.prepare(`
+      SELECT COUNT(DISTINCT at.agent_id) as count 
+      FROM agent_tags at
+      INNER JOIN agents a ON at.agent_id = a.id
+      WHERE at.tag_id = ? AND a.status = 'APPROVED'
+    `).bind(tagId).first<{ count: number }>();
+    
+    await db.prepare(
+      'UPDATE tags SET agent_count = ? WHERE id = ?'
+    ).bind(result?.count || 0, tagId).run();
+  }
 }

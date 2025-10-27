@@ -382,6 +382,42 @@ admin.put('/agents/:id', async (c) => {
       `).bind(...params).run();
     }
     
+    // Handle category assignments if provided
+    if (data.category_ids && Array.isArray(data.category_ids)) {
+      // Remove existing categories
+      await DB.prepare('DELETE FROM agent_categories WHERE agent_id = ?')
+        .bind(agentId)
+        .run();
+      
+      // Add new categories
+      for (const categoryId of data.category_ids) {
+        await DB.prepare('INSERT INTO agent_categories (agent_id, category_id) VALUES (?, ?)')
+          .bind(agentId, categoryId)
+          .run();
+      }
+      
+      // Update category counts
+      await updateCategoryCount(DB, ...data.category_ids);
+    }
+    
+    // Handle tag assignments if provided
+    if (data.tag_ids && Array.isArray(data.tag_ids)) {
+      // Remove existing tags
+      await DB.prepare('DELETE FROM agent_tags WHERE agent_id = ?')
+        .bind(agentId)
+        .run();
+      
+      // Add new tags
+      for (const tagId of data.tag_ids) {
+        await DB.prepare('INSERT INTO agent_tags (agent_id, tag_id) VALUES (?, ?)')
+          .bind(agentId, tagId)
+          .run();
+      }
+      
+      // Update tag counts
+      await updateTagCount(DB, ...data.tag_ids);
+    }
+    
     return c.json({
       success: true,
       message: 'Agent updated successfully'

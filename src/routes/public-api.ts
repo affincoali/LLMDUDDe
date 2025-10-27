@@ -410,6 +410,44 @@ publicApi.get('/:slug/details', async (c) => {
   }
 });
 
+// Get current vote count for an agent (for real-time updates)
+publicApi.get('/:id/vote-count', async (c) => {
+  try {
+    const DB = c.env.DB;
+    const agentId = c.req.param('id');
+    
+    const agent = await DB.prepare('SELECT id, upvote_count FROM agents WHERE id = ?')
+      .bind(agentId)
+      .first();
+    
+    if (!agent) {
+      return c.json({ success: false, error: 'Agent not found' }, 404);
+    }
+    
+    // Check if current user has upvoted
+    let user_upvoted = false;
+    const user = c.get('user');
+    if (user) {
+      const upvote = await DB.prepare('SELECT id FROM upvotes WHERE agent_id = ? AND user_id = ?')
+        .bind(agentId, user.id)
+        .first();
+      user_upvoted = !!upvote;
+    }
+    
+    return c.json({
+      success: true,
+      data: {
+        agent_id: agent.id,
+        upvote_count: agent.upvote_count,
+        user_upvoted
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching vote count:', error);
+    return c.json({ success: false, error: 'Failed to fetch vote count' }, 500);
+  }
+});
+
 // Search agents
 publicApi.get('/search', async (c) => {
   try {

@@ -902,6 +902,9 @@ export const individualAgentPage = (slug: string) => `
                     // Show content
                     document.getElementById('loading').classList.add('hidden');
                     document.getElementById('agent-content').classList.remove('hidden');
+                    
+                    // Start real-time vote count polling (every 3 seconds)
+                    startVoteCountPolling();
                 }
             } catch (error) {
                 console.error('Error loading agent:', error);
@@ -947,6 +950,43 @@ export const individualAgentPage = (slug: string) => `
                 showToast('Failed to upvote', 'error');
             }
         }
+
+        // Real-time Vote Count Update - Polls every 3 seconds
+        let voteCountInterval = null;
+        async function updateVoteCount() {
+            if (!currentAgent) return;
+            try {
+                const response = await axios.get(API_BASE + '/public/' + currentAgent.id + '/vote-count');
+                if (response.data.success) {
+                    const newCount = response.data.data.upvote_count;
+                    // Only update if count changed to avoid unnecessary DOM updates
+                    if (newCount !== currentAgent.upvote_count) {
+                        currentAgent.upvote_count = newCount;
+                        document.getElementById('upvotes-display').textContent = newCount;
+                        document.getElementById('upvote-count').textContent = newCount;
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching vote count:', error);
+            }
+        }
+
+        // Start real-time vote count polling
+        function startVoteCountPolling() {
+            // Clear any existing interval
+            if (voteCountInterval) {
+                clearInterval(voteCountInterval);
+            }
+            // Poll every 3 seconds for real-time updates
+            voteCountInterval = setInterval(updateVoteCount, 3000);
+        }
+
+        // Stop polling when user leaves the page
+        window.addEventListener('beforeunload', () => {
+            if (voteCountInterval) {
+                clearInterval(voteCountInterval);
+            }
+        });
 
         // Track Click
         async function trackClick() {
