@@ -377,17 +377,18 @@ export const enhancedAgentDetailPage = (slug: string) => `
                 if (response.data.success) {
                     currentAgent = response.data.data.agent;
                     const features = response.data.data.features || [];
-                    const useCases = response.data.data.use_cases || [];
+                    const useCases = response.data.data.useCases || [];
                     const faqs = response.data.data.faqs || [];
-                    const pricingPlans = response.data.data.pricing_plans || [];
+                    const pricingPlans = response.data.data.pricingPlans || [];
                     const screenshots = response.data.data.screenshots || [];
-                    const prosCons = response.data.data.pros_cons || [];
+                    const pros = response.data.data.pros || [];
+                    const cons = response.data.data.cons || [];
                     const similar = response.data.data.similar || [];
                     
                     // Track view
-                    axios.post(API_BASE + '/public/' + currentAgent.id + '/view');
+                    axios.post(API_BASE + '/public/' + currentAgent.id + '/view').catch(err => console.error('View tracking error:', err));
                     
-                    renderAgent(currentAgent, features, useCases, faqs, pricingPlans, screenshots, prosCons, similar);
+                    renderAgent(currentAgent, features, useCases, faqs, pricingPlans, screenshots, pros, cons, similar);
                     
                     // Start vote count polling
                     startVoteCountPolling();
@@ -401,7 +402,7 @@ export const enhancedAgentDetailPage = (slug: string) => `
             }
         }
 
-        function renderAgent(agent, features, useCases, faqs, pricingPlans, screenshots, prosCons, similar) {
+        function renderAgent(agent, features, useCases, faqs, pricingPlans, screenshots, pros, cons, similar) {
             // Basic info
             document.getElementById('page-title').textContent = agent.name + ' - AI Agents Directory';
             document.getElementById('page-description').setAttribute('content', agent.tagline || agent.description);
@@ -436,6 +437,16 @@ export const enhancedAgentDetailPage = (slug: string) => `
             document.getElementById('upvotes-display').textContent = agent.upvote_count || 0;
             document.getElementById('upvote-count').textContent = agent.upvote_count || 0;
             document.getElementById('review-count').textContent = agent.review_count || 0;
+            
+            // Check if already upvoted in session
+            const upvoteKey = 'upvoted_' + agent.id;
+            if (sessionStorage.getItem(upvoteKey)) {
+                const upvoteBtn = document.getElementById('upvote-btn');
+                if (upvoteBtn) {
+                    upvoteBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                    upvoteBtn.innerHTML = '<i class="fas fa-check mr-2"></i>Upvoted';
+                }
+            }
             
             // Links
             document.getElementById('visit-website-btn').href = agent.website_url;
@@ -499,8 +510,6 @@ export const enhancedAgentDetailPage = (slug: string) => `
             }
             
             // Pros & Cons
-            const pros = prosCons.filter(pc => pc.type === 'PRO');
-            const cons = prosCons.filter(pc => pc.type === 'CON');
             if (pros.length > 0 || cons.length > 0) {
                 document.getElementById('pros-cons-section').style.display = 'block';
                 document.getElementById('pros-list').innerHTML = pros.map(p => \`<li class="flex items-start gap-2"><i class="fas fa-check text-green-600 mt-1"></i><span>\${p.description}</span></li>\`).join('');
@@ -539,9 +548,29 @@ export const enhancedAgentDetailPage = (slug: string) => `
         }
 
         function extractYouTubeId(url) {
-            const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-            const match = url.match(regExp);
-            return (match && match[7].length === 11) ? match[7] : null;
+            if (!url) return null;
+            // Extract YouTube video ID from various URL formats
+            let videoId = null;
+            
+            // Check for youtu.be short links
+            if (url.includes('youtu.be/')) {
+                videoId = url.split('youtu.be/')[1].split(/[?&#]/)[0];
+            }
+            // Check for youtube.com/watch?v= format
+            else if (url.includes('youtube.com/watch?v=')) {
+                videoId = url.split('v=')[1].split(/[&#]/)[0];
+            }
+            // Check for youtube.com/embed/ format
+            else if (url.includes('youtube.com/embed/')) {
+                videoId = url.split('embed/')[1].split(/[?&#]/)[0];
+            }
+            // Check for youtube.com/v/ format
+            else if (url.includes('youtube.com/v/')) {
+                videoId = url.split('v/')[1].split(/[?&#]/)[0];
+            }
+            
+            // Validate video ID is 11 characters
+            return (videoId && videoId.length === 11) ? videoId : null;
         }
 
         function renderVideoPlaceholder() {
@@ -624,12 +653,30 @@ export const enhancedAgentDetailPage = (slug: string) => `
         }
 
         async function upvoteAgent() {
+            // Check if already upvoted in this session
+            const upvoteKey = 'upvoted_' + currentAgent.id;
+            if (sessionStorage.getItem(upvoteKey)) {
+                showToast('You have already upvoted this agent in this session', 'info');
+                return;
+            }
+            
             try {
                 const response = await axios.post(API_BASE + '/public/' + currentAgent.id + '/upvote');
                 if (response.data.success) {
                     currentAgent.upvote_count = response.data.data.upvote_count;
                     document.getElementById('upvote-count').textContent = currentAgent.upvote_count;
                     document.getElementById('upvotes-display').textContent = currentAgent.upvote_count;
+                    
+                    // Mark as upvoted in session
+                    sessionStorage.setItem(upvoteKey, 'true');
+                    
+                    // Update button state
+                    const upvoteBtn = document.getElementById('upvote-btn');
+                    if (upvoteBtn) {
+                        upvoteBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                        upvoteBtn.innerHTML = '<i class="fas fa-check mr-2"></i>Upvoted';
+                    }
+                    
                     showToast('Upvote recorded!', 'success');
                 }
             } catch (error) {
