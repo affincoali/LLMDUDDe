@@ -5,26 +5,47 @@ const categories = new Hono<{ Bindings: Bindings }>();
 
 /**
  * GET /api/categories
- * List all categories
+ * List all categories with agent counts and growth
  */
 categories.get('/', async (c) => {
   try {
     const { DB } = c.env;
     const parent_id = c.req.query('parent_id');
+    const slug = c.req.query('slug');
     
-    let query = 'SELECT * FROM categories WHERE is_active = 1';
+    let query = `
+      SELECT 
+        c.*,
+        COUNT(DISTINCT ac.agent_id) as agent_count,
+        (
+          SELECT COUNT(*) 
+          FROM agent_categories ac2 
+          JOIN agents a2 ON ac2.agent_id = a2.id 
+          WHERE ac2.category_id = c.id 
+            AND a2.status = 'APPROVED'
+            AND a2.created_at >= date('now', '-30 days')
+        ) as growth_30d
+      FROM categories c
+      LEFT JOIN agent_categories ac ON c.id = ac.category_id
+      LEFT JOIN agents a ON ac.agent_id = a.id AND a.status = 'APPROVED'
+      WHERE c.is_active = 1
+    `;
+    
     let params: any[] = [];
     
-    if (parent_id) {
-      query += ' AND parent_id = ?';
+    if (slug) {
+      query += ' AND c.slug = ?';
+      params.push(slug);
+    } else if (parent_id) {
+      query += ' AND c.parent_id = ?';
       params.push(parent_id);
     } else {
-      query += ' AND parent_id IS NULL';
+      query += ' AND c.parent_id IS NULL';
     }
     
-    query += ' ORDER BY display_order ASC, name ASC';
+    query += ' GROUP BY c.id ORDER BY agent_count DESC, c.display_order ASC, c.name ASC';
     
-    const result = await DB.prepare(query).bind(...params).all<Category>();
+    const result = await DB.prepare(query).bind(...params).all();
     
     return c.json({
       success: true,

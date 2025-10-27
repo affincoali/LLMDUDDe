@@ -11,6 +11,8 @@ import adminRoutes from './routes/admin';
 import adminEnhancedRoutes from './routes/admin-enhanced';
 import userRoutes from './routes/users';
 import publicApiRoutes from './routes/public-api';
+import leaderboardApiRoutes from './routes/leaderboard-api';
+import landscapeApiRoutes from './routes/landscape-api';
 import { enhancedAdminDashboard, agentApprovalQueue } from './admin-ui';
 import { 
   adminUsersPage, 
@@ -23,6 +25,7 @@ import { adminAgentCreatePage, adminAgentEditPage } from './admin-agent-forms';
 import { enhancedHomepage } from './public-pages';
 import { advancedAgentsListing, individualAgentPage } from './agents-pages';
 import { categoriesPage, categoryDetailPage } from './categories-pages';
+import { enhancedCategoriesPage, leaderboardPage, landscapePage } from './enhanced-pages';
 
 const app = new Hono<{ Bindings: Bindings }>();
 
@@ -40,6 +43,8 @@ app.route('/api/admin', adminRoutes);
 app.route('/api/admin', adminEnhancedRoutes);
 app.route('/api/users', userRoutes);
 app.route('/api/public', publicApiRoutes);
+app.route('/api/leaderboard', leaderboardApiRoutes);
+app.route('/api/landscape', landscapeApiRoutes);
 
 // Homepage - Enhanced
 app.get('/', (c) => {
@@ -317,15 +322,31 @@ app.get('/agents/:slug', (c) => {
   return c.html(individualAgentPage(slug));
 });
 
-// Categories page
-app.get('/categories', (c) => {
+// Categories page - KEEPING OLD FOR BACKWARD COMPATIBILITY
+// Use /categories-old for simple version
+app.get('/categories-old', (c) => {
   return c.html(categoriesPage());
+});
+
+// Categories page - Enhanced version with stats
+app.get('/categories', (c) => {
+  return c.html(enhancedCategoriesPage());
 });
 
 // Category detail page
 app.get('/categories/:slug', (c) => {
   const slug = c.req.param('slug');
   return c.html(categoryDetailPage(slug));
+});
+
+// Leaderboard page
+app.get('/leaderboard', (c) => {
+  return c.html(leaderboardPage());
+});
+
+// Landscape page
+app.get('/landscape', (c) => {
+  return c.html(landscapePage());
 });
 
 // Submit agent page
