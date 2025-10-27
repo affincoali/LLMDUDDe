@@ -26,6 +26,9 @@ import { enhancedHomepage } from './public-pages';
 import { advancedAgentsListing, individualAgentPage } from './agents-pages';
 import { categoriesPage, categoryDetailPage } from './categories-pages';
 import { enhancedCategoriesPage, leaderboardPage, landscapePage } from './enhanced-pages';
+import { loginPage, signupPage, forgotPasswordPage } from './auth-pages';
+import { submitAgentForm } from './submit-form';
+import { userDashboard } from './dashboard-page';
 
 const app = new Hono<{ Bindings: Bindings }>();
 
@@ -349,121 +352,27 @@ app.get('/landscape', (c) => {
   return c.html(landscapePage());
 });
 
-// Submit agent page
+// Authentication pages
+app.get('/login', (c) => {
+  return c.html(loginPage());
+});
+
+app.get('/signup', (c) => {
+  return c.html(signupPage());
+});
+
+app.get('/forgot-password', (c) => {
+  return c.html(forgotPasswordPage());
+});
+
+// Submit agent page - Multi-step form
 app.get('/submit', (c) => {
-  return c.html(`
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Submit Your AI Agent</title>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
-    </head>
-    <body class="bg-gray-50">
-        <nav class="bg-white shadow-sm">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between h-16 items-center">
-                    <a href="/" class="flex items-center">
-                        <i class="fas fa-robot text-3xl text-purple-600 mr-3"></i>
-                        <span class="text-xl font-bold">AI Agents Directory</span>
-                    </a>
-                </div>
-            </div>
-        </nav>
+  return c.html(submitAgentForm());
+});
 
-        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <h1 class="text-4xl font-bold mb-2">Submit Your AI Agent</h1>
-            <p class="text-gray-600 mb-8">Share your AI tool with the community</p>
-
-            <div class="bg-white rounded-lg shadow p-8">
-                <form id="submit-form">
-                    <div class="mb-6">
-                        <label class="block text-sm font-medium mb-2">Agent Name *</label>
-                        <input type="text" id="name" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600">
-                    </div>
-
-                    <div class="mb-6">
-                        <label class="block text-sm font-medium mb-2">Tagline *</label>
-                        <input type="text" id="tagline" required placeholder="Brief description in one line" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600">
-                    </div>
-
-                    <div class="mb-6">
-                        <label class="block text-sm font-medium mb-2">Website URL *</label>
-                        <input type="url" id="website_url" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600">
-                    </div>
-
-                    <div class="mb-6">
-                        <label class="block text-sm font-medium mb-2">Description *</label>
-                        <textarea id="description" required rows="6" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600"></textarea>
-                    </div>
-
-                    <div class="mb-6">
-                        <label class="block text-sm font-medium mb-2">Pricing Model *</label>
-                        <select id="pricing_model" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600">
-                            <option value="FREE">Free</option>
-                            <option value="FREEMIUM">Freemium</option>
-                            <option value="PAID">Paid</option>
-                            <option value="CONTACT">Contact for Pricing</option>
-                        </select>
-                    </div>
-
-                    <div class="mb-6">
-                        <label class="flex items-center">
-                            <input type="checkbox" id="is_open_source" class="mr-2">
-                            <span class="text-sm font-medium">This is an open source project</span>
-                        </label>
-                    </div>
-
-                    <div class="mb-6">
-                        <label class="block text-sm font-medium mb-2">Your Email *</label>
-                        <input type="email" id="email" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600">
-                    </div>
-
-                    <button type="submit" class="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700">
-                        Submit for Review
-                    </button>
-                </form>
-
-                <div id="success-message" class="hidden mt-4 p-4 bg-green-100 text-green-700 rounded-lg">
-                    Thank you! Your submission will be reviewed shortly.
-                </div>
-            </div>
-        </div>
-
-        <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
-        <script>
-          document.getElementById('submit-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const data = {
-              name: document.getElementById('name').value,
-              tagline: document.getElementById('tagline').value,
-              website_url: document.getElementById('website_url').value,
-              description: document.getElementById('description').value,
-              pricing_model: document.getElementById('pricing_model').value,
-              is_open_source: document.getElementById('is_open_source').checked,
-              submitter_email: document.getElementById('email').value
-            };
-
-            try {
-              const response = await axios.post('/api/agents/submit', data);
-              if (response.data.success) {
-                document.getElementById('submit-form').reset();
-                document.getElementById('success-message').classList.remove('hidden');
-                setTimeout(() => {
-                  window.location.href = '/';
-                }, 2000);
-              }
-            } catch (error) {
-              alert('Error submitting agent: ' + (error.response?.data?.error || 'Unknown error'));
-            }
-          });
-        </script>
-    </body>
-    </html>
-  `);
+// User Dashboard (protected route)
+app.get('/dashboard', (c) => {
+  return c.html(userDashboard());
 });
 
 // Admin pages

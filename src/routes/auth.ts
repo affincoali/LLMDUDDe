@@ -166,4 +166,120 @@ auth.get('/me', async (c) => {
   }
 });
 
+/**
+ * POST /api/auth/forgot-password
+ * Request password reset
+ */
+auth.post('/forgot-password', async (c) => {
+  try {
+    const { email } = await c.req.json();
+    
+    if (!email) {
+      return c.json({ success: false, error: 'Email is required' }, 400);
+    }
+    
+    const { DB } = c.env;
+    
+    // Check if user exists
+    const user = await DB.prepare(
+      'SELECT id, email, name FROM users WHERE email = ?'
+    ).bind(email).first<User>();
+    
+    // Always return success to prevent email enumeration
+    if (!user) {
+      return c.json({
+        success: true,
+        message: 'If an account exists with this email, you will receive a password reset link.'
+      });
+    }
+    
+    // Generate reset token (valid for 1 hour)
+    const resetToken = crypto.randomUUID();
+    const expiresAt = new Date(Date.now() + 3600000).toISOString(); // 1 hour from now
+    
+    // Store reset token in database
+    await DB.prepare(`
+      INSERT INTO password_resets (user_id, token, expires_at)
+      VALUES (?, ?, ?)
+    `).bind(user.id, resetToken, expiresAt).run();
+    
+    // TODO: Send email with reset link
+    // const resetLink = `https://yourdomain.com/reset-password?token=${resetToken}`;
+    // await sendPasswordResetEmail(user.email, user.name, resetLink);
+    
+    console.log(`Password reset requested for ${email}. Token: ${resetToken}`);
+    
+    return c.json({
+      success: true,
+      message: 'If an account exists with this email, you will receive a password reset link.',
+      // For demo purposes only - remove in production
+      debug: {
+        resetToken,
+        resetLink: `/reset-password?token=${resetToken}`
+      }
+    });
+  } catch (error) {
+    console.error('Forgot password error:', error);
+    return c.json({ success: false, error: 'Failed to process request' }, 500);
+  }
+});
+
+/**
+ * POST /api/auth/reset-password
+ * Reset password with token
+ */
+auth.post('/reset-password', async (c) => {
+  try {
+    const { token, newPassword } = await c.req.json();
+    
+    if (!token || !newPassword) {
+      return c.json({ success: false, error: 'Token and new password are required' }, 400);
+    }
+    
+    if (newPassword.length < 8) {
+      return c.json({ success: false, error: 'Password must be at least 8 characters' }, 400);
+    }
+    
+    const { DB } = c.env;
+    
+    // Verify token
+    const resetRequest = await DB.prepare(`
+      SELECT pr.id, pr.user_id, pr.expires_at, u.email
+      FROM password_resets pr
+      JOIN users u ON pr.user_id = u.id
+      WHERE pr.token = ? AND pr.used = 0
+    `).bind(token).first<any>();
+    
+    if (!resetRequest) {
+      return c.json({ success: false, error: 'Invalid or expired reset token' }, 400);
+    }
+    
+    // Check if token is expired
+    if (new Date(resetRequest.expires_at) < new Date()) {
+      return c.json({ success: false, error: 'Reset token has expired' }, 400);
+    }
+    
+    // Hash new password
+    const password_hash = await hashPassword(newPassword);
+    
+    // Update user password
+    await DB.prepare(`
+      UPDATE users SET password_hash = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?
+    `).bind(password_hash, resetRequest.user_id).run();
+    
+    // Mark reset token as used
+    await DB.prepare(`
+      UPDATE password_resets SET used = 1 WHERE id = ?
+    `).bind(resetRequest.id).run();
+    
+    return c.json({
+      success: true,
+      message: 'Password reset successful. You can now login with your new password.'
+    });
+  } catch (error) {
+    console.error('Reset password error:', error);
+    return c.json({ success: false, error: 'Failed to reset password' }, 500);
+  }
+});
+
 export default auth;
