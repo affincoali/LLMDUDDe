@@ -8,7 +8,9 @@ import authRoutes from './routes/auth';
 import agentRoutes from './routes/agents';
 import categoryRoutes from './routes/categories';
 import adminRoutes from './routes/admin';
+import adminEnhancedRoutes from './routes/admin-enhanced';
 import userRoutes from './routes/users';
+import { enhancedAdminDashboard, agentApprovalQueue } from './admin-ui';
 
 const app = new Hono<{ Bindings: Bindings }>();
 
@@ -23,6 +25,7 @@ app.route('/api/auth', authRoutes);
 app.route('/api/agents', agentRoutes);
 app.route('/api/categories', categoryRoutes);
 app.route('/api/admin', adminRoutes);
+app.route('/api/admin', adminEnhancedRoutes);
 app.route('/api/users', userRoutes);
 
 // Homepage
@@ -552,8 +555,17 @@ app.get('/submit', (c) => {
   `);
 });
 
-// Admin dashboard
+// Admin pages
 app.get('/admin', (c) => {
+  return c.html(enhancedAdminDashboard());
+});
+
+app.get('/admin/agents-queue', (c) => {
+  return c.html(agentApprovalQueue());
+});
+
+// Legacy admin dashboard (old version, kept for backward compatibility)
+app.get('/admin/legacy', (c) => {
   return c.html(`
     <!DOCTYPE html>
     <html lang="en">

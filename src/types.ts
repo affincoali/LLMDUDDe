@@ -41,6 +41,10 @@ export type Agent = {
   submitted_at: string;
   approved_at?: string;
   approved_by_id?: number;
+  rejection_reason?: string;
+  admin_notes?: string;
+  last_edited_by?: number;
+  last_edited_at?: string;
   view_count: number;
   upvote_count: number;
   review_count: number;
@@ -184,4 +188,41 @@ export type AgentWithRelations = Agent & {
   submitter?: User;
   average_rating?: number;
   user_upvoted?: boolean;
+}
+
+// Audit Log types
+export type AuditLog = {
+  id: number;
+  user_id: number;
+  action: string;
+  entity_type: string;
+  entity_id?: number;
+  details?: string; // JSON string
+  ip_address?: string;
+  user_agent?: string;
+  created_at: string;
+}
+
+// Admin dashboard metrics
+export type DashboardMetrics = {
+  total_agents: number;
+  pending_agents: number;
+  approved_agents: number;
+  rejected_agents: number;
+  agents_growth_30d: number;
+  total_categories: number;
+  total_users: number;
+  total_reviews: number;
+  total_views: number;
+  total_upvotes: number;
+  total_clicks: number;
+  total_sponsorship_revenue: number;
+}
+
+// Analytics data types
+export type AnalyticsData = {
+  daily_views: Array<{ date: string; views: number }>;
+  top_categories: Array<{ name: string; count: number }>;
+  pricing_distribution: Array<{ model: string; count: number }>;
+  upvotes_trend: Array<{ date: string; upvotes: number }>;
 }
