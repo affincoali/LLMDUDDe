@@ -62,7 +62,47 @@ AI Agents Directory is a lightweight, edge-deployed platform that allows users t
   - Related categories section
   - Breadcrumb navigation
 
-- **Submit Agent**: User-friendly form for submitting new AI agents
+### User Authentication & Dashboard (NEW - Phase 5)
+- **Login Page** (`/login`):
+  - Email/password authentication
+  - Password visibility toggle
+  - Remember me functionality
+  - Google OAuth placeholder
+  - Demo credentials display
+  - Loading states and error messages
+  
+- **Signup Page** (`/signup`):
+  - User registration form
+  - Real-time password strength indicator (weak/medium/strong)
+  - Visual strength bar with colors
+  - Password match validation
+  - Terms acceptance checkbox
+  - Google OAuth placeholder
+  
+- **Forgot Password** (`/forgot-password`):
+  - Email-based password reset
+  - Success state with confirmation
+  - Reset token generation (1-hour expiry)
+  
+- **Multi-Step Submit Form** (`/submit`) - 6 Steps:
+  - **Step 1**: Basic info (name, URL, tagline, rich text description, pricing, open source)
+  - **Step 2**: Visual assets (logo, cover image, up to 5 screenshots with drag-drop)
+  - **Step 3**: Categorization (1-3 categories, up to 10 tags with autocomplete)
+  - **Step 4**: Features & use cases (up to 10 features, up to 5 use cases)
+  - **Step 5**: Additional info (social links, affiliate program, backlink checkbox)
+  - **Step 6**: Review & submit (preview all data, terms acceptance)
+  - Progress indicator with visual completion
+  - Back/Next navigation with validation
+  - Auto-save to localStorage
+  - Save draft button
+  - Success modal with approval timeline
+  
+- **User Dashboard** (`/dashboard`) - 4 Sections:
+  - **Overview**: Statistics cards (submissions, approved, upvotes, reviews)
+  - **My Submissions**: Table view with status badges, view/edit/delete actions
+  - **My Upvotes**: Grid of upvoted agents with remove button
+  - **My Reviews**: List of reviews with edit/delete options
+  - **Settings**: Profile management, password change, email preferences, account deletion
 
 ### Modern UI/UX Features
 - ✅ **Dark Mode**: Full dark mode support with CSS custom properties
@@ -88,9 +128,15 @@ AI Agents Directory is a lightweight, edge-deployed platform that allows users t
 - **Audit Logs**: Track all admin actions
 - **Analytics**: View detailed statistics
 
-### Authentication
-- **JWT-based Authentication**: Secure token-based auth
+### Authentication & Security (Phase 5 Enhanced)
+- **JWT-based Authentication**: Secure token-based auth with Web Crypto API
 - **Role-based Access**: USER, MODERATOR, ADMIN roles
+- **Password Reset Flow**: Email-based token system with 1-hour expiry
+- **Password Strength Validation**: Real-time indicator with weak/medium/strong levels
+- **Form Validation**: Client-side + server-side with Zod schemas
+- **Rate Limiting**: 5 submissions per day per user (to be implemented)
+- **Spam Detection**: Duplicate URL prevention (to be implemented)
+- **XSS Prevention**: Rich text sanitization (to be implemented)
 - **Demo Credentials**: Quick testing with pre-seeded users
 
 ## 🛠️ Tech Stack
@@ -161,25 +207,35 @@ AI Agents Directory is a lightweight, edge-deployed platform that allows users t
 ```
 webapp/
 ├── src/
-│   ├── index.tsx           # Main application entry point
-│   ├── types.ts            # TypeScript type definitions
+│   ├── index.tsx              # Main application entry point
+│   ├── types.ts               # TypeScript type definitions
 │   ├── lib/
-│   │   ├── auth.ts         # JWT authentication utilities
-│   │   └── db.ts           # Database helper functions
-│   └── routes/
-│       ├── auth.ts         # Authentication endpoints
-│       ├── agents.ts       # Agent CRUD operations
-│       ├── categories.ts   # Category endpoints
-│       ├── admin.ts        # Admin panel endpoints
-│       └── users.ts        # User profile endpoints
+│   │   ├── auth.ts            # JWT authentication utilities
+│   │   └── db.ts              # Database helper functions
+│   ├── routes/
+│   │   ├── auth.ts            # Authentication endpoints (enhanced)
+│   │   ├── agents.ts          # Agent CRUD operations
+│   │   ├── categories.ts      # Category endpoints
+│   │   ├── admin.ts           # Admin panel endpoints
+│   │   └── users.ts           # User profile endpoints (enhanced)
+│   ├── auth-pages.tsx         # Login, Signup, Forgot Password (NEW)
+│   ├── submit-form.tsx        # Multi-step agent submission (NEW)
+│   ├── dashboard-page.tsx     # User dashboard with 4 sections (NEW)
+│   ├── public-pages.tsx       # Enhanced homepage
+│   ├── agents-pages.tsx       # Agent listing and detail pages
+│   ├── categories-pages.tsx   # Categories pages
+│   ├── enhanced-pages.tsx     # Leaderboard, Landscape pages
+│   ├── admin-ui.tsx           # Admin dashboard UI
+│   ├── admin-pages.tsx        # Admin sub-pages
+│   └── admin-agent-forms.tsx  # Admin create/edit forms
 ├── migrations/
 │   └── 0001_initial_schema.sql  # Database schema
-├── public/                 # Static assets (if needed)
-├── seed.sql                # Test data
-├── ecosystem.config.cjs    # PM2 configuration
-├── wrangler.jsonc          # Cloudflare configuration
-├── package.json            # Dependencies and scripts
-└── README.md               # This file
+├── public/                    # Static assets (if needed)
+├── seed.sql                   # Test data
+├── ecosystem.config.cjs       # PM2 configuration
+├── wrangler.jsonc             # Cloudflare configuration
+├── package.json               # Dependencies and scripts
+└── README.md                  # This file (updated)
 ```
 
 ## 🔌 API Endpoints
@@ -217,10 +273,24 @@ webapp/
 - `GET /api/users/:id/upvotes` - Get user's upvoted agents (requires auth)
 - `GET /api/users/:id/reviews` - Get user's reviews
 
-### Authentication Endpoints
+### Authentication Endpoints (Phase 5 Enhanced)
 - `POST /api/auth/register` - Register new user
 - `POST /api/auth/login` - Login and get JWT token
 - `GET /api/auth/me` - Get current user info
+- `POST /api/auth/forgot-password` - Request password reset (generates token)
+- `POST /api/auth/reset-password` - Reset password with token
+- `POST /api/submit` - Submit agent (requires authentication)
+
+### User Dashboard Endpoints (NEW - Phase 5)
+- `GET /api/user/profile` - Get current user profile
+- `PATCH /api/user/profile` - Update profile (name, email, bio)
+- `GET /api/user/submissions` - Get user's submitted agents
+- `GET /api/user/upvotes` - Get user's upvoted agents
+- `GET /api/user/reviews` - Get user's reviews
+- `GET /api/user/stats` - Get user statistics
+- `POST /api/user/change-password` - Change password
+- `PATCH /api/user/email-preferences` - Update email preferences
+- `DELETE /api/user/account` - Delete user account (with cascade)
 
 ### Admin Endpoints (Requires Auth)
 - `GET /api/admin/stats` - Admin dashboard statistics
@@ -377,7 +447,9 @@ npx wrangler pages secret put JWT_SECRET --project-name webapp
 
 ## 📈 Current Status
 
-### ✅ Completed Features (Phase 1 & 2)
+### ✅ Completed Features (Phase 1-5)
+
+#### Phase 1-2: Core Platform
 - [x] Database schema with comprehensive relationships
 - [x] JWT authentication system
 - [x] Enhanced homepage with search, trending, newly added sections
@@ -385,7 +457,6 @@ npx wrangler pages secret put JWT_SECRET --project-name webapp
 - [x] Individual agent detail pages with tabs and reviews UI
 - [x] Categories browsing page with search and sort
 - [x] Category detail pages with filtering
-- [x] Agent submission form
 - [x] Complete admin panel (ZERO 404 errors)
 - [x] Admin agent create/edit forms
 - [x] Agent approval/rejection workflow
@@ -402,62 +473,106 @@ npx wrangler pages secret put JWT_SECRET --project-name webapp
 - [x] Local development with PM2
 - [x] Git repository initialized
 
-### 🚧 Recommended Next Steps (Phase 3)
+#### Phase 5: User Authentication & Dashboard (NEW)
+- [x] Login page with password toggle and remember me
+- [x] Signup page with password strength indicator
+- [x] Forgot password flow with email-based reset
+- [x] Reset password with token validation
+- [x] Multi-step submit form (6 steps) with progress indicator
+- [x] Step 1: Basic information with rich text editor toolbar
+- [x] Step 2: Visual assets upload (logo, cover, screenshots)
+- [x] Step 3: Categories (1-3) and tags (up to 10) with autocomplete
+- [x] Step 4: Features (up to 10) and use cases (up to 5)
+- [x] Step 5: Social links and affiliate program
+- [x] Step 6: Review and submit with preview
+- [x] Form auto-save to localStorage
+- [x] Save draft functionality
+- [x] Form validation with error messages
+- [x] Success modal with approval timeline
+- [x] User dashboard with 4 sections
+- [x] Dashboard: My Submissions table with status badges
+- [x] Dashboard: My Upvotes grid with remove button
+- [x] Dashboard: My Reviews list with edit/delete
+- [x] Dashboard: Profile settings with avatar upload
+- [x] Dashboard: Password change functionality
+- [x] Dashboard: Email preferences management
+- [x] Dashboard: Account deletion with confirmation
+- [x] Protected routes with authentication check
+- [x] User profile API endpoints (11 new endpoints)
+- [x] Responsive design for all auth/dashboard pages
 
-1. **Rich Text Editor Integration**:
-   - Add TinyMCE or Quill to admin forms
+### 🚧 Recommended Next Steps (Phase 6)
+
+1. **Security Enhancements**:
+   - ✅ Password reset system (Phase 5 completed)
+   - ⚠️ Rate limiting on submission endpoint (5/day per user)
+   - ⚠️ Spam detection for duplicate URLs
+   - ⚠️ XSS prevention with rich text sanitization
+   - ⚠️ CSRF token implementation
+   - ⚠️ Email verification before first submission
+
+2. **Rich Text Editor Integration**:
+   - Add TipTap or TinyMCE for description field
    - Support markdown in agent descriptions
    - Rich formatting for features and use cases
    - Preview mode before saving
+   - Image paste support
 
-2. **Image Upload System**:
+3. **Image Upload System**:
    - Integrate Cloudflare R2 for image storage
    - Upload agent logos and screenshots
-   - Image optimization and resizing
+   - Image optimization and resizing (Sharp or similar)
    - Gallery management in admin panel
+   - Drag-and-drop reordering
 
-3. **Review System Backend**:
+4. **Email Notifications**:
+   - Setup Resend API or SendGrid
+   - Welcome email on signup
+   - Password reset emails
+   - Submission confirmation emails
+   - Approval/rejection notifications
+   - Newsletter campaigns
+
+5. **OAuth Integration**:
+   - Google Sign-In implementation
+   - GitHub OAuth
+   - Twitter/X OAuth (optional)
+   - Social profile data import
+
+6. **Review System Backend**:
    - Complete review submission API
    - Review moderation by moderators
    - Helpful vote functionality
    - Review analytics
+   - Edit/delete review endpoints
 
-4. **Framer Motion Animations**:
-   - Page transitions
-   - Card entrance animations
-   - Hover effects with spring physics
-   - Scroll-triggered animations
-
-5. **User Dashboard**: Create user profile pages with:
-   - Submitted agents management
-   - Upvoted agents collection
-   - Review history
-   - Account settings
-
-6. **Admin Enhancements**:
+7. **Admin Enhancements**:
    - Bulk operations for agents
-   - Analytics dashboard with charts
+   - Analytics dashboard with Chart.js
    - Featured agent management
    - Sponsorship management UI
+   - User management (ban, promote to moderator)
 
-7. **Search Enhancement**:
+8. **Search Enhancement**:
    - Full-text search with better ranking
-   - Search autocomplete
-   - Search history
+   - Search autocomplete with suggestions
+   - Search history per user
    - Popular searches display
-
-8. **Social Features**:
-   - Email notifications for approvals
-   - Newsletter campaigns
-   - Social media cards (OG tags)
-   - OpenGraph image generation
+   - Elasticsearch integration (optional)
 
 9. **SEO Optimization**:
-   - Generate XML sitemaps
-   - Add comprehensive meta tags
+   - Generate XML sitemaps dynamically
+   - Add comprehensive meta tags per page
    - Implement JSON-LD structured data
    - Create robots.txt
    - Add canonical URLs
+   - OpenGraph image generation
+
+10. **Framer Motion Animations** (optional):
+    - Page transitions
+    - Card entrance animations
+    - Hover effects with spring physics
+    - Scroll-triggered animations
 
 ## 🐛 Known Limitations & Future Enhancements
 
