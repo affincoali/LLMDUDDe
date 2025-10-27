@@ -14,6 +14,7 @@ import publicApiRoutes from './routes/public-api';
 import leaderboardApiRoutes from './routes/leaderboard-api';
 import landscapeApiRoutes from './routes/landscape-api';
 import submitRoutes from './routes/submit';
+import uploadRoutes from './routes/upload';
 import { enhancedAdminDashboard, agentApprovalQueue } from './admin-ui';
 import { 
   adminUsersPage, 
@@ -50,6 +51,7 @@ app.route('/api/public', publicApiRoutes);
 app.route('/api/leaderboard', leaderboardApiRoutes);
 app.route('/api/landscape', landscapeApiRoutes);
 app.route('/api/submit', submitRoutes);
+app.route('/api/upload', uploadRoutes);
 
 // Homepage - Enhanced
 app.get('/', (c) => {
