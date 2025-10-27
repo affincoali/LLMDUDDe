@@ -798,14 +798,17 @@ adminEnhanced.get('/agents/:id', async (c) => {
     const result = await DB.prepare(`
       SELECT 
         a.*,
-        c.name as category_name,
-        u.username as submitter_name,
-        e.username as editor_name
+        u.name as submitter_name,
+        e.name as editor_name,
+        GROUP_CONCAT(DISTINCT c.name) as category_names,
+        GROUP_CONCAT(DISTINCT c.id) as category_ids
       FROM agents a
-      LEFT JOIN categories c ON a.category_id = c.id
+      LEFT JOIN agent_categories ac ON a.id = ac.agent_id
+      LEFT JOIN categories c ON ac.category_id = c.id
       LEFT JOIN users u ON a.submitted_by_id = u.id
       LEFT JOIN users e ON a.last_edited_by = e.id
       WHERE a.id = ?
+      GROUP BY a.id
     `).bind(agentId).first();
     
     if (!result) {
