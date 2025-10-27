@@ -21,6 +21,8 @@ import {
 } from './admin-pages';
 import { adminAgentCreatePage, adminAgentEditPage } from './admin-agent-forms';
 import { enhancedHomepage } from './public-pages';
+import { advancedAgentsListing, individualAgentPage } from './agents-pages';
+import { categoriesPage, categoryDetailPage } from './categories-pages';
 
 const app = new Hono<{ Bindings: Bindings }>();
 
@@ -304,154 +306,26 @@ app.get('/old', (c) => {
   `);
 });
 
-// Agents listing page
+// Agents listing page - Enhanced version
 app.get('/agents', (c) => {
-  return c.html(`
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>All AI Agents - AI Agents Directory</title>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
-    </head>
-    <body class="bg-gray-50">
-        <nav class="bg-white shadow-sm">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between h-16 items-center">
-                    <a href="/" class="flex items-center">
-                        <i class="fas fa-robot text-3xl text-purple-600 mr-3"></i>
-                        <span class="text-xl font-bold">AI Agents Directory</span>
-                    </a>
-                </div>
-            </div>
-        </nav>
+  return c.html(advancedAgentsListing());
+});
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <h1 class="text-4xl font-bold mb-8">All AI Agents</h1>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                <!-- Filters Sidebar -->
-                <div class="lg:col-span-1">
-                    <div class="bg-white rounded-lg shadow p-6 sticky top-20">
-                        <h3 class="font-bold text-lg mb-4">Filters</h3>
-                        
-                        <div class="mb-6">
-                            <label class="block text-sm font-medium mb-2">Pricing Model</label>
-                            <select id="filter-pricing" class="w-full px-3 py-2 border rounded-lg">
-                                <option value="">All</option>
-                                <option value="FREE">Free</option>
-                                <option value="FREEMIUM">Freemium</option>
-                                <option value="PAID">Paid</option>
-                            </select>
-                        </div>
+// Agent detail page
+app.get('/agents/:slug', (c) => {
+  const slug = c.req.param('slug');
+  return c.html(individualAgentPage(slug));
+});
 
-                        <div class="mb-6">
-                            <label class="block text-sm font-medium mb-2">Category</label>
-                            <select id="filter-category" class="w-full px-3 py-2 border rounded-lg">
-                                <option value="">All Categories</option>
-                            </select>
-                        </div>
+// Categories page
+app.get('/categories', (c) => {
+  return c.html(categoriesPage());
+});
 
-                        <button onclick="applyFilters()" class="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700">
-                            Apply Filters
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Agents Grid -->
-                <div class="lg:col-span-3">
-                    <div id="agents-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                        <!-- Agents will be loaded here -->
-                    </div>
-                    <div id="loading" class="text-center py-8">
-                        <i class="fas fa-spinner fa-spin text-4xl text-purple-600"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
-        <script>
-          const API_BASE = '/api';
-          let currentFilters = {};
-
-          async function loadAgents() {
-            document.getElementById('loading').style.display = 'block';
-            
-            try {
-              const params = new URLSearchParams(currentFilters);
-              const response = await axios.get(API_BASE + '/agents?' + params.toString());
-              
-              if (response.data.success) {
-                const agents = response.data.data;
-                const grid = document.getElementById('agents-grid');
-                
-                grid.innerHTML = agents.map(agent => \`
-                  <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition cursor-pointer" onclick="window.location='/agents/\${agent.slug}'">
-                    <div class="h-48 bg-gradient-to-br from-purple-400 to-indigo-600 flex items-center justify-center">
-                      <span class="text-6xl">\${agent.logo_url || '🤖'}</span>
-                    </div>
-                    <div class="p-6">
-                      <h3 class="text-xl font-bold mb-2">\${agent.name}</h3>
-                      <p class="text-gray-600 text-sm mb-4">\${agent.tagline || ''}</p>
-                      <div class="flex items-center justify-between">
-                        <span class="text-sm text-gray-500">
-                          <i class="fas fa-arrow-up text-purple-600"></i> \${agent.upvote_count}
-                        </span>
-                        <span class="px-3 py-1 bg-purple-100 text-purple-600 text-xs font-semibold rounded-full">
-                          \${agent.pricing_model}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                \`).join('');
-              }
-            } catch (error) {
-              console.error('Error loading agents:', error);
-            } finally {
-              document.getElementById('loading').style.display = 'none';
-            }
-          }
-
-          async function loadCategories() {
-            try {
-              const response = await axios.get(API_BASE + '/categories');
-              if (response.data.success) {
-                const select = document.getElementById('filter-category');
-                response.data.data.forEach(cat => {
-                  const option = document.createElement('option');
-                  option.value = cat.id;
-                  option.textContent = cat.name;
-                  select.appendChild(option);
-                });
-              }
-            } catch (error) {
-              console.error('Error loading categories:', error);
-            }
-          }
-
-          function applyFilters() {
-            currentFilters = {};
-            
-            const pricing = document.getElementById('filter-pricing').value;
-            if (pricing) currentFilters.pricing_model = pricing;
-            
-            const category = document.getElementById('filter-category').value;
-            if (category) currentFilters.category_id = category;
-            
-            loadAgents();
-          }
-
-          document.addEventListener('DOMContentLoaded', () => {
-            loadAgents();
-            loadCategories();
-          });
-        </script>
-    </body>
-    </html>
-  `);
+// Category detail page
+app.get('/categories/:slug', (c) => {
+  const slug = c.req.param('slug');
+  return c.html(categoryDetailPage(slug));
 });
 
 // Submit agent page
