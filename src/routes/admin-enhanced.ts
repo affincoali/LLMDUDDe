@@ -652,4 +652,174 @@ adminEnhanced.post('/categories/reorder', async (c) => {
   }
 });
 
+// Create new agent (admin only)
+adminEnhanced.post('/agents/create', requireAdmin, async (c) => {
+  try {
+    const user = c.get('user');
+    const DB = c.env.DB;
+    const data = await c.req.json();
+    
+    // Generate slug if not provided
+    const slug = data.slug || data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    
+    // Insert new agent
+    const result = await DB.prepare(`
+      INSERT INTO agents (
+        name, slug, tagline, description, website_url, logo_url, demo_url, docs_url,
+        pricing_model, pricing_details, is_open_source, has_free_trial,
+        category_id, tags, features, status, admin_notes, rejection_reason,
+        is_featured, submitter_email, submitted_by_id, last_edited_by
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).bind(
+      data.name,
+      slug,
+      data.tagline,
+      data.description,
+      data.website_url,
+      data.logo_url || null,
+      data.demo_url || null,
+      data.docs_url || null,
+      data.pricing_model,
+      data.pricing_details || null,
+      data.is_open_source ? 1 : 0,
+      data.has_free_trial ? 1 : 0,
+      data.category_id,
+      data.tags || null,
+      data.features || null,
+      data.status || 'PENDING',
+      data.admin_notes || null,
+      data.rejection_reason || null,
+      data.is_featured ? 1 : 0,
+      data.submitter_email || null,
+      user.id,
+      user.id
+    ).run();
+    
+    const agentId = result.meta.last_row_id;
+    
+    // Log audit action
+    await logAuditAction(DB, user, 'CREATE_AGENT', 'agent', agentId, {
+      name: data.name,
+      status: data.status || 'PENDING'
+    });
+    
+    return c.json({
+      success: true,
+      message: 'Agent created successfully',
+      data: { id: agentId, slug }
+    });
+  } catch (error: any) {
+    console.error('Error creating agent:', error);
+    return c.json({ success: false, error: error.message || 'Failed to create agent' }, 500);
+  }
+});
+
+// Update agent (admin only)
+adminEnhanced.put('/agents/:id', requireAdmin, async (c) => {
+  try {
+    const user = c.get('user');
+    const DB = c.env.DB;
+    const agentId = c.req.param('id');
+    const data = await c.req.json();
+    
+    // Update agent
+    await DB.prepare(`
+      UPDATE agents SET
+        name = ?,
+        slug = ?,
+        tagline = ?,
+        description = ?,
+        website_url = ?,
+        logo_url = ?,
+        demo_url = ?,
+        docs_url = ?,
+        pricing_model = ?,
+        pricing_details = ?,
+        is_open_source = ?,
+        has_free_trial = ?,
+        category_id = ?,
+        tags = ?,
+        features = ?,
+        status = ?,
+        admin_notes = ?,
+        rejection_reason = ?,
+        is_featured = ?,
+        submitter_email = ?,
+        last_edited_by = ?,
+        last_edited_at = CURRENT_TIMESTAMP
+      WHERE id = ?
+    `).bind(
+      data.name,
+      data.slug,
+      data.tagline,
+      data.description,
+      data.website_url,
+      data.logo_url || null,
+      data.demo_url || null,
+      data.docs_url || null,
+      data.pricing_model,
+      data.pricing_details || null,
+      data.is_open_source ? 1 : 0,
+      data.has_free_trial ? 1 : 0,
+      data.category_id,
+      data.tags || null,
+      data.features || null,
+      data.status,
+      data.admin_notes || null,
+      data.rejection_reason || null,
+      data.is_featured ? 1 : 0,
+      data.submitter_email || null,
+      user.id,
+      agentId
+    ).run();
+    
+    // Log audit action
+    await logAuditAction(DB, user, 'UPDATE_AGENT', 'agent', parseInt(agentId), {
+      name: data.name,
+      status: data.status
+    });
+    
+    return c.json({
+      success: true,
+      message: 'Agent updated successfully'
+    });
+  } catch (error: any) {
+    console.error('Error updating agent:', error);
+    return c.json({ success: false, error: error.message || 'Failed to update agent' }, 500);
+  }
+});
+
+// Get single agent details (admin only)
+adminEnhanced.get('/agents/:id', async (c) => {
+  try {
+    const DB = c.env.DB;
+    const agentId = c.req.param('id');
+    
+    const result = await DB.prepare(`
+      SELECT 
+        a.*,
+        c.name as category_name,
+        u.username as submitter_name,
+        e.username as editor_name
+      FROM agents a
+      LEFT JOIN categories c ON a.category_id = c.id
+      LEFT JOIN users u ON a.submitted_by_id = u.id
+      LEFT JOIN users e ON a.last_edited_by = e.id
+      WHERE a.id = ?
+    `).bind(agentId).first();
+    
+    if (!result) {
+      return c.json({ success: false, error: 'Agent not found' }, 404);
+    }
+    
+    return c.json({
+      success: true,
+      data: result
+    });
+  } catch (error) {
+    console.error('Error fetching agent:', error);
+    return c.json({ success: false, error: 'Failed to fetch agent' }, 500);
+  }
+});
+
 export default adminEnhanced;

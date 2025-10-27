@@ -11,6 +11,14 @@ import adminRoutes from './routes/admin';
 import adminEnhancedRoutes from './routes/admin-enhanced';
 import userRoutes from './routes/users';
 import { enhancedAdminDashboard, agentApprovalQueue } from './admin-ui';
+import { 
+  adminUsersPage, 
+  adminAnalyticsPage, 
+  adminAuditLogsPage, 
+  adminCategoriesPage, 
+  adminAllAgentsPage 
+} from './admin-pages';
+import { adminAgentCreatePage, adminAgentEditPage } from './admin-agent-forms';
 
 const app = new Hono<{ Bindings: Bindings }>();
 
@@ -562,6 +570,35 @@ app.get('/admin', (c) => {
 
 app.get('/admin/agents-queue', (c) => {
   return c.html(agentApprovalQueue());
+});
+
+app.get('/admin/agents-all', (c) => {
+  return c.html(adminAllAgentsPage());
+});
+
+app.get('/admin/agents/create', (c) => {
+  return c.html(adminAgentCreatePage());
+});
+
+app.get('/admin/agents/:id/edit', (c) => {
+  const agentId = c.req.param('id');
+  return c.html(adminAgentEditPage(agentId));
+});
+
+app.get('/admin/users', (c) => {
+  return c.html(adminUsersPage());
+});
+
+app.get('/admin/analytics', (c) => {
+  return c.html(adminAnalyticsPage());
+});
+
+app.get('/admin/audit-logs', (c) => {
+  return c.html(adminAuditLogsPage());
+});
+
+app.get('/admin/categories', (c) => {
+  return c.html(adminCategoriesPage());
 });
 
 // Legacy admin dashboard (old version, kept for backward compatibility)

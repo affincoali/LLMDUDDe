@@ -740,7 +740,7 @@ export const agentApprovalQueue = () => `
 </html>
 `;
 
-function getSidebar(activePage: string) {
+export function getSidebar(activePage: string) {
   return `
         <div class="bg-gray-900 text-white w-64 flex-shrink-0 overflow-y-auto">
             <div class="p-6">
