@@ -103,7 +103,7 @@ export const adminUsersPage = () => `
                     ...(role && { role })
                 });
 
-                const response = await axios.get('/api/admin/users/all?' + params.toString());
+                const response = await axios.get('/api/admin/users?' + params.toString());
                 
                 if (response.data.success) {
                     renderUsersTable(response.data.data);
@@ -626,12 +626,13 @@ export const adminCategoriesPage = () => `
 
         async function loadCategories() {
             try {
-                const response = await axios.get('/api/categories');
+                const response = await axios.get('/api/admin/categories');
                 if (response.data.success) {
                     renderCategories(response.data.data);
                 }
             } catch (error) {
                 console.error('Error loading categories:', error);
+                showToast('Failed to load categories', 'error');
             }
         }
 
@@ -652,27 +653,125 @@ export const adminCategoriesPage = () => `
                     </div>
                     <h3 class="text-xl font-bold mb-2">\${cat.name}</h3>
                     <p class="text-sm text-gray-600 mb-4">\${cat.description || 'No description'}</p>
-                    <div class="flex items-center space-x-2">
-                        <div class="w-6 h-6 rounded-full" style="background-color: \${cat.color}"></div>
-                        <span class="text-xs text-gray-500">\${cat.slug}</span>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-6 h-6 rounded-full" style="background-color: \${cat.color || '#9333ea'}"></div>
+                            <span class="text-xs text-gray-500">\${cat.slug}</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="showEditModal(\${cat.id})" class="text-blue-600 hover:text-blue-900 text-sm">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteCategory(\${cat.id}, '\${cat.name}', \${cat.agent_count})" class="text-red-600 hover:text-red-900 text-sm">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             \`).join('');
         }
 
+        let editingCategoryId = null;
+
         function showCreateModal() {
+            editingCategoryId = null;
             document.getElementById('modal-title').textContent = 'New Category';
             document.getElementById('category-form').reset();
+            document.getElementById('cat-color').value = '#9333ea';
             document.getElementById('category-modal').classList.remove('hidden');
+        }
+
+        async function showEditModal(categoryId) {
+            try {
+                const response = await axios.get('/api/admin/categories/' + categoryId);
+                if (response.data.success) {
+                    const cat = response.data.data;
+                    editingCategoryId = categoryId;
+                    document.getElementById('modal-title').textContent = 'Edit Category';
+                    document.getElementById('cat-name').value = cat.name;
+                    document.getElementById('cat-icon').value = cat.icon || '';
+                    document.getElementById('cat-description').value = cat.description || '';
+                    document.getElementById('cat-color').value = cat.color || '#9333ea';
+                    document.getElementById('category-modal').classList.remove('hidden');
+                }
+            } catch (error) {
+                showToast('Failed to load category details', 'error');
+            }
         }
 
         function hideCategoryModal() {
             document.getElementById('category-modal').classList.add('hidden');
         }
 
+        async function deleteCategory(categoryId, categoryName, agentCount) {
+            if (agentCount > 0) {
+                showToast('Cannot delete "' + categoryName + '" - it has ' + agentCount + ' associated agents', 'error');
+                return;
+            }
+            
+            if (!confirm('Are you sure you want to delete "' + categoryName + '"?')) {
+                return;
+            }
+            
+            try {
+                const response = await axios.delete('/api/admin/categories/' + categoryId);
+                if (response.data.success) {
+                    showToast('Category deleted successfully!', 'success');
+                    loadCategories();
+                }
+            } catch (error) {
+                showToast(error.response?.data?.error || 'Failed to delete category', 'error');
+            }
+        }
+
+        function showToast(message, type = 'info') {
+            const bgColor = type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-blue-500';
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-4 right-4 ' + bgColor + ' text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-opacity';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(function() {
+                toast.style.opacity = '0';
+                setTimeout(function() { toast.remove(); }, 300);
+            }, 3000);
+        }
+
         document.getElementById('category-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            alert('Category creation API endpoint needs to be implemented');
+            
+            const name = document.getElementById('cat-name').value.trim();
+            const icon = document.getElementById('cat-icon').value.trim();
+            const description = document.getElementById('cat-description').value.trim();
+            const color = document.getElementById('cat-color').value;
+            const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+            
+            if (!name) {
+                showToast('Category name is required', 'error');
+                return;
+            }
+            
+            try {
+                let response;
+                if (editingCategoryId) {
+                    // Update existing category
+                    response = await axios.put('/api/admin/categories/' + editingCategoryId, {
+                        name, slug, icon, description, color
+                    });
+                } else {
+                    // Create new category
+                    response = await axios.post('/api/admin/categories', {
+                        name, slug, icon, description, color
+                    });
+                }
+                
+                if (response.data.success) {
+                    hideCategoryModal();
+                    loadCategories();
+                    showToast(editingCategoryId ? 'Category updated successfully!' : 'Category created successfully!', 'success');
+                }
+            } catch (error) {
+                showToast(error.response?.data?.error || 'Failed to save category', 'error');
+            }
         });
 
         function logout() {

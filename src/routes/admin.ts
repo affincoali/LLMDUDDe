@@ -729,10 +729,13 @@ admin.get('/users', async (c) => {
     
     const users = await DB.prepare(`
       SELECT 
-        id, email, name, image, role, email_verified, created_at, updated_at
-      FROM users
+        u.id, u.email, u.name, u.image, u.role, u.email_verified, u.created_at, u.updated_at,
+        (SELECT COUNT(*) FROM agents WHERE submitted_by_id = u.id) as agents_count,
+        (SELECT COUNT(*) FROM reviews WHERE user_id = u.id) as reviews_count,
+        (SELECT COUNT(*) FROM upvotes WHERE user_id = u.id) as upvotes_count
+      FROM users u
       WHERE ${whereClause}
-      ORDER BY created_at DESC
+      ORDER BY u.created_at DESC
       LIMIT ? OFFSET ?
     `).bind(...params, limit, offset).all();
     
@@ -816,6 +819,48 @@ admin.get('/users/:id', async (c) => {
   } catch (error) {
     console.error('Error fetching user:', error);
     return c.json({ success: false, error: 'Failed to fetch user' }, 500);
+  }
+});
+
+/**
+ * PUT /api/admin/users/:id/role
+ * Update user role (admin only)
+ */
+admin.put('/users/:id/role', requireAdmin, async (c) => {
+  try {
+    const { DB } = c.env;
+    const userId = parseInt(c.req.param('id'));
+    const data = await c.req.json();
+    
+    const user = await DB.prepare('SELECT * FROM users WHERE id = ?')
+      .bind(userId)
+      .first();
+    
+    if (!user) {
+      return c.json({ success: false, error: 'User not found' }, 404);
+    }
+    
+    const { role } = data;
+    
+    // Validate role
+    if (!role || !['USER', 'ADMIN', 'MODERATOR'].includes(role)) {
+      return c.json({ success: false, error: 'Invalid role' }, 400);
+    }
+    
+    await DB.prepare(`
+      UPDATE users
+      SET role = ?,
+          updated_at = CURRENT_TIMESTAMP
+      WHERE id = ?
+    `).bind(role, userId).run();
+    
+    return c.json({
+      success: true,
+      message: 'User role updated successfully'
+    });
+  } catch (error) {
+    console.error('Error updating user role:', error);
+    return c.json({ success: false, error: 'Failed to update user role' }, 500);
   }
 });
 
