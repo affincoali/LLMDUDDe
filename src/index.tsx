@@ -10,6 +10,7 @@ import categoryRoutes from './routes/categories';
 import adminRoutes from './routes/admin';
 import adminEnhancedRoutes from './routes/admin-enhanced';
 import userRoutes from './routes/users';
+import publicApiRoutes from './routes/public-api';
 import { enhancedAdminDashboard, agentApprovalQueue } from './admin-ui';
 import { 
   adminUsersPage, 
@@ -19,6 +20,7 @@ import {
   adminAllAgentsPage 
 } from './admin-pages';
 import { adminAgentCreatePage, adminAgentEditPage } from './admin-agent-forms';
+import { enhancedHomepage } from './public-pages';
 
 const app = new Hono<{ Bindings: Bindings }>();
 
@@ -35,9 +37,15 @@ app.route('/api/categories', categoryRoutes);
 app.route('/api/admin', adminRoutes);
 app.route('/api/admin', adminEnhancedRoutes);
 app.route('/api/users', userRoutes);
+app.route('/api/public', publicApiRoutes);
 
-// Homepage
+// Homepage - Enhanced
 app.get('/', (c) => {
+  return c.html(enhancedHomepage());
+});
+
+// Old Homepage (backup - keeping for reference)
+app.get('/old', (c) => {
   return c.html(`
     <!DOCTYPE html>
     <html lang="en">

@@ -1,0 +1,588 @@
+// Public-Facing Frontend Pages
+// Modern, high-converting pages with advanced features
+
+export const enhancedHomepage = () => `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agents Directory - The x402-Ready AI Agents Marketplace</title>
+    <meta name="description" content="Browse AI Apps capable of autonomous payments. Discover 1800+ AI agents across 72 categories.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        .scroll-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .scroll-container::-webkit-scrollbar {
+            display: none;
+        }
+        .scroll-item {
+            flex: 0 0 auto;
+            scroll-snap-align: start;
+        }
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s ease-in-out infinite;
+        }
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .badge-glow {
+            animation: glow 2s ease-in-out infinite;
+        }
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 5px rgba(102, 126, 234, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(102, 126, 234, 0.8); }
+        }
+        .hero-animation {
+            animation: fadeInUp 0.8s ease-out;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <i class="fas fa-robot text-3xl text-purple-600 mr-3"></i>
+                    <span class="text-xl font-bold text-gray-900">AI Agents Directory</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="/" class="text-purple-600 font-semibold">Home</a>
+                    <a href="/agents" class="text-gray-700 hover:text-purple-600 transition">Browse</a>
+                    <a href="/categories" class="text-gray-700 hover:text-purple-600 transition">Categories</a>
+                    <a href="/submit" class="text-gray-700 hover:text-purple-600 transition">Submit</a>
+                    <button onclick="showLogin()" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">
+                        Login
+                    </button>
+                </div>
+                <button class="md:hidden" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-2xl text-gray-700"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-4 py-4 space-y-3">
+                <a href="/" class="block text-purple-600 font-semibold">Home</a>
+                <a href="/agents" class="block text-gray-700">Browse</a>
+                <a href="/categories" class="block text-gray-700">Categories</a>
+                <a href="/submit" class="block text-gray-700">Submit</a>
+                <button onclick="showLogin()" class="w-full bg-purple-600 text-white px-4 py-2 rounded-lg">
+                    Login
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="gradient-bg text-white py-20 lg:py-28 hero-animation">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-4xl mx-auto">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                    The x402-Ready AI Agents Marketplace
+                </h1>
+                <p class="text-xl md:text-2xl mb-8 text-gray-100">
+                    Browse AI Apps capable of autonomous payments, seamless integrations, and intelligent automation
+                </p>
+                
+                <!-- Search Bar -->
+                <div class="max-w-2xl mx-auto mb-8">
+                    <div class="relative">
+                        <input 
+                            type="text" 
+                            id="hero-search"
+                            placeholder="Search for AI agents, tools, or categories..." 
+                            class="w-full px-6 py-4 pr-12 rounded-full text-gray-900 focus:outline-none focus:ring-4 focus:ring-purple-300 shadow-xl"
+                            autocomplete="off"
+                        >
+                        <button class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-purple-600 text-white w-10 h-10 rounded-full hover:bg-purple-700 transition">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    <!-- Search Results Dropdown -->
+                    <div id="search-results" class="hidden mt-2 bg-white rounded-lg shadow-xl text-left max-h-96 overflow-y-auto">
+                        <!-- Results will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="flex flex-wrap justify-center gap-6 text-sm md:text-base">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-robot text-2xl"></i>
+                        <span id="stat-agents" class="font-semibold">Loading...</span>
+                        <span class="opacity-90">Agents</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-folder text-2xl"></i>
+                        <span id="stat-categories" class="font-semibold">Loading...</span>
+                        <span class="opacity-90">Categories</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-gift text-2xl"></i>
+                        <span id="stat-free" class="font-semibold">Loading...</span>
+                        <span class="opacity-90">Free</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-code text-2xl"></i>
+                        <span id="stat-opensource" class="font-semibold">Loading...</span>
+                        <span class="opacity-90">Open Source</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Newly Added Section -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-3xl font-bold text-gray-900 flex items-center">
+                <i class="fas fa-sparkles text-purple-600 mr-3"></i>
+                Newly Added
+            </h2>
+            <a href="/agents?sort=newest" class="text-purple-600 font-semibold hover:text-purple-700 transition">
+                View All <i class="fas fa-arrow-right ml-1"></i>
+            </a>
+        </div>
+        
+        <div class="relative">
+            <div id="newly-added-container" class="scroll-container space-x-6 pb-4">
+                <!-- Loading Skeletons -->
+                <div class="scroll-item w-80 h-80 bg-gray-200 rounded-lg skeleton"></div>
+                <div class="scroll-item w-80 h-80 bg-gray-200 rounded-lg skeleton"></div>
+                <div class="scroll-item w-80 h-80 bg-gray-200 rounded-lg skeleton"></div>
+            </div>
+            <button onclick="scrollLeft('newly-added-container')" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-3 shadow-lg hover:bg-gray-50 transition">
+                <i class="fas fa-chevron-left text-purple-600"></i>
+            </button>
+            <button onclick="scrollRight('newly-added-container')" class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-3 shadow-lg hover:bg-gray-50 transition">
+                <i class="fas fa-chevron-right text-purple-600"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Trending Section -->
+    <div class="bg-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-900 flex items-center">
+                    <i class="fas fa-fire text-orange-500 mr-3"></i>
+                    Trending This Week
+                </h2>
+                <a href="/agents?sort=trending" class="text-purple-600 font-semibold hover:text-purple-700 transition">
+                    View All <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+            
+            <div class="relative">
+                <div id="trending-container" class="scroll-container space-x-6 pb-4">
+                    <!-- Loading Skeletons -->
+                    <div class="scroll-item w-80 h-80 bg-gray-200 rounded-lg skeleton"></div>
+                    <div class="scroll-item w-80 h-80 bg-gray-200 rounded-lg skeleton"></div>
+                    <div class="scroll-item w-80 h-80 bg-gray-200 rounded-lg skeleton"></div>
+                </div>
+                <button onclick="scrollLeft('trending-container')" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-3 shadow-lg hover:bg-gray-50 transition">
+                    <i class="fas fa-chevron-left text-purple-600"></i>
+                </button>
+                <button onclick="scrollRight('trending-container')" class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-3 shadow-lg hover:bg-gray-50 transition">
+                    <i class="fas fa-chevron-right text-purple-600"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popular Categories Grid -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-3">
+                <i class="fas fa-th text-purple-600 mr-3"></i>
+                Popular Categories
+            </h2>
+            <p class="text-gray-600">Explore AI agents by category</p>
+        </div>
+        
+        <div id="categories-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <!-- Loading Skeletons -->
+            ${Array(12).fill(0).map(() => '<div class="h-32 bg-gray-200 rounded-lg skeleton"></div>').join('')}
+        </div>
+    </div>
+
+    <!-- Newsletter Section -->
+    <div class="bg-gradient-to-br from-purple-600 to-indigo-700 text-white py-16">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <i class="fas fa-envelope text-5xl mb-6 opacity-90"></i>
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">
+                Stay Ahead of the Curve
+            </h2>
+            <p class="text-xl mb-8 opacity-90">
+                Get weekly updates on the latest AI agents and tools
+            </p>
+            
+            <form id="newsletter-form" class="max-w-md mx-auto">
+                <div class="flex gap-3">
+                    <input 
+                        type="email" 
+                        id="newsletter-email"
+                        placeholder="Enter your email" 
+                        required
+                        class="flex-1 px-6 py-4 rounded-lg text-gray-900 focus:outline-none focus:ring-4 focus:ring-purple-300"
+                    >
+                    <button 
+                        type="submit"
+                        class="bg-white text-purple-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition whitespace-nowrap"
+                    >
+                        Subscribe
+                    </button>
+                </div>
+            </form>
+            
+            <div id="newsletter-message" class="hidden mt-4 p-4 rounded-lg"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-robot text-3xl text-purple-500 mr-3"></i>
+                        <span class="text-xl font-bold">AI Agents</span>
+                    </div>
+                    <p class="text-gray-400">
+                        Discover the best AI agents and tools for your needs.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4">Explore</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="/agents" class="hover:text-white transition">Browse Agents</a></li>
+                        <li><a href="/categories" class="hover:text-white transition">Categories</a></li>
+                        <li><a href="/agents?sort=trending" class="hover:text-white transition">Trending</a></li>
+                        <li><a href="/agents?pricing=FREE" class="hover:text-white transition">Free Agents</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4">Resources</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="/submit" class="hover:text-white transition">Submit Agent</a></li>
+                        <li><a href="/blog" class="hover:text-white transition">Blog</a></li>
+                        <li><a href="/api-docs" class="hover:text-white transition">API Docs</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4">Connect</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition text-xl">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition text-xl">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition text-xl">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition text-xl">
+                            <i class="fab fa-discord"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 AI Agents Directory. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold">Login</h3>
+                <button onclick="hideLogin()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <form onsubmit="handleLogin(event)">
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">Email</label>
+                    <input type="email" id="login-email" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 mb-2">Password</label>
+                    <input type="password" id="login-password" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600">
+                </div>
+                <button type="submit" class="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700">
+                    Login
+                </button>
+            </form>
+            <div class="mt-4 text-center">
+                <p class="text-gray-600">Demo credentials:</p>
+                <p class="text-sm text-gray-500">admin@aiagents.directory / admin123</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
+    <script>
+        const API_BASE = '/api';
+        let searchTimeout = null;
+
+        // Load enhanced stats
+        async function loadStats() {
+            try {
+                const response = await axios.get(API_BASE + '/agents/stats');
+                if (response.data.success) {
+                    const stats = response.data.data;
+                    document.getElementById('stat-agents').textContent = stats.total_agents || 0;
+                    document.getElementById('stat-categories').textContent = stats.total_categories || 0;
+                    
+                    // Calculate free and open source from agents
+                    const agentsResponse = await axios.get(API_BASE + '/agents?status=APPROVED&limit=1000');
+                    if (agentsResponse.data.success) {
+                        const agents = agentsResponse.data.data;
+                        const freeCount = agents.filter(a => a.pricing_model === 'FREE' || a.pricing_model === 'FREEMIUM').length;
+                        const osCount = agents.filter(a => a.is_open_source).length;
+                        document.getElementById('stat-free').textContent = freeCount;
+                        document.getElementById('stat-opensource').textContent = osCount;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        // Load newly added agents
+        async function loadNewlyAdded() {
+            try {
+                const response = await axios.get(API_BASE + '/public/newly-added?limit=6');
+                if (response.data.success) {
+                    const agents = response.data.data;
+                    const container = document.getElementById('newly-added-container');
+                    container.innerHTML = agents.map(agent => createAgentCard(agent)).join('');
+                }
+            } catch (error) {
+                console.error('Error loading newly added:', error);
+            }
+        }
+
+        // Load trending agents
+        async function loadTrending() {
+            try {
+                const response = await axios.get(API_BASE + '/public/trending?limit=6');
+                if (response.data.success) {
+                    const agents = response.data.data;
+                    const container = document.getElementById('trending-container');
+                    container.innerHTML = agents.map(agent => createAgentCard(agent)).join('');
+                }
+            } catch (error) {
+                console.error('Error loading trending:', error);
+            }
+        }
+
+        // Load popular categories
+        async function loadCategories() {
+            try {
+                const response = await axios.get(API_BASE + '/public/categories/popular?limit=12');
+                if (response.data.success) {
+                    const categories = response.data.data;
+                    const grid = document.getElementById('categories-grid');
+                    grid.innerHTML = categories.map((cat, index) => \`
+                        <a href="/categories/\${cat.slug}" class="bg-white rounded-lg p-6 hover:shadow-xl transition card-hover border-2 border-gray-100">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="text-4xl">\${cat.icon || '📁'}</div>
+                                \${index < 3 ? \`<div class="text-2xl">\${['🥇','🥈','🥉'][index]}</div>\` : ''}
+                            </div>
+                            <h3 class="font-bold text-gray-900 mb-1">\${cat.name}</h3>
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-gray-600">\${cat.agent_count} agents</span>
+                                \${cat.recent_additions > 0 ? \`<span class="text-green-600 badge-glow px-2 py-1 bg-green-100 rounded">+\${cat.recent_additions} new</span>\` : ''}
+                            </div>
+                        </a>
+                    \`).join('');
+                }
+            } catch (error) {
+                console.error('Error loading categories:', error);
+            }
+        }
+
+        // Create agent card HTML
+        function createAgentCard(agent) {
+            return \`
+                <div class="scroll-item w-80 bg-white rounded-lg shadow-md overflow-hidden card-hover cursor-pointer" onclick="window.location='/agents/\${agent.slug}'">
+                    <div class="h-48 bg-gradient-to-br from-purple-400 to-indigo-600 flex items-center justify-center">
+                        <span class="text-6xl">\${agent.logo_url || '🤖'}</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2 truncate">\${agent.name}</h3>
+                        <p class="text-gray-600 text-sm mb-4 h-10 overflow-hidden">\${agent.tagline || ''}</p>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-3 py-1 bg-purple-100 text-purple-600 text-xs font-semibold rounded-full">
+                                \${agent.pricing_model}
+                            </span>
+                            \${agent.is_open_source ? '<span class="text-xs text-green-600"><i class="fas fa-code"></i> Open Source</span>' : ''}
+                        </div>
+                        <div class="flex items-center justify-between text-sm text-gray-500">
+                            <span><i class="fas fa-eye text-purple-600"></i> \${agent.view_count || 0}</span>
+                            <span><i class="fas fa-arrow-up text-purple-600"></i> \${agent.upvote_count || 0}</span>
+                        </div>
+                    </div>
+                </div>
+            \`;
+        }
+
+        // Search functionality
+        document.getElementById('hero-search').addEventListener('input', (e) => {
+            const query = e.target.value;
+            
+            clearTimeout(searchTimeout);
+            
+            if (query.length < 2) {
+                document.getElementById('search-results').classList.add('hidden');
+                return;
+            }
+            
+            searchTimeout = setTimeout(async () => {
+                try {
+                    const response = await axios.get(API_BASE + '/public/search?q=' + encodeURIComponent(query));
+                    if (response.data.success) {
+                        const results = response.data.data;
+                        const resultsDiv = document.getElementById('search-results');
+                        
+                        if (results.length === 0) {
+                            resultsDiv.innerHTML = '<div class="p-4 text-gray-500 text-center">No results found</div>';
+                        } else {
+                            resultsDiv.innerHTML = results.slice(0, 5).map(agent => \`
+                                <a href="/agents/\${agent.slug}" class="flex items-center p-4 hover:bg-gray-50 border-b last:border-b-0">
+                                    <div class="text-3xl mr-4">\${agent.logo_url || '🤖'}</div>
+                                    <div class="flex-1">
+                                        <div class="font-semibold text-gray-900">\${agent.name}</div>
+                                        <div class="text-sm text-gray-600 truncate">\${agent.tagline || ''}</div>
+                                    </div>
+                                    <span class="text-xs bg-purple-100 text-purple-600 px-2 py-1 rounded">\${agent.pricing_model}</span>
+                                </a>
+                            \`).join('');
+                        }
+                        
+                        resultsDiv.classList.remove('hidden');
+                    }
+                } catch (error) {
+                    console.error('Search error:', error);
+                }
+            }, 300);
+        });
+
+        // Newsletter subscription
+        document.getElementById('newsletter-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('newsletter-email').value;
+            const messageDiv = document.getElementById('newsletter-message');
+            
+            try {
+                const response = await axios.post(API_BASE + '/public/newsletter/subscribe', { email });
+                if (response.data.success) {
+                    messageDiv.className = 'mt-4 p-4 rounded-lg bg-white text-green-600';
+                    messageDiv.textContent = response.data.message;
+                    document.getElementById('newsletter-form').reset();
+                } else {
+                    messageDiv.className = 'mt-4 p-4 rounded-lg bg-white text-red-600';
+                    messageDiv.textContent = response.data.error || 'Subscription failed';
+                }
+                messageDiv.classList.remove('hidden');
+                setTimeout(() => messageDiv.classList.add('hidden'), 5000);
+            } catch (error) {
+                messageDiv.className = 'mt-4 p-4 rounded-lg bg-white text-red-600';
+                messageDiv.textContent = 'Subscription failed. Please try again.';
+                messageDiv.classList.remove('hidden');
+            }
+        });
+
+        // Scroll functions
+        function scrollLeft(containerId) {
+            const container = document.getElementById(containerId);
+            container.scrollBy({ left: -400, behavior: 'smooth' });
+        }
+
+        function scrollRight(containerId) {
+            const container = document.getElementById(containerId);
+            container.scrollBy({ left: 400, behavior: 'smooth' });
+        }
+
+        // Login functions
+        function showLogin() {
+            document.getElementById('login-modal').classList.remove('hidden');
+        }
+
+        function hideLogin() {
+            document.getElementById('login-modal').classList.add('hidden');
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            try {
+                const response = await axios.post(API_BASE + '/auth/login', { email, password });
+                if (response.data.success) {
+                    localStorage.setItem('auth_token', response.data.data.token);
+                    alert('Login successful!');
+                    hideLogin();
+                    window.location.href = '/admin';
+                }
+            } catch (error) {
+                alert('Login failed: ' + (error.response?.data?.error || 'Unknown error'));
+            }
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        // Hide search results when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#hero-search') && !e.target.closest('#search-results')) {
+                document.getElementById('search-results').classList.add('hidden');
+            }
+        });
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            loadStats();
+            loadNewlyAdded();
+            loadTrending();
+            loadCategories();
+        });
+    </script>
+</body>
+</html>
+`;
