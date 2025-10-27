@@ -1,6 +1,8 @@
 // Agents Listing and Detail Pages
 // Advanced filtering, search, and comprehensive agent details
 
+import { getFooter } from './components/footer';
+
 export const advancedAgentsListing = () => `
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
@@ -527,6 +529,8 @@ export const advancedAgentsListing = () => `
             loadAgents();
         });
     </script>
+
+    ${getFooter()}
 </body>
 </html>
 `;
@@ -796,6 +800,8 @@ export const individualAgentPage = (slug: string) => `
             </div>
         </div>
     </div>
+
+    ${getFooter()}
 
     <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
     <script>

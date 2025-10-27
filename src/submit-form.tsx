@@ -1,3 +1,5 @@
+import { getFooter } from './components/footer';
+
 export const submitAgentForm = () => `
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
@@ -1051,31 +1053,41 @@ export const submitAgentForm = () => `
         };
 
         // Popular tags for autocomplete
-        const popularTags = [
-            'AI', 'Machine Learning', 'NLP', 'Computer Vision', 'ChatBot', 'Automation',
-            'Data Analysis', 'Image Generation', 'Text Generation', 'Voice Assistant',
-            'Code Assistant', 'Writing Assistant', 'Marketing', 'Sales', 'Customer Support',
-            'Productivity', 'Education', 'Healthcare', 'Finance', 'E-commerce'
-        ];
+        // Categories and tags loaded from database
+        let categories = [];
+        let availableTags = [];
 
-        // Load categories from API or use hardcoded list
-        const categories = [
-            { id: 1, name: 'Chatbots & Conversational AI' },
-            { id: 2, name: 'Content Generation & Writing' },
-            { id: 3, name: 'Code Assistant & Development' },
-            { id: 4, name: 'Image & Video Generation' },
-            { id: 5, name: 'Data Analysis & Business Intelligence' },
-            { id: 6, name: 'Marketing & SEO Tools' },
-            { id: 7, name: 'Customer Support & CRM' },
-            { id: 8, name: 'Voice & Audio Processing' },
-            { id: 9, name: 'Productivity & Automation' },
-            { id: 10, name: 'Education & Learning' }
-        ];
+        // Load categories from database
+        async function loadCategories() {
+            try {
+                const response = await axios.get('/api/categories');
+                if (response.data.success) {
+                    categories = response.data.data;
+                    renderCategories();
+                }
+            } catch (error) {
+                console.error('Error loading categories:', error);
+                showToast('Failed to load categories', 'error');
+            }
+        }
+
+        // Load tags from database
+        async function loadTags() {
+            try {
+                const response = await axios.get('/api/tags');
+                if (response.data.success) {
+                    availableTags = response.data.data.map(tag => tag.name);
+                }
+            } catch (error) {
+                console.error('Error loading tags:', error);
+            }
+        }
 
         // Initialize on page load
-        window.addEventListener('DOMContentLoaded', () => {
+        window.addEventListener('DOMContentLoaded', async () => {
             loadDraft();
-            renderCategories();
+            await loadCategories();
+            await loadTags();
             updateProgressBar();
             
             // Character counter for tagline
@@ -1563,7 +1575,7 @@ export const submitAgentForm = () => `
                 return;
             }
 
-            const matches = popularTags.filter(tag => 
+            const matches = availableTags.filter(tag => 
                 tag.toLowerCase().includes(input) && !formData.tags.includes(tag)
             );
 
@@ -1652,6 +1664,8 @@ export const submitAgentForm = () => `
             document.getElementById('affiliate-url-group').style.display = hasAffiliate ? 'block' : 'none';
         }
     </script>
+
+    ${getFooter()}
 </body>
 </html>
 `;
