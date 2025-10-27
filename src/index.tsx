@@ -26,6 +26,7 @@ import {
 import { adminAgentCreatePage, adminAgentEditPage } from './admin-agent-forms';
 import { enhancedHomepage } from './public-pages';
 import { advancedAgentsListing, individualAgentPage } from './agents-pages';
+import { enhancedAgentDetailPage } from './enhanced-agent-page';
 import { categoriesPage, categoryDetailPage } from './categories-pages';
 import { enhancedCategoriesPage, leaderboardPage, landscapePage } from './enhanced-pages';
 import { loginPage, signupPage, forgotPasswordPage } from './auth-pages';
@@ -324,8 +325,14 @@ app.get('/agents', (c) => {
   return c.html(advancedAgentsListing());
 });
 
-// Agent detail page
+// Agent detail page - Enhanced version with YouTube and comprehensive sections
 app.get('/agents/:slug', (c) => {
+  const slug = c.req.param('slug');
+  return c.html(enhancedAgentDetailPage(slug));
+});
+
+// Agent detail page - Old version (kept for reference)
+app.get('/agents-old/:slug', (c) => {
   const slug = c.req.param('slug');
   return c.html(individualAgentPage(slug));
 });
