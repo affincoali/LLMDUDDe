@@ -4,6 +4,33 @@ import type { Bindings } from '../types';
 
 const publicApi = new Hono<{ Bindings: Bindings }>();
 
+// Get public statistics
+publicApi.get('/stats', async (c) => {
+  try {
+    const DB = c.env.DB;
+    
+    const stats = await DB.batch([
+      DB.prepare('SELECT COUNT(*) as count FROM agents WHERE status = "APPROVED"'),
+      DB.prepare('SELECT COUNT(*) as count FROM categories WHERE is_active = 1'),
+      DB.prepare('SELECT SUM(upvote_count) as count FROM agents WHERE status = "APPROVED"'),
+      DB.prepare('SELECT SUM(view_count) as count FROM agents WHERE status = "APPROVED"')
+    ]);
+    
+    return c.json({
+      success: true,
+      data: {
+        total_agents: stats[0].results[0].count || 0,
+        total_categories: stats[1].results[0].count || 0,
+        total_upvotes: stats[2].results[0].count || 0,
+        total_views: stats[3].results[0].count || 0
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching stats:', error);
+    return c.json({ success: false, error: 'Failed to fetch stats' }, 500);
+  }
+});
+
 // Get trending agents (by views in last 7 days)
 publicApi.get('/trending', async (c) => {
   try {
@@ -244,7 +271,7 @@ publicApi.get('/:slug/details', async (c) => {
         a.*,
         GROUP_CONCAT(DISTINCT c.name) as category_names,
         GROUP_CONCAT(DISTINCT c.id) as category_ids,
-        u.username as submitter_name
+        u.name as submitter_name
       FROM agents a
       LEFT JOIN agent_categories ac ON a.id = ac.agent_id
       LEFT JOIN categories c ON ac.category_id = c.id
