@@ -27,6 +27,7 @@ import { adminAgentCreatePage, adminAgentEditPage } from './admin-agent-forms';
 import { enhancedHomepage } from './public-pages';
 import { advancedAgentsListing, individualAgentPage } from './agents-pages';
 import { enhancedAgentDetailPage } from './enhanced-agent-page';
+import { enhancedCategoryDetailPage } from './enhanced-category-page';
 import { categoriesPage, categoryDetailPage } from './categories-pages';
 import { enhancedCategoriesPage, leaderboardPage, landscapePage } from './enhanced-pages';
 import { loginPage, signupPage, forgotPasswordPage } from './auth-pages';
@@ -348,8 +349,14 @@ app.get('/categories', (c) => {
   return c.html(enhancedCategoriesPage());
 });
 
-// Category detail page
+// Category detail page - Enhanced version
 app.get('/categories/:slug', (c) => {
+  const slug = c.req.param('slug');
+  return c.html(enhancedCategoryDetailPage(slug));
+});
+
+// Category detail page - Old version (kept for reference)
+app.get('/categories-old/:slug', (c) => {
   const slug = c.req.param('slug');
   return c.html(categoryDetailPage(slug));
 });
