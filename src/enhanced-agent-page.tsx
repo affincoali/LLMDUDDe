@@ -915,6 +915,15 @@ export const enhancedAgentDetailPage = (slug: string) => `
         }
 
         async function upvoteAgent() {
+            const token = localStorage.getItem('token');
+            
+            // Check if user is logged in
+            if (!token) {
+                showToast('Please login to upvote', 'error');
+                setTimeout(() => window.location.href = '/login', 1500);
+                return;
+            }
+            
             // Check if already upvoted in this session
             const upvoteKey = 'upvoted_' + currentAgent.id;
             if (sessionStorage.getItem(upvoteKey)) {
@@ -923,7 +932,12 @@ export const enhancedAgentDetailPage = (slug: string) => `
             }
             
             try {
-                const response = await axios.post(API_BASE + '/public/' + currentAgent.id + '/upvote');
+                const response = await axios.post(
+                    API_BASE + '/agents/' + currentAgent.id + '/upvote',
+                    {},
+                    { headers: { Authorization: 'Bearer ' + token } }
+                );
+                
                 if (response.data.success) {
                     currentAgent.upvote_count = response.data.data.upvote_count;
                     document.getElementById('upvote-count').textContent = currentAgent.upvote_count;
@@ -942,7 +956,9 @@ export const enhancedAgentDetailPage = (slug: string) => `
                     showToast('Upvote recorded!', 'success');
                 }
             } catch (error) {
-                showToast(error.response?.data?.error || 'Error recording upvote', 'error');
+                const errMsg = error.response?.data?.error || error.response?.data?.message || 'Error recording upvote';
+                showToast(errMsg, 'error');
+                console.error('Upvote error:', error);
             }
         }
 

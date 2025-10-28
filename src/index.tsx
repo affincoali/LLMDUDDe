@@ -16,6 +16,7 @@ import landscapeApiRoutes from './routes/landscape-api';
 import submitRoutes from './routes/submit';
 import uploadRoutes from './routes/upload';
 import reviewRoutes from './routes/reviews';
+import savesRoutes from './routes/saves';
 import { enhancedAdminDashboard, agentApprovalQueue } from './admin-ui';
 import { 
   adminUsersPage, 
@@ -30,6 +31,7 @@ import { adminReviewsPage } from './admin-reviews';
 import { enhancedHomepage } from './public-pages';
 import { advancedAgentsListing, individualAgentPage } from './agents-pages';
 import { enhancedAgentDetailPage } from './enhanced-agent-page';
+import { redesignedAgentDetailPage } from './redesigned-agent-page';
 import { enhancedCategoryDetailPage } from './enhanced-category-page';
 import { categoriesPage, categoryDetailPage } from './categories-pages';
 import { enhancedCategoriesPage, leaderboardPage, landscapePage } from './enhanced-pages';
@@ -59,6 +61,7 @@ app.route('/api/landscape', landscapeApiRoutes);
 app.route('/api/submit', submitRoutes);
 app.route('/api/upload', uploadRoutes);
 app.route('/api/reviews', reviewRoutes);
+app.route('/api/saves', savesRoutes);
 
 // Tags endpoint for autocomplete
 app.get('/api/tags', async (c) => {
@@ -348,10 +351,10 @@ app.get('/agents', (c) => {
   return c.html(advancedAgentsListing());
 });
 
-// Agent detail page - Enhanced version with YouTube and comprehensive sections
+// Agent detail page - Redesigned with dark theme and all new features
 app.get('/agents/:slug', (c) => {
   const slug = c.req.param('slug');
-  return c.html(enhancedAgentDetailPage(slug));
+  return c.html(redesignedAgentDetailPage(slug));
 });
 
 // Agent detail page - Old version (kept for reference)

@@ -119,3 +119,19 @@ export async function verifyPassword(password: string, hash: string): Promise<bo
   const passwordHash = await hashPassword(password);
   return passwordHash === hash;
 }
+
+/**
+ * Authenticate token and return user (for API routes)
+ */
+export async function authenticateToken(token: string): Promise<User | null> {
+  const payload = await verifyToken(token);
+  if (!payload) return null;
+  
+  // Note: This function doesn't have access to DB context
+  // Caller must verify user exists in DB separately
+  return {
+    id: payload.sub,
+    email: payload.email,
+    role: payload.role
+  } as User;
+}
