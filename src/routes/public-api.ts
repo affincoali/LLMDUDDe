@@ -101,14 +101,13 @@ publicApi.get('/categories/popular', async (c) => {
     const categories = await DB.prepare(`
       SELECT 
         c.*,
-        COUNT(DISTINCT ac.agent_id) as agent_count,
-        SUM(CASE WHEN a.created_at >= date('now', '-7 days') THEN 1 ELSE 0 END) as recent_additions
+        COUNT(ac.agent_id) as agent_count,
+        0 as recent_additions
       FROM categories c
       LEFT JOIN agent_categories ac ON c.id = ac.category_id
-      LEFT JOIN agents a ON ac.agent_id = a.id AND a.status = 'APPROVED'
+      WHERE c.is_active = 1
       GROUP BY c.id
-      HAVING agent_count > 0
-      ORDER BY agent_count DESC
+      ORDER BY agent_count DESC, c.display_order ASC
       LIMIT ?
     `).bind(limit).all();
     

@@ -28,7 +28,16 @@ agents.get('/', async (c) => {
     const category_id = c.req.query('category_id');
     const pricing_model = c.req.query('pricing_model');
     const search = c.req.query('search');
-    const sort = c.req.query('sort') || 'created_at';
+    
+    // Map sort aliases to actual column names
+    const sortParam = c.req.query('sort') || 'created_at';
+    const sortMap: { [key: string]: string } = {
+      'newest': 'created_at',
+      'popular': 'upvote_count',
+      'trending': 'view_count',
+      'name': 'name'
+    };
+    const sort = sortMap[sortParam] || sortParam;
     const order = c.req.query('order') || 'DESC';
     
     // Build query
@@ -53,10 +62,17 @@ agents.get('/', async (c) => {
     
     const whereClause = whereConditions.join(' AND ');
     
+    // Validate sort column to prevent SQL injection
+    const validSortColumns = ['created_at', 'updated_at', 'name', 'upvote_count', 'view_count', 'published_at'];
+    const sortColumn = validSortColumns.includes(sort) ? sort : 'created_at';
+    
+    // Validate order
+    const orderDirection = order.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
+    
     const query = `
       SELECT * FROM agents 
       WHERE ${whereClause}
-      ORDER BY ${sort} ${order}
+      ORDER BY ${sortColumn} ${orderDirection}
     `;
     
     const countQuery = `SELECT COUNT(*) as count FROM agents WHERE ${whereClause}`;
