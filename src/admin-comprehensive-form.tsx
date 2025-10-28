@@ -39,6 +39,13 @@ export const adminComprehensiveEditPage = (agentId: string) => `
             margin-bottom: 12px;
             border: 1px solid #e5e7eb;
         }
+        .upload-area {
+            transition: all 0.3s ease;
+        }
+        .upload-area:hover {
+            border-color: #7c3aed !important;
+            background-color: #f5f3ff;
+        }
     </style>
 </head>
 <body class="bg-gray-100">
@@ -170,15 +177,47 @@ export const adminComprehensiveEditPage = (agentId: string) => `
                                 <input type="url" id="website_url" required class="w-full px-4 py-2 border rounded-lg">
                             </div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div class="field-group">
-                                    <label class="block text-sm font-medium mb-2">Logo URL or Emoji</label>
-                                    <input type="text" id="logo_url" placeholder="🤖 or https://..." class="w-full px-4 py-2 border rounded-lg">
+                            <div class="field-group">
+                                <label class="block text-sm font-medium mb-2">Logo <span class="text-red-500">*</span></label>
+                                <div class="upload-area" id="admin-logo-upload-area" onclick="document.getElementById('admin-logo-upload').click()" 
+                                     style="border: 2px dashed #d1d5db; border-radius: 8px; padding: 2rem; text-align: center; cursor: pointer; transition: all 0.3s;">
+                                    <i class="fas fa-cloud-upload-alt text-4xl mb-2" style="color: #7c3aed;"></i>
+                                    <p style="color: #6b7280;">Drag & drop or click to upload logo</p>
+                                    <p class="text-sm" style="color: #9ca3af;">Max 2MB • Square format recommended (500x500px)</p>
                                 </div>
+                                <input 
+                                    type="file" 
+                                    id="admin-logo-upload" 
+                                    accept="image/*" 
+                                    style="display: none;"
+                                    onchange="handleAdminLogoUpload(event)"
+                                />
+                                <div id="admin-logo-preview" class="mt-3"></div>
+                                <div class="mt-2">
+                                    <label class="block text-xs text-gray-600 mb-1">Or paste URL/Emoji:</label>
+                                    <input type="text" id="logo_url" placeholder="🤖 or https://..." class="w-full px-3 py-2 border rounded-lg text-sm">
+                                </div>
+                            </div>
 
-                                <div class="field-group">
-                                    <label class="block text-sm font-medium mb-2">Cover Image URL</label>
-                                    <input type="url" id="cover_image" class="w-full px-4 py-2 border rounded-lg">
+                            <div class="field-group">
+                                <label class="block text-sm font-medium mb-2">Cover Image</label>
+                                <div class="upload-area" id="admin-cover-upload-area" onclick="document.getElementById('admin-cover-upload').click()" 
+                                     style="border: 2px dashed #d1d5db; border-radius: 8px; padding: 2rem; text-align: center; cursor: pointer; transition: all 0.3s;">
+                                    <i class="fas fa-image text-4xl mb-2" style="color: #7c3aed;"></i>
+                                    <p style="color: #6b7280;">Drag & drop or click to upload cover image</p>
+                                    <p class="text-sm" style="color: #9ca3af;">Max 5MB • Recommended: 1200x630px</p>
+                                </div>
+                                <input 
+                                    type="file" 
+                                    id="admin-cover-upload" 
+                                    accept="image/*" 
+                                    style="display: none;"
+                                    onchange="handleAdminCoverUpload(event)"
+                                />
+                                <div id="admin-cover-preview" class="mt-3"></div>
+                                <div class="mt-2">
+                                    <label class="block text-xs text-gray-600 mb-1">Or paste URL:</label>
+                                    <input type="url" id="cover_image" class="w-full px-3 py-2 border rounded-lg text-sm">
                                 </div>
                             </div>
 
@@ -865,6 +904,113 @@ export const adminComprehensiveEditPage = (agentId: string) => `
             }
         }
 
+        // Image Upload Handlers
+        async function handleAdminLogoUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            if (file.size > 2 * 1024 * 1024) {
+                alert('Logo file size must be less than 2MB');
+                return;
+            }
+            
+            // Show loading state
+            document.getElementById('admin-logo-preview').innerHTML = \`
+                <div style="text-align: center; padding: 1.5rem; background: #f9fafb; border-radius: 8px;">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #7c3aed;"></i>
+                    <p style="margin-top: 0.5rem; color: #6b7280;">Uploading logo...</p>
+                </div>
+            \`;
+            
+            try {
+                // Upload to server
+                const uploadFormData = new FormData();
+                uploadFormData.append('file', file);
+                
+                const response = await axios.post('/api/upload/image', uploadFormData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                
+                if (response.data.success) {
+                    const imageUrl = response.data.data.url;
+                    document.getElementById('logo_url').value = imageUrl;
+                    document.getElementById('admin-logo-preview').innerHTML = \`
+                        <div style="background: #f9fafb; border-radius: 8px; padding: 1rem;">
+                            <img src="\${imageUrl}" style="max-width: 150px; max-height: 150px; border-radius: 8px; margin: 0 auto; display: block;" alt="Logo preview" />
+                            <div style="margin-top: 0.75rem; font-size: 0.875rem; color: #10b981; text-align: center;">
+                                <i class="fas fa-check-circle"></i> Logo uploaded successfully
+                            </div>
+                        </div>
+                    \`;
+                } else {
+                    throw new Error(response.data.error || 'Upload failed');
+                }
+            } catch (error) {
+                console.error('Logo upload error:', error);
+                document.getElementById('admin-logo-preview').innerHTML = \`
+                    <div style="color: #ef4444; text-align: center; padding: 1rem; background: #fef2f2; border-radius: 8px;">
+                        <i class="fas fa-exclamation-circle"></i> Upload failed. Please try again.
+                    </div>
+                \`;
+                alert('Failed to upload logo: ' + (error.response?.data?.error || error.message));
+            }
+        }
+
+        async function handleAdminCoverUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Cover image file size must be less than 5MB');
+                return;
+            }
+            
+            // Show loading state
+            document.getElementById('admin-cover-preview').innerHTML = \`
+                <div style="text-align: center; padding: 1.5rem; background: #f9fafb; border-radius: 8px;">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #7c3aed;"></i>
+                    <p style="margin-top: 0.5rem; color: #6b7280;">Uploading cover image...</p>
+                </div>
+            \`;
+            
+            try {
+                // Upload to server
+                const uploadFormData = new FormData();
+                uploadFormData.append('file', file);
+                
+                const response = await axios.post('/api/upload/image', uploadFormData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                
+                if (response.data.success) {
+                    const imageUrl = response.data.data.url;
+                    document.getElementById('cover_image').value = imageUrl;
+                    document.getElementById('admin-cover-preview').innerHTML = \`
+                        <div style="background: #f9fafb; border-radius: 8px; padding: 1rem;">
+                            <img src="\${imageUrl}" style="max-width: 100%; max-height: 200px; border-radius: 8px; margin: 0 auto; display: block;" alt="Cover preview" />
+                            <div style="margin-top: 0.75rem; font-size: 0.875rem; color: #10b981; text-align: center;">
+                                <i class="fas fa-check-circle"></i> Cover image uploaded successfully
+                            </div>
+                        </div>
+                    \`;
+                } else {
+                    throw new Error(response.data.error || 'Upload failed');
+                }
+            } catch (error) {
+                console.error('Cover upload error:', error);
+                document.getElementById('admin-cover-preview').innerHTML = \`
+                    <div style="color: #ef4444; text-align: center; padding: 1rem; background: #fef2f2; border-radius: 8px;">
+                        <i class="fas fa-exclamation-circle"></i> Upload failed. Please try again.
+                    </div>
+                \`;
+                alert('Failed to upload cover image: ' + (error.response?.data?.error || error.message));
+            }
+        }
+
         // Form submission
         document.getElementById('edit-form').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -986,10 +1132,47 @@ export const adminComprehensiveEditPage = (agentId: string) => `
             }
         });
 
+        // Initialize drag and drop for image uploads
+        function initializeDragAndDrop() {
+            ['admin-logo-upload-area', 'admin-cover-upload-area'].forEach(areaId => {
+                const area = document.getElementById(areaId);
+                if (!area) return;
+
+                area.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    area.style.borderColor = '#7c3aed';
+                    area.style.backgroundColor = '#f5f3ff';
+                });
+
+                area.addEventListener('dragleave', (e) => {
+                    e.preventDefault();
+                    area.style.borderColor = '#d1d5db';
+                    area.style.backgroundColor = 'transparent';
+                });
+
+                area.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    area.style.borderColor = '#d1d5db';
+                    area.style.backgroundColor = 'transparent';
+                    
+                    const files = e.dataTransfer.files;
+                    if (files.length > 0) {
+                        const inputId = areaId.replace('-area', '');
+                        const input = document.getElementById(inputId);
+                        if (input) {
+                            input.files = files;
+                            input.dispatchEvent(new Event('change'));
+                        }
+                    }
+                });
+            });
+        }
+
         // Initialize
         document.addEventListener('DOMContentLoaded', async () => {
             await loadCategories();
             await loadAgentData();
+            initializeDragAndDrop();
         });
     </script>
 </body>
