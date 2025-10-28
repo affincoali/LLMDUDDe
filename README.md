@@ -4,12 +4,23 @@ A comprehensive directory platform for discovering, submitting, and managing AI 
 
 ## 🚀 Live Demo
 
+- **Production**: https://a2d9fcfc.webapp-ds7.pages.dev (Latest deployment)
+- **Custom Domain**: https://llmdude.com (Production site)
 - **Development**: https://3000-izrhvxrc8y0zaw0u52v89-2e1b9533.sandbox.novita.ai
-- **Production**: (Deploy to Cloudflare Pages)
 
 ### ✅ All Pages Fully Functional
 
-**Status**: All pages are working and connected to database (Last tested: 2025-10-27 20:50 UTC)
+**Status**: All pages are working and connected to database (Last tested: 2025-10-28 19:20 UTC)
+
+**🔥 LATEST FIXES - Homepage Search & Universal Header** (2025-10-28):
+- ✅ **Home Page Search Fixed**: Search bar now properly responds to user input
+- ✅ **Universal Header Applied**: All pages now use consistent navigation structure
+- ✅ **Enhanced Search UI**: Improved dropdown with better styling, icons, and result counts
+- ✅ **Search Button Handler**: Added click handler for manual search triggering
+- ✅ **Enter Key Support**: Press Enter to perform search
+- ✅ **Better Error Handling**: User-friendly error messages for failed searches
+- ✅ **Improved Alignment**: Fixed search dropdown positioning and z-index
+- ✅ **Production Deployed**: Live at https://a2d9fcfc.webapp-ds7.pages.dev and llmdude.com
 
 **🔥 RECENTLY FIXED - Admin Panel 100% Working**:
 - ✅ **Category Management**: Create, edit, delete categories with real database persistence
@@ -19,13 +30,17 @@ A comprehensive directory platform for discovering, submitting, and managing AI 
 - ✅ **Toast Notifications**: Real-time feedback for all admin operations
 
 **Working Pages**:
-- ✅ Homepage with statistics
-- ✅ Agents listing page
-- ✅ **Enhanced Agent Detail Pages** (NEW - with YouTube embed, comprehensive sections)
-- ✅ Categories page (real database counts via junction tables)
-- ✅ **Statistics Page** (NEW - /allstats with real-time charts)
-- ✅ Login/Signup/Dashboard
-- ✅ Admin panel with full functionality (Categories, Users, Agents)
+- ✅ **Homepage** - Universal header, working search, statistics (FIXED - 2025-10-28)
+- ✅ **Agents listing page** - Advanced filters and dark mode
+- ✅ **Enhanced Agent Detail Pages** - YouTube embed, comprehensive sections
+- ✅ **Categories page** - Universal header, working search (FIXED - 2025-10-28)
+- ✅ **Category Detail pages** - Filter and search within category (FIXED - 2025-10-28)
+- ✅ **Statistics Page** (/allstats) - Real-time charts with Chart.js
+- ✅ **Leaderboard page** - Top agents ranking
+- ✅ **Landscape page** - Visual agent ecosystem
+- ✅ **Login/Signup/Dashboard** - Full authentication flow
+- ✅ **Submit Form** - Multi-step agent submission
+- ✅ **Admin panel** - Full CRUD for Categories, Users, Agents (FIXED - 2025-10-27)
 
 **Test URLs**:
 - Homepage: https://3000-izrhvxrc8y0zaw0u52v89-2e1b9533.sandbox.novita.ai/
@@ -56,13 +71,18 @@ AI Agents Directory is a lightweight, edge-deployed platform that allows users t
 ## ✨ Key Features
 
 ### Public Features
-- **Enhanced Homepage**: 
-  - Real-time search with 300ms debounce
+- **Enhanced Homepage** (SEARCH FIXED - 2025-10-28): 
+  - ✅ **Working real-time search** with 300ms debounce and click handler
+  - ✅ **Universal header** for consistent navigation across all pages
+  - ✅ **Enhanced search results dropdown** with proper styling and alignment
+  - ✅ **Enter key support** for quick searching
+  - ✅ **Result count display** showing number of matches
+  - ✅ **Error handling** with user-friendly messages
   - Newly added agents carousel with horizontal scroll
   - Trending agents section (last 7 days by views)
   - Popular categories grid with top 12 categories
   - Newsletter subscription with email validation
-  - Quick stats display
+  - Quick stats display (agents, categories, free, open source)
   
 - **Advanced Agent Listing** (`/agents`):
   - Dark mode support with localStorage persistence
