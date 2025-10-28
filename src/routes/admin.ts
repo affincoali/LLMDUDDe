@@ -172,6 +172,7 @@ admin.get('/agents/:id', async (c) => {
       data: {
         ...agent,
         categories: categories.results || [],
+        category_ids: (categories.results || []).map((cat: any) => cat.id),
         tags: tags.results || []
       }
     });

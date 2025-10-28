@@ -160,11 +160,11 @@ export const adminAgentCreatePage = () => `
                             </h2>
                             
                             <div>
-                                <label class="block text-sm font-medium mb-2">Category *</label>
-                                <select id="category_id" required 
+                                <label class="block text-sm font-medium mb-2">Categories * (hold Ctrl/Cmd to select multiple)</label>
+                                <select id="category_ids" multiple required size="5"
                                     class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600">
-                                    <option value="">Select a category...</option>
                                 </select>
+                                <p class="text-xs text-gray-500 mt-1">Hold Ctrl (Windows) or Cmd (Mac) to select multiple categories</p>
                             </div>
 
                             <div class="mt-6">
@@ -276,7 +276,7 @@ export const adminAgentCreatePage = () => `
             try {
                 const response = await axios.get('/api/categories');
                 if (response.data.success) {
-                    const select = document.getElementById('category_id');
+                    const select = document.getElementById('category_ids');
                     response.data.data.forEach(cat => {
                         const option = document.createElement('option');
                         option.value = cat.id;
@@ -315,7 +315,7 @@ export const adminAgentCreatePage = () => `
                 pricing_details: document.getElementById('pricing_details').value || null,
                 is_open_source: document.getElementById('is_open_source').checked,
                 has_free_trial: document.getElementById('has_free_trial').checked,
-                category_id: parseInt(document.getElementById('category_id').value),
+                category_ids: Array.from(document.getElementById('category_ids').selectedOptions).map(opt => parseInt(opt.value)),
                 tags: document.getElementById('tags').value || null,
                 features: document.getElementById('features').value || null,
                 status: document.getElementById('status').value,
@@ -504,11 +504,11 @@ export const adminAgentEditPage = (agentId: string) => `
                             </h2>
                             
                             <div>
-                                <label class="block text-sm font-medium mb-2">Category *</label>
-                                <select id="category_id" required 
+                                <label class="block text-sm font-medium mb-2">Categories * (hold Ctrl/Cmd to select multiple)</label>
+                                <select id="category_ids" multiple required size="5"
                                     class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600">
-                                    <option value="">Select a category...</option>
                                 </select>
+                                <p class="text-xs text-gray-500 mt-1">Hold Ctrl (Windows) or Cmd (Mac) to select multiple categories</p>
                             </div>
 
                             <div class="mt-6">
@@ -650,7 +650,16 @@ export const adminAgentEditPage = (agentId: string) => `
                     document.getElementById('pricing_details').value = agent.pricing_details || '';
                     document.getElementById('is_open_source').checked = agent.is_open_source || false;
                     document.getElementById('has_free_trial').checked = agent.has_free_trial || false;
-                    document.getElementById('category_id').value = agent.category_id || '';
+                    
+                    // Load existing categories (after categories are loaded)
+                    if (agent.category_ids && agent.category_ids.length > 0) {
+                        const select = document.getElementById('category_ids');
+                        agent.category_ids.forEach(catId => {
+                            const option = select.querySelector('option[value="' + catId + '"]');
+                            if (option) option.selected = true;
+                        });
+                    }
+                    
                     document.getElementById('tags').value = agent.tags || '';
                     document.getElementById('features').value = agent.features || '';
                     document.getElementById('status').value = agent.status || 'PENDING';
@@ -685,7 +694,7 @@ export const adminAgentEditPage = (agentId: string) => `
                 pricing_details: document.getElementById('pricing_details').value || null,
                 is_open_source: document.getElementById('is_open_source').checked,
                 has_free_trial: document.getElementById('has_free_trial').checked,
-                category_id: parseInt(document.getElementById('category_id').value),
+                category_ids: Array.from(document.getElementById('category_ids').selectedOptions).map(opt => parseInt(opt.value)),
                 tags: document.getElementById('tags').value || null,
                 features: document.getElementById('features').value || null,
                 status: document.getElementById('status').value,
