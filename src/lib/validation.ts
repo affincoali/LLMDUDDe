@@ -60,9 +60,16 @@ export const agentSubmissionSchema = z.object({
   githubUrl: z.string().url('Invalid GitHub URL').optional().or(z.literal('')),
   
   // Step 2: Visual Assets
-  logoUrl: z.string().url('Invalid logo URL').optional().or(z.literal('')),
-  coverUrl: z.string().url('Invalid cover URL').optional().or(z.literal('')),
-  screenshots: z.array(z.string().url()).max(5, 'Maximum 5 screenshots allowed').default([]),
+  // Accept both regular URLs and data URLs (base64)
+  logoUrl: z.string()
+    .refine(val => !val || val.startsWith('http') || val.startsWith('data:image/'), 'Invalid logo URL')
+    .optional().or(z.literal('')),
+  coverUrl: z.string()
+    .refine(val => !val || val.startsWith('http') || val.startsWith('data:image/'), 'Invalid cover URL')
+    .optional().or(z.literal('')),
+  screenshots: z.array(
+    z.string().refine(val => val.startsWith('http') || val.startsWith('data:image/'), 'Invalid screenshot URL')
+  ).max(5, 'Maximum 5 screenshots allowed').default([]),
   
   // Step 3: Categorization
   categories: z.array(z.number())

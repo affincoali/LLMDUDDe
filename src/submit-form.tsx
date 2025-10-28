@@ -1369,6 +1369,16 @@ export const submitAgentForm = () => `
             
             // Collect acceptTerms from step 6
             formData.acceptTerms = document.getElementById('accept-terms').checked;
+            
+            // Check payload size to prevent network errors
+            const payloadSize = JSON.stringify(formData).length;
+            const maxSize = 1 * 1024 * 1024; // 1MB limit for HTTP request
+            
+            if (payloadSize > maxSize) {
+                const sizeMB = (payloadSize / (1024 * 1024)).toFixed(2);
+                alert(\`Request payload is too large (\${sizeMB}MB). Please reduce image sizes or remove some images. Maximum allowed: 1MB.\`);
+                return;
+            }
 
             // Show loading state
             document.getElementById('submit-text').style.display = 'none';
