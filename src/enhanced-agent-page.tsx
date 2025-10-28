@@ -407,7 +407,10 @@ export const enhancedAgentDetailPage = (slug: string) => `
             document.getElementById('page-title').textContent = agent.name + ' - AI Agents Directory';
             document.getElementById('page-description').setAttribute('content', agent.tagline || agent.description);
             
-            document.getElementById('agent-logo').innerHTML = \`<span class="text-5xl">\${agent.logo_url || '🤖'}</span>\`;
+            document.getElementById('agent-logo').innerHTML = agent.logo_url ? \`
+                <img src="\${agent.logo_url}" alt="\${agent.name}" class="w-20 h-20 rounded-lg object-cover" 
+                    onerror="this.outerHTML='<span class=\\'text-5xl\\'>🤖</span>'">
+            \` : '<span class="text-5xl">🤖</span>';
             document.getElementById('agent-name').textContent = agent.name;
             document.getElementById('agent-tagline').textContent = agent.tagline || '';
             
@@ -624,7 +627,12 @@ export const enhancedAgentDetailPage = (slug: string) => `
             
             document.getElementById('similar-agents').innerHTML = agents.map(agent => \`
                 <a href="/agents/\${agent.slug}" class="card p-4 rounded-lg hover:shadow-lg transition">
-                    <div class="text-4xl mb-3 text-center">\${agent.logo_url || '🤖'}</div>
+                    <div class="mb-3 text-center flex items-center justify-center">
+                        \${agent.logo_url ? \`
+                            <img src="\${agent.logo_url}" alt="\${agent.name}" class="w-16 h-16 rounded-lg object-cover" 
+                                onerror="this.outerHTML='<span class=\\'text-4xl\\'>🤖</span>'">
+                        \` : '<span class="text-4xl">🤖</span>'}
+                    </div>
                     <h3 class="font-bold text-lg mb-2 text-center">\${agent.name}</h3>
                     <p class="text-sm text-gray-600 dark:text-gray-400 text-center line-clamp-2">\${agent.tagline || agent.description}</p>
                     <div class="mt-4 flex items-center justify-between text-sm">

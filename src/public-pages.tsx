@@ -409,8 +409,12 @@ export const enhancedHomepage = () => `
         function createAgentCard(agent) {
             return \`
                 <div class="scroll-item w-80 bg-white rounded-lg shadow-md overflow-hidden card-hover cursor-pointer" onclick="window.location='/agents/\${agent.slug}'">
-                    <div class="h-48 bg-gradient-to-br from-purple-400 to-indigo-600 flex items-center justify-center">
-                        <span class="text-6xl">\${agent.logo_url || '🤖'}</span>
+                    <div class="h-48 bg-gradient-to-br from-purple-400 to-indigo-600 flex items-center justify-center overflow-hidden">
+                        \${agent.logo_url ? \`
+                            <img src="\${agent.logo_url}" alt="\${agent.name}" class="w-full h-full object-cover" 
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <span class="text-6xl hidden">🤖</span>
+                        \` : '<span class="text-6xl">🤖</span>'}
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-900 mb-2 truncate">\${agent.name}</h3>
@@ -485,7 +489,12 @@ export const enhancedHomepage = () => `
                             </div>
                         \` + results.map(agent => \`
                             <a href="/agents/\${agent.slug}" class="flex items-center p-4 hover:bg-purple-50 transition border-b border-gray-100 last:border-b-0 cursor-pointer">
-                                <div class="text-3xl mr-4 flex-shrink-0">\${agent.logo_url || '🤖'}</div>
+                                <div class="mr-4 flex-shrink-0">
+                                    \${agent.logo_url ? \`
+                                        <img src="\${agent.logo_url}" alt="\${agent.name}" class="w-12 h-12 rounded-lg object-cover" 
+                                            onerror="this.outerHTML='<div class=\\'text-3xl\\'>🤖</div>'">
+                                    \` : '<div class="text-3xl">🤖</div>'}
+                                </div>
                                 <div class="flex-1 min-w-0">
                                     <div class="font-semibold text-gray-900 mb-1">\${agent.name}</div>
                                     <div class="text-sm text-gray-600 truncate">\${agent.tagline || 'No description available'}</div>

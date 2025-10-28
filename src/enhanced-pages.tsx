@@ -1,4 +1,5 @@
 // Enhanced Pages - Categories Main, Leaderboard, and Landscape
+import { getHeader } from './components/header';
 
 export const enhancedCategoriesPage = () => `
 <!DOCTYPE html>
@@ -1006,12 +1007,26 @@ export const landscapePage = () => `
       
       #landscape-canvas {
         width: 100%;
-        height: 800px;
+        height: 500px;
         background-color: var(--bg-primary);
-        border-radius: 16px;
+        border-radius: 12px;
         position: relative;
         overflow: hidden;
         cursor: grab;
+        touch-action: none;
+      }
+      
+      @media (min-width: 768px) {
+        #landscape-canvas {
+          height: 700px;
+          border-radius: 16px;
+        }
+      }
+      
+      @media (min-width: 1024px) {
+        #landscape-canvas {
+          height: 800px;
+        }
       }
       
       #landscape-canvas:active {
@@ -1020,14 +1035,21 @@ export const landscapePage = () => `
       
       .category-node {
         position: absolute;
-        padding: 16px;
-        border-radius: 12px;
+        padding: 12px;
+        border-radius: 8px;
         border: 2px solid rgba(139, 92, 246, 0.3);
         background-color: var(--card-bg);
         cursor: pointer;
         transition: all 0.3s ease;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         user-select: none;
+      }
+      
+      @media (min-width: 768px) {
+        .category-node {
+          padding: 16px;
+          border-radius: 12px;
+        }
       }
       
       .category-node:hover {
@@ -1043,29 +1065,50 @@ export const landscapePage = () => `
       }
       
       .node-icon {
-        font-size: 2rem;
-        margin-bottom: 8px;
-        text-align: center;
-      }
-      
-      .node-name {
-        font-weight: 600;
-        font-size: 0.875rem;
+        font-size: 1.5rem;
         margin-bottom: 4px;
         text-align: center;
       }
       
-      .node-count {
+      @media (min-width: 768px) {
+        .node-icon {
+          font-size: 2rem;
+          margin-bottom: 8px;
+        }
+      }
+      
+      .node-name {
+        font-weight: 600;
         font-size: 0.75rem;
+        margin-bottom: 2px;
+        text-align: center;
+        line-height: 1.2;
+      }
+      
+      @media (min-width: 768px) {
+        .node-name {
+          font-size: 0.875rem;
+          margin-bottom: 4px;
+        }
+      }
+      
+      .node-count {
+        font-size: 0.625rem;
         color: var(--text-secondary);
         text-align: center;
+      }
+      
+      @media (min-width: 768px) {
+        .node-count {
+          font-size: 0.75rem;
+        }
       }
       
       .side-panel {
         position: fixed;
         right: 0;
         top: 64px;
-        width: 400px;
+        width: 100%;
         height: calc(100vh - 64px);
         background-color: var(--card-bg);
         border-left: 1px solid var(--border-color);
@@ -1076,34 +1119,73 @@ export const landscapePage = () => `
         box-shadow: -4px 0 16px rgba(0, 0, 0, 0.1);
       }
       
+      @media (min-width: 640px) {
+        .side-panel {
+          width: 90%;
+          max-width: 400px;
+        }
+      }
+      
+      @media (min-width: 768px) {
+        .side-panel {
+          width: 400px;
+        }
+      }
+      
       .side-panel.open {
         transform: translateX(0);
       }
       
       .controls-panel {
         position: absolute;
-        bottom: 20px;
-        left: 20px;
+        bottom: 10px;
+        left: 10px;
         background-color: var(--card-bg);
         border: 1px solid var(--border-color);
-        border-radius: 12px;
-        padding: 16px;
+        border-radius: 8px;
+        padding: 12px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         z-index: 20;
       }
       
+      @media (min-width: 768px) {
+        .controls-panel {
+          bottom: 20px;
+          left: 20px;
+          border-radius: 12px;
+          padding: 16px;
+        }
+      }
+      
       .minimap {
         position: absolute;
-        top: 20px;
-        right: 20px;
-        width: 200px;
-        height: 150px;
+        top: 10px;
+        right: 10px;
+        width: 120px;
+        height: 90px;
         background-color: var(--card-bg);
         border: 1px solid var(--border-color);
-        border-radius: 8px;
+        border-radius: 6px;
         overflow: hidden;
         z-index: 20;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+      
+      @media (min-width: 768px) {
+        .minimap {
+          top: 20px;
+          right: 20px;
+          width: 180px;
+          height: 135px;
+          border-radius: 8px;
+        }
+      }
+      
+      @media (min-width: 1024px) {
+        .minimap {
+          width: 200px;
+          height: 150px;
+        }
       }
       
       .agent-item {
@@ -1119,54 +1201,19 @@ export const landscapePage = () => `
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="card border-b sticky top-0 z-40 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <a href="/" class="flex items-center space-x-3">
-                    <i class="fas fa-robot text-3xl text-purple-600"></i>
-                    <span class="text-xl font-bold">AI Agents Directory</span>
-                </a>
-                
-                <div class="hidden md:flex items-center space-x-6">
-                    <a href="/" class="hover:text-purple-600">Home</a>
-                    <a href="/agents" class="hover:text-purple-600">Agents</a>
-                    <a href="/categories" class="hover:text-purple-600">Categories</a>
-                    <a href="/leaderboard" class="hover:text-purple-600">Leaderboard</a>
-                    <a href="/landscape" class="text-purple-600 font-semibold">Landscape</a>
-                    <a href="/submit" class="hover:text-purple-600">Submit</a>
-                    <button onclick="toggleDarkMode()" class="p-2 rounded-lg">
-                        <i id="theme-icon" class="fas fa-moon"></i>
-                    </button>
-                </div>
-                
-                <button class="md:hidden p-2" onclick="toggleMobileMenu()">
-                    <i class="fas fa-bars text-xl"></i>
-                </button>
-            </div>
-            
-            <div id="mobile-menu" class="hidden md:hidden pb-4">
-                <a href="/" class="block py-2">Home</a>
-                <a href="/agents" class="block py-2">Agents</a>
-                <a href="/categories" class="block py-2">Categories</a>
-                <a href="/leaderboard" class="block py-2">Leaderboard</a>
-                <a href="/landscape" class="block py-2 text-purple-600 font-semibold">Landscape</a>
-                <a href="/submit" class="block py-2">Submit</a>
-            </div>
-        </div>
-    </nav>
+    ${getHeader('landscape')}
 
     <!-- Header -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="text-center mb-8">
-            <h1 class="text-5xl md:text-6xl font-bold mb-4">
-                <i class="fas fa-project-diagram text-purple-600 mr-3"></i>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        <div class="text-center mb-6 md:mb-8">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 md:mb-4">
+                <i class="fas fa-project-diagram text-purple-600 mr-2 md:mr-3"></i>
                 AI Agents Market Landscape
             </h1>
-            <p class="text-xl md:text-2xl mb-4" style="color: var(--text-secondary)">
+            <p class="text-base sm:text-lg md:text-xl lg:text-2xl mb-3 md:mb-4 px-4" style="color: var(--text-secondary)">
                 Interactive ecosystem map of AI agents, tools, and assistants
             </p>
-            <div class="flex justify-center gap-6 text-sm" style="color: var(--text-secondary)">
+            <div class="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-6 text-xs sm:text-sm px-4" style="color: var(--text-secondary)">
                 <span><strong>Date:</strong> October 2025</span>
                 <span><strong>Categories:</strong> <span id="total-categories">72</span></span>
                 <span><strong>Agents:</strong> <span id="total-agents">1832+</span></span>
@@ -1186,24 +1233,27 @@ export const landscapePage = () => `
             
             <!-- Controls -->
             <div class="controls-panel">
-                <div class="flex flex-col gap-3">
-                    <button onclick="zoomIn()" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
-                        <i class="fas fa-search-plus mr-2"></i>
-                        Zoom In
+                <div class="flex flex-col gap-2">
+                    <button onclick="zoomIn()" class="px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm">
+                        <i class="fas fa-search-plus mr-1 md:mr-2"></i>
+                        <span class="hidden sm:inline">Zoom In</span>
+                        <span class="sm:hidden">+</span>
                     </button>
-                    <button onclick="zoomOut()" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
-                        <i class="fas fa-search-minus mr-2"></i>
-                        Zoom Out
+                    <button onclick="zoomOut()" class="px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm">
+                        <i class="fas fa-search-minus mr-1 md:mr-2"></i>
+                        <span class="hidden sm:inline">Zoom Out</span>
+                        <span class="sm:hidden">−</span>
                     </button>
-                    <button onclick="resetView()" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700">
-                        <i class="fas fa-undo mr-2"></i>
-                        Reset
+                    <button onclick="resetView()" class="px-3 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 text-sm">
+                        <i class="fas fa-undo mr-1 md:mr-2"></i>
+                        <span class="hidden sm:inline">Reset</span>
+                        <span class="sm:hidden">↺</span>
                     </button>
-                    <div class="mt-2">
+                    <div class="mt-1 md:mt-2">
                         <label class="block text-xs mb-1">Filter</label>
-                        <select id="filter-pricing" class="card w-full px-2 py-1 text-sm rounded border" onchange="filterNodes()">
-                            <option value="">All Pricing</option>
-                            <option value="free">Free Only</option>
+                        <select id="filter-pricing" class="card w-full px-2 py-1 text-xs md:text-sm rounded border" onchange="filterNodes()">
+                            <option value="">All</option>
+                            <option value="free">Free</option>
                             <option value="opensource">Open Source</option>
                         </select>
                     </div>
@@ -1224,27 +1274,27 @@ export const landscapePage = () => `
         </div>
         
         <!-- Instructions -->
-        <div class="card border rounded-xl p-6 mb-12">
-            <h3 class="text-xl font-bold mb-4">
+        <div class="card border rounded-xl p-4 md:p-6 mb-8 md:mb-12">
+            <h3 class="text-lg md:text-xl font-bold mb-3 md:mb-4">
                 <i class="fas fa-info-circle text-blue-600 mr-2"></i>
                 How to Use the Landscape
             </h3>
-            <div class="grid md:grid-cols-3 gap-6">
+            <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
                 <div>
-                    <h4 class="font-semibold mb-2">🖱️ Navigate</h4>
-                    <p class="text-sm" style="color: var(--text-secondary)">
-                        Click and drag to pan around the map. Use zoom controls to get closer or see the big picture.
+                    <h4 class="font-semibold mb-2 text-sm md:text-base">🖱️ Navigate</h4>
+                    <p class="text-xs md:text-sm" style="color: var(--text-secondary)">
+                        Click/tap and drag to pan around the map. Use zoom controls to get closer or see the big picture.
                     </p>
                 </div>
                 <div>
-                    <h4 class="font-semibold mb-2">🎯 Explore</h4>
-                    <p class="text-sm" style="color: var(--text-secondary)">
-                        Click on any category node to see agents in that category. Larger nodes mean more agents.
+                    <h4 class="font-semibold mb-2 text-sm md:text-base">🎯 Explore</h4>
+                    <p class="text-xs md:text-sm" style="color: var(--text-secondary)">
+                        Click/tap any category node to see agents in that category. Larger nodes mean more agents.
                     </p>
                 </div>
-                <div>
-                    <h4 class="font-semibold mb-2">🔍 Search</h4>
-                    <p class="text-sm" style="color: var(--text-secondary)">
+                <div class="sm:col-span-2 md:col-span-1">
+                    <h4 class="font-semibold mb-2 text-sm md:text-base">🔍 Search</h4>
+                    <p class="text-xs md:text-sm" style="color: var(--text-secondary)">
                         Use the search box above to highlight specific categories instantly.
                     </p>
                 </div>
@@ -1252,11 +1302,11 @@ export const landscapePage = () => `
         </div>
         
         <!-- SEO Content -->
-        <div class="card border rounded-xl p-8">
-            <h2 class="text-3xl font-bold mb-6">AI Agents Landscape October 2025: Your Complete Guide</h2>
+        <div class="card border rounded-xl p-4 md:p-6 lg:p-8">
+            <h2 class="text-2xl md:text-3xl font-bold mb-4 md:mb-6">AI Agents Landscape October 2025: Your Complete Guide</h2>
             
-            <div class="mb-8">
-                <h3 class="text-2xl font-semibold mb-4">What is the AI Agents Landscape?</h3>
+            <div class="mb-6 md:mb-8">
+                <h3 class="text-xl md:text-2xl font-semibold mb-3 md:mb-4">What is the AI Agents Landscape?</h3>
                 <p style="color: var(--text-secondary)" class="mb-4">
                     The AI Agents Landscape is an interactive visualization of the entire ecosystem of AI-powered agents, 
                     tools, and assistants available in 2025. With over 1,832 AI agents organized across 72 categories, 
@@ -1264,13 +1314,13 @@ export const landscapePage = () => `
                 </p>
             </div>
             
-            <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <div class="grid sm:grid-cols-2 gap-4 md:gap-6 lg:gap-8 mb-6 md:mb-8">
                 <div>
-                    <h3 class="text-xl font-semibold mb-3">
+                    <h3 class="text-lg md:text-xl font-semibold mb-2 md:mb-3">
                         <i class="fas fa-check-circle text-green-600 mr-2"></i>
                         Benefits of the Landscape View
                     </h3>
-                    <ul class="space-y-2" style="color: var(--text-secondary)">
+                    <ul class="space-y-1.5 md:space-y-2 text-sm md:text-base" style="color: var(--text-secondary)">
                         <li>• <strong>Visual Overview:</strong> See the entire market at a glance</li>
                         <li>• <strong>Category Relationships:</strong> Understand how different AI categories relate</li>
                         <li>• <strong>Market Insights:</strong> Identify saturated vs. emerging categories</li>
@@ -1279,11 +1329,11 @@ export const landscapePage = () => `
                 </div>
                 
                 <div>
-                    <h3 class="text-xl font-semibold mb-3">
+                    <h3 class="text-lg md:text-xl font-semibold mb-2 md:mb-3">
                         <i class="fas fa-users text-blue-600 mr-2"></i>
                         Who Benefits Most?
                     </h3>
-                    <ul class="space-y-2" style="color: var(--text-secondary)">
+                    <ul class="space-y-1.5 md:space-y-2 text-sm md:text-base" style="color: var(--text-secondary)">
                         <li>• <strong>Developers:</strong> Find integration opportunities</li>
                         <li>• <strong>Investors:</strong> Identify market gaps and trends</li>
                         <li>• <strong>Researchers:</strong> Map the AI ecosystem</li>
@@ -1292,8 +1342,8 @@ export const landscapePage = () => `
                 </div>
             </div>
             
-            <div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-6">
-                <h3 class="text-xl font-semibold mb-3">Latest Trends (October 2025)</h3>
+            <div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4 md:p-6">
+                <h3 class="text-lg md:text-xl font-semibold mb-2 md:mb-3">Latest Trends (October 2025)</h3>
                 <ul class="space-y-2" style="color: var(--text-secondary)">
                     <li>• <strong>Code Assistants:</strong> Most crowded category with 150+ agents</li>
                     <li>• <strong>Content Creation:</strong> Fastest growing with 39 new agents this month</li>

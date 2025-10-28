@@ -538,8 +538,12 @@ export const agentApprovalQueue = () => `
                     </td>
                     <td class="px-6 py-4">
                         <div class="flex items-center">
-                            <div class="h-10 w-10 flex-shrink-0 bg-gradient-to-br from-purple-400 to-indigo-600 rounded-lg flex items-center justify-center text-2xl">
-                                \${agent.logo_url ? '🤖' : '📦'}
+                            <div class="h-10 w-10 flex-shrink-0 rounded-lg overflow-hidden">
+                                \${agent.logo_url ? \`
+                                    <img src="\${agent.logo_url}" alt="\${agent.name}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\\'bg-gradient-to-br from-purple-400 to-indigo-600 w-full h-full flex items-center justify-center text-2xl\\'>🤖</div>';">
+                                \` : \`
+                                    <div class="bg-gradient-to-br from-purple-400 to-indigo-600 w-full h-full flex items-center justify-center text-2xl">📦</div>
+                                \`}
                             </div>
                             <div class="ml-4">
                                 <div class="font-semibold text-gray-900">\${agent.name}</div>
@@ -724,8 +728,184 @@ export const agentApprovalQueue = () => `
         }
 
         async function viewAgent(agentId) {
-            // TODO: Implement detailed review modal
-            alert('Detailed review modal coming soon! Agent ID: ' + agentId);
+            try {
+                const response = await axios.get(\`/api/admin/agents/\${agentId}\`);
+                if (response.data.success) {
+                    const agent = response.data.data;
+                    showReviewModal(agent);
+                }
+            } catch (error) {
+                alert('Error loading agent: ' + (error.response?.data?.error || 'Unknown error'));
+            }
+        }
+        
+        function showReviewModal(agent) {
+            const modal = document.getElementById('review-modal');
+            const content = document.getElementById('modal-content');
+            
+            content.innerHTML = \`
+                <div class="p-6 border-b border-gray-200">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h2 class="text-2xl font-bold mb-2">\${agent.name}</h2>
+                            <p class="text-gray-600">\${agent.tagline || 'No tagline'}</p>
+                            <div class="flex items-center gap-4 mt-3 text-sm">
+                                <span class="px-3 py-1 rounded-full \${
+                                    agent.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
+                                    agent.status === 'APPROVED' ? 'bg-green-100 text-green-800' :
+                                    'bg-red-100 text-red-800'
+                                }">
+                                    \${agent.status}
+                                </span>
+                                <span class="text-gray-500">
+                                    <i class="far fa-calendar mr-1"></i>
+                                    \${new Date(agent.submitted_at).toLocaleDateString()}
+                                </span>
+                            </div>
+                        </div>
+                        <button onclick="closeReviewModal()" class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-times text-2xl"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="p-6 max-h-[60vh] overflow-y-auto">
+                    <!-- Logo & Basic Info -->
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <h3 class="font-semibold text-gray-700 mb-3">Logo</h3>
+                            <div class="flex items-center gap-4">
+                                \${agent.logo_url ? \`
+                                    <img src="\${agent.logo_url}" alt="\${agent.name}" class="w-20 h-20 rounded-lg object-cover border" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                    <div class="w-20 h-20 rounded-lg bg-gradient-to-br from-purple-400 to-indigo-600 flex items-center justify-center text-3xl" style="display:none;">🤖</div>
+                                \` : \`
+                                    <div class="w-20 h-20 rounded-lg bg-gradient-to-br from-purple-400 to-indigo-600 flex items-center justify-center text-3xl">🤖</div>
+                                \`}
+                                <div class="text-sm text-gray-500">
+                                    <p>\${agent.logo_url || 'No logo uploaded'}</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-semibold text-gray-700 mb-3">Pricing</h3>
+                            <div class="space-y-2 text-sm">
+                                <p><strong>Model:</strong> \${agent.pricing_model || 'N/A'}</p>
+                                <p><strong>Starts at:</strong> \${agent.pricing_starts_at || 'N/A'}</p>
+                                <p><strong>Free Plan:</strong> \${agent.free_plan_available ? 'Yes' : 'No'}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Description -->
+                    <div class="mb-6">
+                        <h3 class="font-semibold text-gray-700 mb-3">Description</h3>
+                        <div class="bg-gray-50 rounded-lg p-4 text-sm text-gray-700">
+                            \${agent.description || 'No description provided'}
+                        </div>
+                    </div>
+                    
+                    <!-- URL & Links -->
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <h3 class="font-semibold text-gray-700 mb-3">Website</h3>
+                            <a href="\${agent.website_url}" target="_blank" class="text-blue-600 hover:underline text-sm break-all">
+                                \${agent.website_url || 'No website'}
+                            </a>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-700 mb-3">Submitter</h3>
+                            <div class="text-sm text-gray-700">
+                                <p>\${agent.submitter_name || 'Unknown'}</p>
+                                <p class="text-gray-500">\${agent.submitter_email || ''}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Categories -->
+                    <div class="mb-6">
+                        <h3 class="font-semibold text-gray-700 mb-3">Categories</h3>
+                        <div class="text-sm text-gray-700">
+                            \${agent.category_names || 'No categories assigned'}
+                        </div>
+                    </div>
+                    
+                    <!-- Admin Notes -->
+                    \${agent.admin_notes ? \`
+                        <div class="mb-6">
+                            <h3 class="font-semibold text-gray-700 mb-3">Admin Notes</h3>
+                            <div class="bg-yellow-50 rounded-lg p-4 text-sm text-gray-700">
+                                \${agent.admin_notes}
+                            </div>
+                        </div>
+                    \` : ''}
+                </div>
+                
+                <div class="p-6 border-t border-gray-200 bg-gray-50">
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="editAgent(\${agent.id})" class="flex-1 sm:flex-none px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                            <i class="fas fa-edit mr-2"></i>
+                            Edit Agent
+                        </button>
+                        \${agent.status === 'PENDING' ? \`
+                            <button onclick="approveFromModal(\${agent.id})" class="flex-1 sm:flex-none px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                                <i class="fas fa-check mr-2"></i>
+                                Approve
+                            </button>
+                            <button onclick="rejectFromModal(\${agent.id})" class="flex-1 sm:flex-none px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700">
+                                <i class="fas fa-times mr-2"></i>
+                                Reject
+                            </button>
+                        \` : ''}
+                        <button onclick="closeReviewModal()" class="flex-1 sm:flex-none px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            \`;
+            
+            modal.classList.remove('hidden');
+        }
+        
+        function closeReviewModal() {
+            document.getElementById('review-modal').classList.add('hidden');
+        }
+        
+        function editAgent(agentId) {
+            window.location.href = \`/admin/agents/\${agentId}/edit-full\`;
+        }
+        
+        async function approveFromModal(agentId) {
+            if (!confirm('Approve this agent?')) return;
+            
+            try {
+                const response = await axios.put(\`/api/admin/agents/\${agentId}/approve\`);
+                if (response.data.success) {
+                    alert('Agent approved successfully!');
+                    closeReviewModal();
+                    loadAgents();
+                }
+            } catch (error) {
+                alert('Error: ' + (error.response?.data?.error || 'Failed to approve'));
+            }
+        }
+        
+        async function rejectFromModal(agentId) {
+            const reason = prompt('Enter rejection reason:');
+            if (!reason) return;
+            
+            try {
+                const response = await axios.put(\`/api/admin/agents/\${agentId}/reject-with-reason\`, {
+                    reason
+                });
+                if (response.data.success) {
+                    alert('Agent rejected successfully');
+                    closeReviewModal();
+                    loadAgents();
+                }
+            } catch (error) {
+                alert('Error: ' + (error.response?.data?.error || 'Failed to reject'));
+            }
         }
 
         document.getElementById('bulk-approve-btn').addEventListener('click', bulkApprove);
