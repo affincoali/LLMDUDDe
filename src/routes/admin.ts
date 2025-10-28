@@ -1787,4 +1787,207 @@ admin.put('/agents/:id/comprehensive', async (c) => {
   }
 });
 
+/**
+ * REVIEW MANAGEMENT ENDPOINTS
+ */
+
+// GET /api/admin/reviews - Get all reviews with filters
+admin.get('/reviews', async (c) => {
+  try {
+    const { DB } = c.env;
+    const page = parseInt(c.req.query('page') || '1');
+    const limit = parseInt(c.req.query('limit') || '20');
+    const status = c.req.query('status') || ''; // PENDING, APPROVED, REJECTED
+    const offset = (page - 1) * limit;
+
+    let query = `
+      SELECT 
+        r.id,
+        r.rating,
+        r.review_title,
+        r.review_summary,
+        r.status,
+        r.helpful_count,
+        r.created_at,
+        r.updated_at,
+        u.id as user_id,
+        u.name as user_name,
+        u.email as user_email,
+        a.id as agent_id,
+        a.name as agent_name,
+        a.slug as agent_slug
+      FROM reviews r
+      JOIN users u ON r.user_id = u.id
+      JOIN agents a ON r.agent_id = a.id
+    `;
+
+    const params: any[] = [];
+    if (status) {
+      query += ' WHERE r.status = ?';
+      params.push(status);
+    }
+
+    query += ' ORDER BY r.created_at DESC LIMIT ? OFFSET ?';
+    params.push(limit, offset);
+
+    const reviews = await DB.prepare(query).bind(...params).all();
+
+    // Get total count
+    let countQuery = 'SELECT COUNT(*) as total FROM reviews';
+    if (status) {
+      countQuery += ' WHERE status = ?';
+      const countResult = await DB.prepare(countQuery).bind(status).first<{ total: number }>();
+      const total = countResult?.total || 0;
+
+      return c.json({
+        success: true,
+        data: {
+          reviews: reviews.results,
+          pagination: {
+            page,
+            limit,
+            total,
+            pages: Math.ceil(total / limit)
+          }
+        }
+      });
+    } else {
+      const countResult = await DB.prepare(countQuery).first<{ total: number }>();
+      const total = countResult?.total || 0;
+
+      return c.json({
+        success: true,
+        data: {
+          reviews: reviews.results,
+          pagination: {
+            page,
+            limit,
+            total,
+            pages: Math.ceil(total / limit)
+          }
+        }
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching reviews:', error);
+    return c.json({ success: false, error: 'Failed to fetch reviews' }, 500);
+  }
+});
+
+// PUT /api/admin/reviews/:id/approve - Approve a review
+admin.put('/reviews/:id/approve', async (c) => {
+  try {
+    const { DB } = c.env;
+    const reviewId = c.req.param('id');
+
+    await DB.prepare(`
+      UPDATE reviews 
+      SET status = 'APPROVED', updated_at = CURRENT_TIMESTAMP 
+      WHERE id = ?
+    `).bind(reviewId).run();
+
+    return c.json({
+      success: true,
+      message: 'Review approved successfully'
+    });
+  } catch (error) {
+    console.error('Error approving review:', error);
+    return c.json({ success: false, error: 'Failed to approve review' }, 500);
+  }
+});
+
+// PUT /api/admin/reviews/:id/reject - Reject a review
+admin.put('/reviews/:id/reject', async (c) => {
+  try {
+    const { DB } = c.env;
+    const reviewId = c.req.param('id');
+
+    await DB.prepare(`
+      UPDATE reviews 
+      SET status = 'REJECTED', updated_at = CURRENT_TIMESTAMP 
+      WHERE id = ?
+    `).bind(reviewId).run();
+
+    return c.json({
+      success: true,
+      message: 'Review rejected successfully'
+    });
+  } catch (error) {
+    console.error('Error rejecting review:', error);
+    return c.json({ success: false, error: 'Failed to reject review' }, 500);
+  }
+});
+
+// PUT /api/admin/reviews/:id - Edit a review
+admin.put('/reviews/:id', async (c) => {
+  try {
+    const { DB } = c.env;
+    const reviewId = c.req.param('id');
+    const { rating, review_title, review_summary } = await c.req.json();
+
+    if (!rating || !review_title || !review_summary) {
+      return c.json({ success: false, error: 'All fields are required' }, 400);
+    }
+
+    await DB.prepare(`
+      UPDATE reviews 
+      SET rating = ?, review_title = ?, review_summary = ?, updated_at = CURRENT_TIMESTAMP 
+      WHERE id = ?
+    `).bind(rating, review_title, review_summary, reviewId).run();
+
+    return c.json({
+      success: true,
+      message: 'Review updated successfully'
+    });
+  } catch (error) {
+    console.error('Error updating review:', error);
+    return c.json({ success: false, error: 'Failed to update review' }, 500);
+  }
+});
+
+// DELETE /api/admin/reviews/:id - Delete a review
+admin.delete('/reviews/:id', async (c) => {
+  try {
+    const { DB } = c.env;
+    const reviewId = c.req.param('id');
+
+    await DB.prepare('DELETE FROM reviews WHERE id = ?').bind(reviewId).run();
+
+    return c.json({
+      success: true,
+      message: 'Review deleted successfully'
+    });
+  } catch (error) {
+    console.error('Error deleting review:', error);
+    return c.json({ success: false, error: 'Failed to delete review' }, 500);
+  }
+});
+
+// GET /api/admin/reviews/stats - Get review statistics
+admin.get('/reviews/stats', async (c) => {
+  try {
+    const { DB } = c.env;
+
+    const stats = await DB.batch([
+      DB.prepare('SELECT COUNT(*) as count FROM reviews WHERE status = "PENDING"'),
+      DB.prepare('SELECT COUNT(*) as count FROM reviews WHERE status = "APPROVED"'),
+      DB.prepare('SELECT COUNT(*) as count FROM reviews WHERE status = "REJECTED"'),
+      DB.prepare('SELECT AVG(rating) as avg FROM reviews WHERE status = "APPROVED"')
+    ]);
+
+    return c.json({
+      success: true,
+      data: {
+        pending: stats[0].results[0].count || 0,
+        approved: stats[1].results[0].count || 0,
+        rejected: stats[2].results[0].count || 0,
+        average_rating: stats[3].results[0].avg || 0
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching review stats:', error);
+    return c.json({ success: false, error: 'Failed to fetch stats' }, 500);
+  }
+});
+
 export default admin;

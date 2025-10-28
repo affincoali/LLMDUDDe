@@ -334,6 +334,77 @@ export const enhancedAgentDetailPage = (slug: string) => `
             </div>
         </div>
 
+        <!-- Reviews & Ratings Section -->
+        <div class="section">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-3xl font-bold flex items-center">
+                    <i class="fas fa-star text-purple-600 mr-3"></i>
+                    Reviews & Ratings
+                </h2>
+                <div class="flex items-center gap-4">
+                    <div class="text-right">
+                        <div class="text-4xl font-bold" id="avg-rating">0.0</div>
+                        <div class="text-yellow-500" id="star-display">☆☆☆☆☆</div>
+                        <div class="text-sm" style="color:var(--text-secondary)" id="total-reviews">0 reviews</div>
+                    </div>
+                    <button onclick="showReviewForm()" id="write-review-btn" class="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-medium">
+                        <i class="fas fa-pencil-alt mr-2"></i>Write a Review
+                    </button>
+                </div>
+            </div>
+
+            <!-- Review Form (hidden by default) -->
+            <div id="review-form" class="card border rounded-lg p-6 mb-6 hidden">
+                <h3 class="text-xl font-bold mb-4">Share Your Experience</h3>
+                <div class="mb-4">
+                    <label class="block mb-2 font-medium">Rate ${slug} <span class="text-red-500">*</span></label>
+                    <div class="flex gap-2" id="rating-stars">
+                        <button class="star-btn text-4xl text-gray-300 hover:text-yellow-500" data-rating="1">☆</button>
+                        <button class="star-btn text-4xl text-gray-300 hover:text-yellow-500" data-rating="2">☆</button>
+                        <button class="star-btn text-4xl text-gray-300 hover:text-yellow-500" data-rating="3">☆</button>
+                        <button class="star-btn text-4xl text-gray-300 hover:text-yellow-500" data-rating="4">☆</button>
+                        <button class="star-btn text-4xl text-gray-300 hover:text-yellow-500" data-rating="5">☆</button>
+                    </div>
+                    <p class="text-sm mt-1 text-red-500" id="rating-error" style="display:none">Please select a star rating</p>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-2 font-medium">Review Title <span class="text-red-500">*</span></label>
+                    <input type="text" id="review-title" placeholder="Summarize your experience" 
+                           class="card w-full px-4 py-2 border rounded-lg" maxlength="100">
+                    <p class="text-sm mt-1" style="color:var(--text-secondary)">100 characters remaining</p>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-2 font-medium">Your Review <span class="text-red-500">*</span> (minimum 20 characters)</label>
+                    <textarea id="review-summary" placeholder="What did you like or dislike? How was your experience with this AI agent?" 
+                              class="card w-full px-4 py-2 border rounded-lg" rows="5" maxlength="2000"></textarea>
+                    <p class="text-sm mt-1" style="color:var(--text-secondary)"><span id="review-char-count">0</span>/2000 characters remaining</p>
+                </div>
+                <div class="flex gap-4">
+                    <button onclick="submitReview()" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:from-purple-700 hover:to-indigo-700 font-medium">
+                        Login to Submit Review
+                    </button>
+                    <button onclick="hideReviewForm()" class="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+
+            <!-- Reviews List -->
+            <div id="reviews-list" class="space-y-6">
+                <div class="text-center py-12" style="color:var(--text-secondary)">
+                    <i class="fas fa-spinner fa-spin text-4xl mb-4"></i>
+                    <p>Loading reviews...</p>
+                </div>
+            </div>
+
+            <!-- Load More Button -->
+            <div id="load-more-container" class="text-center mt-6" style="display:none">
+                <button onclick="loadMoreReviews()" class="px-6 py-3 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                    Load More Reviews
+                </button>
+            </div>
+        </div>
+
         <!-- Alternative Agents -->
         <div class="section">
             <h2 class="text-3xl font-bold mb-6 flex items-center">
@@ -548,6 +619,9 @@ export const enhancedAgentDetailPage = (slug: string) => `
             
             // Similar agents
             renderSimilarAgents(similar);
+            
+            // Load reviews
+            loadReviews();
         }
 
         function extractYouTubeId(url) {
@@ -641,6 +715,186 @@ export const enhancedAgentDetailPage = (slug: string) => `
                     </div>
                 </a>
             \`).join('');
+        }
+
+        // Review Functions
+        let selectedRating = 0;
+        let currentReviewPage = 1;
+
+        async function loadReviews() {
+            if (!currentAgent) return;
+            try {
+                const res = await axios.get(\`\${API_BASE}/reviews/agent/\${currentAgent.id}?page=\${currentReviewPage}&limit=5\`);
+                if (res.data.success) {
+                    const {reviews, stats, pagination} = res.data.data;
+                    
+                    // Update stats
+                    document.getElementById('avg-rating').textContent = (stats.average_rating || 0).toFixed(1);
+                    const starDisplay = '★'.repeat(Math.round(stats.average_rating || 0)) + '☆'.repeat(5 - Math.round(stats.average_rating || 0));
+                    document.getElementById('star-display').textContent = starDisplay;
+                    document.getElementById('total-reviews').textContent = \`\${stats.total_reviews || 0} reviews\`;
+                    
+                    // Render reviews
+                    if (reviews.length === 0 && currentReviewPage === 1) {
+                        document.getElementById('reviews-list').innerHTML = \`
+                            <div class="card border rounded-lg p-12 text-center">
+                                <i class="fas fa-comments text-6xl text-gray-300 mb-4"></i>
+                                <p class="text-xl mb-2" style="color:var(--text-primary)">No reviews yet</p>
+                                <p style="color:var(--text-secondary)">Be the first to share your experience!</p>
+                            </div>
+                        \`;
+                    } else {
+                        const reviewsHtml = reviews.map(r => \`
+                            <div class="card border rounded-lg p-6">
+                                <div class="flex items-start gap-4">
+                                    <div class="flex-shrink-0">
+                                        <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                                            \${r.user_name.charAt(0).toUpperCase()}
+                                        </div>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <div>
+                                                <div class="font-bold">\${r.user_name}</div>
+                                                <div class="text-yellow-500">\${'★'.repeat(r.rating)}\${'☆'.repeat(5-r.rating)}</div>
+                                            </div>
+                                            <div class="text-sm" style="color:var(--text-secondary)">
+                                                \${new Date(r.created_at).toLocaleDateString('en-US', {year:'numeric', month:'long', day:'numeric'})}
+                                            </div>
+                                        </div>
+                                        <h4 class="font-bold text-lg mb-2">\${r.review_title}</h4>
+                                        <p style="color:var(--text-secondary)">\${r.review_summary}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        \`).join('');
+                        
+                        if (currentReviewPage === 1) {
+                            document.getElementById('reviews-list').innerHTML = reviewsHtml;
+                        } else {
+                            document.getElementById('reviews-list').innerHTML += reviewsHtml;
+                        }
+                        
+                        // Show/hide load more button
+                        if (currentReviewPage < pagination.pages) {
+                            document.getElementById('load-more-container').style.display = 'block';
+                        } else {
+                            document.getElementById('load-more-container').style.display = 'none';
+                        }
+                    }
+                }
+            } catch (err) {
+                console.error('Error loading reviews:', err);
+            }
+        }
+
+        function loadMoreReviews() {
+            currentReviewPage++;
+            loadReviews();
+        }
+
+        function showReviewForm() {
+            // Check if user is logged in
+            const token = localStorage.getItem('token');
+            if (!token) {
+                showToast('Please login to write a review', 'error');
+                setTimeout(() => window.location.href = '/login', 1500);
+                return;
+            }
+            document.getElementById('review-form').classList.remove('hidden');
+            document.getElementById('write-review-btn').style.display = 'none';
+        }
+
+        function hideReviewForm() {
+            document.getElementById('review-form').classList.add('hidden');
+            document.getElementById('write-review-btn').style.display = 'block';
+            selectedRating = 0;
+            document.querySelectorAll('.star-btn').forEach(btn => {
+                btn.textContent = '☆';
+                btn.classList.remove('text-yellow-500');
+                btn.classList.add('text-gray-300');
+            });
+        }
+
+        // Star rating selection
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.star-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    selectedRating = parseInt(this.dataset.rating);
+                    document.getElementById('rating-error').style.display = 'none';
+                    
+                    document.querySelectorAll('.star-btn').forEach((b, i) => {
+                        if (i < selectedRating) {
+                            b.textContent = '★';
+                            b.classList.add('text-yellow-500');
+                            b.classList.remove('text-gray-300');
+                        } else {
+                            b.textContent = '☆';
+                            b.classList.remove('text-yellow-500');
+                            b.classList.add('text-gray-300');
+                        }
+                    });
+                });
+            });
+            
+            // Character counter
+            const summaryInput = document.getElementById('review-summary');
+            const charCount = document.getElementById('review-char-count');
+            if (summaryInput && charCount) {
+                summaryInput.addEventListener('input', function() {
+                    charCount.textContent = 2000 - this.value.length;
+                });
+            }
+        });
+
+        async function submitReview() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                showToast('Please login to submit a review', 'error');
+                setTimeout(() => window.location.href = '/login', 1500);
+                return;
+            }
+
+            const title = document.getElementById('review-title').value.trim();
+            const summary = document.getElementById('review-summary').value.trim();
+
+            // Validation
+            if (selectedRating === 0) {
+                document.getElementById('rating-error').style.display = 'block';
+                showToast('Please select a rating', 'error');
+                return;
+            }
+
+            if (!title) {
+                showToast('Please enter a review title', 'error');
+                return;
+            }
+
+            if (summary.length < 20) {
+                showToast('Review must be at least 20 characters', 'error');
+                return;
+            }
+
+            try {
+                const res = await axios.post(\`\${API_BASE}/reviews/submit\`, {
+                    agent_id: currentAgent.id,
+                    rating: selectedRating,
+                    review_title: title,
+                    review_summary: summary
+                }, {
+                    headers: { Authorization: \`Bearer \${token}\` }
+                });
+
+                if (res.data.success) {
+                    showToast('Review submitted! It will appear after admin approval.', 'success');
+                    hideReviewForm();
+                    document.getElementById('review-title').value = '';
+                    document.getElementById('review-summary').value = '';
+                }
+            } catch (err) {
+                const msg = err.response?.data?.message || 'Failed to submit review';
+                showToast(msg, 'error');
+            }
         }
 
         function toggleFaq(index) {

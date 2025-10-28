@@ -15,6 +15,7 @@ import leaderboardApiRoutes from './routes/leaderboard-api';
 import landscapeApiRoutes from './routes/landscape-api';
 import submitRoutes from './routes/submit';
 import uploadRoutes from './routes/upload';
+import reviewRoutes from './routes/reviews';
 import { enhancedAdminDashboard, agentApprovalQueue } from './admin-ui';
 import { 
   adminUsersPage, 
@@ -25,6 +26,7 @@ import {
 } from './admin-pages';
 import { adminAgentCreatePage, adminAgentEditPage } from './admin-agent-forms';
 import { adminComprehensiveEditPage } from './admin-comprehensive-form';
+import { adminReviewsPage } from './admin-reviews';
 import { enhancedHomepage } from './public-pages';
 import { advancedAgentsListing, individualAgentPage } from './agents-pages';
 import { enhancedAgentDetailPage } from './enhanced-agent-page';
@@ -56,6 +58,7 @@ app.route('/api/leaderboard', leaderboardApiRoutes);
 app.route('/api/landscape', landscapeApiRoutes);
 app.route('/api/submit', submitRoutes);
 app.route('/api/upload', uploadRoutes);
+app.route('/api/reviews', reviewRoutes);
 
 // Tags endpoint for autocomplete
 app.get('/api/tags', async (c) => {
@@ -429,6 +432,10 @@ app.get('/admin/agents-queue', (c) => {
 
 app.get('/admin/agents-all', (c) => {
   return c.html(adminAllAgentsPage());
+});
+
+app.get('/admin/reviews', (c) => {
+  return c.html(adminReviewsPage());
 });
 
 app.get('/admin/agents/create', (c) => {
