@@ -90,6 +90,25 @@ export const adminAgentCreatePage = () => `
                                     <input type="text" id="logo_url" 
                                         class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600"
                                         placeholder="🤖 or https://...">
+                                    <div class="mt-2">
+                                        <label class="block text-sm text-gray-600 mb-1">Or upload logo:</label>
+                                        <input type="file" id="logo_upload" accept="image/*"
+                                            class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
+                                        <div id="logo_preview" class="mt-2"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-6">
+                                <label class="block text-sm font-medium mb-2">Cover Image URL</label>
+                                <input type="text" id="cover_image_url" 
+                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600"
+                                    placeholder="https://...">
+                                <div class="mt-2">
+                                    <label class="block text-sm text-gray-600 mb-1">Or upload cover image:</label>
+                                    <input type="file" id="cover_upload" accept="image/*"
+                                        class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
+                                    <div id="cover_preview" class="mt-2"></div>
                                 </div>
                             </div>
 
@@ -289,6 +308,67 @@ export const adminAgentCreatePage = () => `
             }
         }
 
+        // Image upload handlers
+        document.getElementById('logo_upload')?.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            if (file.size > 2 * 1024 * 1024) {
+                alert('Logo must be less than 2MB');
+                return;
+            }
+            
+            const preview = document.getElementById('logo_preview');
+            preview.innerHTML = '<div class="text-sm text-gray-500"><i class="fas fa-spinner fa-spin"></i> Uploading...</div>';
+            
+            try {
+                const formData = new FormData();
+                formData.append('file', file);
+                
+                const response = await axios.post('/api/upload/image', formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                });
+                
+                if (response.data.success) {
+                    document.getElementById('logo_url').value = response.data.data.url;
+                    preview.innerHTML = '<img src="' + response.data.data.url + '" class="w-16 h-16 object-cover rounded-lg border" /><p class="text-xs text-green-600 mt-1"><i class="fas fa-check"></i> Uploaded</p>';
+                }
+            } catch (error) {
+                preview.innerHTML = '<p class="text-xs text-red-600"><i class="fas fa-times"></i> Upload failed</p>';
+                alert('Failed to upload logo: ' + (error.response?.data?.error || error.message));
+            }
+        });
+
+        document.getElementById('cover_upload')?.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Cover image must be less than 5MB');
+                return;
+            }
+            
+            const preview = document.getElementById('cover_preview');
+            preview.innerHTML = '<div class="text-sm text-gray-500"><i class="fas fa-spinner fa-spin"></i> Uploading...</div>';
+            
+            try {
+                const formData = new FormData();
+                formData.append('file', file);
+                
+                const response = await axios.post('/api/upload/image', formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                });
+                
+                if (response.data.success) {
+                    document.getElementById('cover_image_url').value = response.data.data.url;
+                    preview.innerHTML = '<img src="' + response.data.data.url + '" class="w-full max-w-xs h-32 object-cover rounded-lg border" /><p class="text-xs text-green-600 mt-1"><i class="fas fa-check"></i> Uploaded</p>';
+                }
+            } catch (error) {
+                preview.innerHTML = '<p class="text-xs text-red-600"><i class="fas fa-times"></i> Upload failed</p>';
+                alert('Failed to upload cover: ' + (error.response?.data?.error || error.message));
+            }
+        });
+
         // Auto-generate slug from name
         document.getElementById('name').addEventListener('input', (e) => {
             const slug = e.target.value
@@ -309,6 +389,7 @@ export const adminAgentCreatePage = () => `
                 description: document.getElementById('description').value,
                 website_url: document.getElementById('website_url').value,
                 logo_url: document.getElementById('logo_url').value || null,
+                cover_image: document.getElementById('cover_image_url')?.value || null,
                 demo_url: document.getElementById('demo_url').value || null,
                 docs_url: document.getElementById('docs_url').value || null,
                 pricing_model: document.getElementById('pricing_model').value,
@@ -439,6 +520,24 @@ export const adminAgentEditPage = (agentId: string) => `
                                     <label class="block text-sm font-medium mb-2">Logo/Icon URL or Emoji</label>
                                     <input type="text" id="logo_url" 
                                         class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600">
+                                    <div class="mt-2">
+                                        <label class="block text-sm text-gray-600 mb-1">Or upload logo:</label>
+                                        <input type="file" id="logo_upload" accept="image/*"
+                                            class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
+                                        <div id="logo_preview" class="mt-2"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-6">
+                                <label class="block text-sm font-medium mb-2">Cover Image URL</label>
+                                <input type="text" id="cover_image_url" 
+                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600">
+                                <div class="mt-2">
+                                    <label class="block text-sm text-gray-600 mb-1">Or upload cover image:</label>
+                                    <input type="file" id="cover_upload" accept="image/*"
+                                        class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
+                                    <div id="cover_preview" class="mt-2"></div>
                                 </div>
                             </div>
 
@@ -644,6 +743,7 @@ export const adminAgentEditPage = (agentId: string) => `
                     document.getElementById('description').value = agent.description || '';
                     document.getElementById('website_url').value = agent.website_url || '';
                     document.getElementById('logo_url').value = agent.logo_url || '';
+                    document.getElementById('cover_image_url').value = agent.cover_image || '';
                     document.getElementById('demo_url').value = agent.demo_url || '';
                     document.getElementById('docs_url').value = agent.docs_url || '';
                     document.getElementById('pricing_model').value = agent.pricing_model || 'FREE';
@@ -688,6 +788,7 @@ export const adminAgentEditPage = (agentId: string) => `
                 description: document.getElementById('description').value,
                 website_url: document.getElementById('website_url').value,
                 logo_url: document.getElementById('logo_url').value || null,
+                cover_image: document.getElementById('cover_image_url')?.value || null,
                 demo_url: document.getElementById('demo_url').value || null,
                 docs_url: document.getElementById('docs_url').value || null,
                 pricing_model: document.getElementById('pricing_model').value,
@@ -725,6 +826,67 @@ export const adminAgentEditPage = (agentId: string) => `
             localStorage.removeItem('auth_token');
             window.location.href = '/';
         }
+
+        // Image upload handlers
+        document.getElementById('logo_upload')?.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            if (file.size > 2 * 1024 * 1024) {
+                alert('Logo must be less than 2MB');
+                return;
+            }
+            
+            const preview = document.getElementById('logo_preview');
+            preview.innerHTML = '<div class="text-sm text-gray-500"><i class="fas fa-spinner fa-spin"></i> Uploading...</div>';
+            
+            try {
+                const formData = new FormData();
+                formData.append('file', file);
+                
+                const response = await axios.post('/api/upload/image', formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                });
+                
+                if (response.data.success) {
+                    document.getElementById('logo_url').value = response.data.data.url;
+                    preview.innerHTML = '<img src="' + response.data.data.url + '" class="w-16 h-16 object-cover rounded-lg border" /><p class="text-xs text-green-600 mt-1"><i class="fas fa-check"></i> Uploaded</p>';
+                }
+            } catch (error) {
+                preview.innerHTML = '<p class="text-xs text-red-600"><i class="fas fa-times"></i> Upload failed</p>';
+                alert('Failed to upload logo: ' + (error.response?.data?.error || error.message));
+            }
+        });
+
+        document.getElementById('cover_upload')?.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Cover image must be less than 5MB');
+                return;
+            }
+            
+            const preview = document.getElementById('cover_preview');
+            preview.innerHTML = '<div class="text-sm text-gray-500"><i class="fas fa-spinner fa-spin"></i> Uploading...</div>';
+            
+            try {
+                const formData = new FormData();
+                formData.append('file', file);
+                
+                const response = await axios.post('/api/upload/image', formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                });
+                
+                if (response.data.success) {
+                    document.getElementById('cover_image_url').value = response.data.data.url;
+                    preview.innerHTML = '<img src="' + response.data.data.url + '" class="w-full max-w-xs h-32 object-cover rounded-lg border" /><p class="text-xs text-green-600 mt-1"><i class="fas fa-check"></i> Uploaded</p>';
+                }
+            } catch (error) {
+                preview.innerHTML = '<p class="text-xs text-red-600"><i class="fas fa-times"></i> Upload failed</p>';
+                alert('Failed to upload cover: ' + (error.response?.data?.error || error.message));
+            }
+        });
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
