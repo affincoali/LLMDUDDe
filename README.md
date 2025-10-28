@@ -4,12 +4,14 @@ A comprehensive directory platform for discovering, submitting, and managing AI 
 
 ## 🚀 Live Demo
 
-- **Production**: https://0ff74ce2.webapp-ds7.pages.dev (Latest - Oct 28, 2025 20:30 UTC)
+- **Production**: https://f7be6f50.webapp-ds7.pages.dev (Latest - Oct 28, 2025 21:35 UTC)
 - **Custom Domain**: https://llmdude.com (Production site)
+- **Image CDN**: https://storage.llmdude.com (R2 Custom Domain)
 
-### 🎉 LATEST - Fully Optimized (2025-10-28)
+### 🎉 LATEST - Fully Optimized (2025-10-28 21:35 UTC)
 
 **✅ Performance & Image System Complete!**
+- ✅ **Custom Domain**: All images served via `storage.llmdude.com`
 - ✅ **Category Images**: Upload images for categories in admin panel
 - ✅ **Lazy Loading**: ALL images load lazily for faster page speed
 - ✅ **Client-Side Resize**: Images resized before upload (max 1920px)
