@@ -1534,7 +1534,7 @@ export const submitAgentForm = () => `
         }
 
         function handleCategoryChange(checkbox) {
-            const categoryId = checkbox.value;
+            const categoryId = parseInt(checkbox.value); // Convert string to number
             
             if (checkbox.checked) {
                 if (formData.categories.length < 3) {
