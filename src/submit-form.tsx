@@ -1106,6 +1106,12 @@ export const submitAgentForm = () => `
                     const data = JSON.parse(draft);
                     if (confirm('A draft submission was found. Would you like to continue from where you left off?')) {
                         formData = data;
+                        // Convert category IDs from strings to numbers if needed
+                        if (formData.categories && Array.isArray(formData.categories)) {
+                            formData.categories = formData.categories.map(id => 
+                                typeof id === 'string' ? parseInt(id) : id
+                            );
+                        }
                         populateFormFromData();
                     }
                 } catch (e) {
@@ -1369,6 +1375,13 @@ export const submitAgentForm = () => `
             
             // Collect acceptTerms from step 6
             formData.acceptTerms = document.getElementById('accept-terms').checked;
+            
+            // Ensure categories are numbers, not strings (convert if needed)
+            if (formData.categories && Array.isArray(formData.categories)) {
+                formData.categories = formData.categories.map(id => 
+                    typeof id === 'string' ? parseInt(id) : id
+                );
+            }
             
             // Check payload size to prevent network errors
             const payloadSize = JSON.stringify(formData).length;
