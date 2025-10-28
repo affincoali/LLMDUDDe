@@ -662,14 +662,14 @@ adminEnhanced.post('/agents/create', requireAdmin, async (c) => {
     // Generate slug if not provided
     const slug = data.slug || data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
     
-    // Insert new agent
+    // Insert new agent (WITHOUT category_id - using junction table instead)
     const result = await DB.prepare(`
       INSERT INTO agents (
         name, slug, tagline, description, website_url, logo_url, demo_url, docs_url,
         pricing_model, pricing_details, is_open_source, has_free_trial,
-        category_id, tags, features, status, admin_notes, rejection_reason,
+        tags, features, status, admin_notes, rejection_reason,
         is_featured, submitter_email, submitted_by_id, last_edited_by
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).bind(
       data.name,
       slug,
@@ -683,7 +683,6 @@ adminEnhanced.post('/agents/create', requireAdmin, async (c) => {
       data.pricing_details || null,
       data.is_open_source ? 1 : 0,
       data.has_free_trial ? 1 : 0,
-      data.category_id,
       data.tags || null,
       data.features || null,
       data.status || 'PENDING',
@@ -696,6 +695,16 @@ adminEnhanced.post('/agents/create', requireAdmin, async (c) => {
     ).run();
     
     const agentId = result.meta.last_row_id;
+    
+    // Handle category assignments using junction table
+    if (data.category_ids && Array.isArray(data.category_ids)) {
+      for (const categoryId of data.category_ids) {
+        await DB.prepare('INSERT INTO agent_categories (agent_id, category_id) VALUES (?, ?)')
+          .bind(agentId, categoryId).run();
+      }
+      // Update category counts
+      await updateCategoryCount(DB, ...data.category_ids);
+    }
     
     // Log audit action
     await logAuditAction(DB, user, 'CREATE_AGENT', 'agent', agentId, {
