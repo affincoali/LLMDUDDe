@@ -10,7 +10,7 @@ Your AI Agents Directory is now live on Cloudflare Pages!
 
 ### Main Application
 **Production URL**: https://webapp-ds7.pages.dev/
-**Latest Deployment**: https://7bd4d0d1.webapp-ds7.pages.dev/
+**Latest Deployment**: https://31d895f7.webapp-ds7.pages.dev/ (Updated: 2025-10-28 11:21 UTC)
 
 ### Admin Panel
 **Admin Login**: https://webapp-ds7.pages.dev/login
@@ -72,13 +72,14 @@ Your AI Agents Directory is now live on Cloudflare Pages!
 18. **public_activity_logs** - Public activity tracking
 19. **migrations** - Database migration history
 
-### Initial Seed Data:
-- ✅ **2 Users**: 1 Admin, 1 Regular user
-- ✅ **8 Categories**: Core categories
-- ✅ **6 Tags**: Common tags
-- ✅ **12 Demo Agents**: Including ChatGPT, Claude, Midjourney, etc.
-- ✅ **Category Links**: Agents linked to categories
-- ✅ **Upvotes**: Initial upvote counts
+### Initial Seed Data (Updated: 2025-10-28):
+- ✅ **3 Users**: 1 Admin, 1 Moderator, 1 Regular user
+- ✅ **8 Categories**: Content Generation, Code Assistants, Data Analysis, Customer Support, Image Generation, Research, Audio & Voice, Productivity
+- ✅ **6 Tags**: GPT-4, Open Source, Enterprise, API Available, Free Tier, Real-time
+- ✅ **13 Demo Agents**: ChatGPT, Claude, GitHub Copilot, Midjourney, Perplexity AI, DALL-E 3, Stable Diffusion, Copy.ai, Jasper, Grammarly, ElevenLabs, Notion AI, Pending Agent
+- ✅ **17 Category Links**: All agents properly linked to relevant categories
+- ✅ **Features & Use Cases**: Detailed information for each agent
+- ✅ **Reviews & Upvotes**: Sample reviews and upvote data
 
 ---
 
