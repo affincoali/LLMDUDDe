@@ -57,6 +57,24 @@ app.route('/api/landscape', landscapeApiRoutes);
 app.route('/api/submit', submitRoutes);
 app.route('/api/upload', uploadRoutes);
 
+// Tags endpoint for autocomplete
+app.get('/api/tags', async (c) => {
+  try {
+    const { DB } = c.env;
+    const tags = await DB.prepare(
+      'SELECT id, name, slug FROM tags ORDER BY name ASC'
+    ).all();
+    
+    return c.json({
+      success: true,
+      data: tags.results || []
+    });
+  } catch (error) {
+    console.error('Error fetching tags:', error);
+    return c.json({ success: false, error: 'Failed to fetch tags' }, 500);
+  }
+});
+
 // Homepage - Enhanced
 app.get('/', (c) => {
   return c.html(enhancedHomepage());
