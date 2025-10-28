@@ -1,4 +1,5 @@
 // Categories Pages - All Categories & Category Detail
+import { getFooter } from './components/footer';
 
 export const categoriesPage = () => `
 <!DOCTYPE html>
@@ -203,11 +204,7 @@ export const categoriesPage = () => `
     </div>
     
     <!-- Footer -->
-    <footer class="card border-t mt-20 py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center" style="color: var(--text-secondary)">
-            <p>&copy; 2024 AI Agents Directory. All rights reserved.</p>
-        </div>
-    </footer>
+    ${getFooter()}
 
     <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
     <script>
@@ -633,11 +630,7 @@ export const categoryDetailPage = (slug: string) => `
     </div>
     
     <!-- Footer -->
-    <footer class="card border-t mt-20 py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center" style="color: var(--text-secondary)">
-            <p>&copy; 2024 AI Agents Directory. All rights reserved.</p>
-        </div>
-    </footer>
+    ${getFooter()}
 
     <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
     <script>
