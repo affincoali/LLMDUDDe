@@ -50,11 +50,15 @@ export async function checkDuplicateUrl(
   next: Next
 ) {
   try {
-    // Check if body was already read by previous middleware
-    let body = c.get('sanitizedBody');
+    // Body MUST be already set by sanitizeRequestBody middleware
+    const body = c.get('sanitizedBody');
+    
     if (!body) {
-      body = await c.req.json();
-      c.set('sanitizedBody', body); // Store for next middleware
+      console.error('checkDuplicateUrl: sanitizedBody not found in context');
+      return c.json({
+        success: false,
+        error: 'Request body not available'
+      }, 400);
     }
     
     const websiteUrl = body.websiteUrl || body.website_url;
@@ -228,7 +232,24 @@ export async function sanitizeRequestBody(
     // Check if body was already read by previous middleware
     let body = c.get('sanitizedBody');
     if (!body) {
-      body = await c.req.json();
+      try {
+        body = await c.req.json();
+      } catch (jsonError) {
+        console.error('Failed to parse JSON body:', jsonError);
+        return c.json({
+          success: false,
+          error: 'Invalid JSON in request body'
+        }, 400);
+      }
+    }
+    
+    // Ensure body is not null/undefined
+    if (!body || typeof body !== 'object') {
+      console.error('Body is not an object:', typeof body);
+      return c.json({
+        success: false,
+        error: 'Request body must be a JSON object'
+      }, 400);
     }
     
     // Sanitize description field if present
@@ -248,8 +269,11 @@ export async function sanitizeRequestBody(
     
     await next();
   } catch (error) {
-    console.error('Sanitization error:', error);
-    await next();
+    console.error('Sanitization middleware error:', error);
+    return c.json({
+      success: false,
+      error: 'Failed to process request body'
+    }, 500);
   }
 }
 

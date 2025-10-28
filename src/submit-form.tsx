@@ -1366,6 +1366,9 @@ export const submitAgentForm = () => `
             }
 
             collectCurrentStepData();
+            
+            // Collect acceptTerms from step 6
+            formData.acceptTerms = document.getElementById('accept-terms').checked;
 
             // Show loading state
             document.getElementById('submit-text').style.display = 'none';

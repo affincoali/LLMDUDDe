@@ -45,9 +45,22 @@ submit.post(
       const user = c.get('user');
       const body = c.get('sanitizedBody') || await c.req.json();
       
+      // Debug logging
+      console.log('Submit body received:', JSON.stringify(body).substring(0, 200));
+      console.log('Body type:', typeof body);
+      console.log('Body keys:', body ? Object.keys(body) : 'body is null/undefined');
+      
+      if (!body) {
+        return c.json({
+          success: false,
+          error: 'Request body is empty'
+        }, 400);
+      }
+      
       // Validate with comprehensive Zod schema
       const validation = validateData(agentSubmissionSchema, body);
       if (!validation.success) {
+        console.log('Validation errors:', JSON.stringify(validation.errors));
         return c.json({
           success: false,
           error: 'Validation failed',
