@@ -4,22 +4,19 @@ A comprehensive directory platform for discovering, submitting, and managing AI 
 
 ## 🚀 Live Demo
 
-- **Production**: https://c22a1d03.webapp-ds7.pages.dev (Latest deployment - 2025-10-28)
+- **Production**: https://0ff74ce2.webapp-ds7.pages.dev (Latest - Oct 28, 2025 20:30 UTC)
 - **Custom Domain**: https://llmdude.com (Production site)
-- **Development**: https://3000-izrhvxrc8y0zaw0u52v89-2e1b9533.sandbox.novita.ai
 
-### 🎉 LATEST UPDATE - Complete Image System (2025-10-28)
+### 🎉 LATEST - Fully Optimized (2025-10-28)
 
-**✅ Full Image Upload & Gallery Management System DEPLOYED!**
-- ✅ **R2 Storage Live**: Production deployment with Cloudflare R2 bucket
-- ✅ **Image Uploads Working**: Tested and verified in production
-- ✅ **Public R2 URLs**: Images served from `https://pub-0226aad7dbe14d2ba087dca75180dc49.r2.dev`
-- ✅ **Gallery Management**: Drag-and-drop interface for up to 10 screenshots
-- ✅ **Image Optimization**: Metadata extraction and validation on upload
-- ✅ **Reordering**: Drag screenshots to reorder display sequence
-- ✅ **Upload Progress**: Visual feedback during image uploads
-- ✅ **Edit & Delete**: Full CRUD operations on gallery images
-- ✅ **Multiple Upload Methods**: Drag-and-drop, click to upload, or manual URL entry
+**✅ Performance & Image System Complete!**
+- ✅ **Category Images**: Upload images for categories in admin panel
+- ✅ **Lazy Loading**: ALL images load lazily for faster page speed
+- ✅ **Client-Side Resize**: Images resized before upload (max 1920px)
+- ✅ **Optimized Bundle**: 843KB (minimal, fast loading)
+- ✅ **R2 Storage**: All images on Cloudflare edge network
+- ✅ **Gallery System**: Drag-drop, reorder, edit, delete screenshots
+- ✅ **Core Web Vitals**: Optimized for Google performance metrics
 
 ### ✅ All Pages Fully Functional
 
@@ -822,16 +819,13 @@ npx wrangler pages secret put JWT_SECRET --project-name webapp
    - Preview mode before saving
    - Image paste support
 
-3. **Image Upload System** ✅ (COMPLETED - 2025-10-28):
-   - ✅ Cloudflare R2 integrated for image storage
-   - ✅ Upload agent logos and screenshots
-   - ✅ Working upload handlers in admin and submit forms
-   - ✅ R2 public URLs with custom domain support
-   - ✅ Image optimization and metadata extraction
-   - ✅ Gallery management UI in admin panel with drag-and-drop
-   - ✅ Reordering with visual feedback
-   - ✅ Edit/delete gallery images
-   - ✅ **DEPLOYED TO PRODUCTION** and tested working
+3. **Image Upload System** ✅ (COMPLETED):
+   - ✅ Cloudflare R2 storage for all images
+   - ✅ Category image upload in admin
+   - ✅ Client-side resize (max 1920px) before upload
+   - ✅ Lazy loading on all images site-wide
+   - ✅ Gallery management with drag-drop
+   - ✅ **LIVE & OPTIMIZED** for Core Web Vitals
 
 4. **Email Notifications**:
    - Setup Resend API or SendGrid
