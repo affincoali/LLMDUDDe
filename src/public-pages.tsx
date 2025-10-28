@@ -386,10 +386,15 @@ export const enhancedHomepage = () => `
                 if (response.data.success) {
                     const categories = response.data.data;
                     const grid = document.getElementById('categories-grid');
-                    grid.innerHTML = categories.map((cat, index) => \`
+                    grid.innerHTML = categories.map((cat, index) => {
+                        const imageOrIcon = cat.image_url 
+                            ? \`<img src="\${cat.image_url}" alt="\${cat.name}" class="w-16 h-16 object-cover rounded-lg" loading="lazy" onerror="this.outerHTML='<div class=\\'text-4xl\\'>\${cat.icon || '📁'}</div>'">\`
+                            : \`<div class="text-4xl">\${cat.icon || '📁'}</div>\`;
+                        
+                        return \`
                         <a href="/categories/\${cat.slug}" class="bg-white rounded-lg p-6 hover:shadow-xl transition card-hover border-2 border-gray-100">
                             <div class="flex items-center justify-between mb-3">
-                                <div class="text-4xl">\${cat.icon || '📁'}</div>
+                                \${imageOrIcon}
                                 \${index < 3 ? \`<div class="text-2xl">\${['🥇','🥈','🥉'][index]}</div>\` : ''}
                             </div>
                             <h3 class="font-bold text-gray-900 mb-1">\${cat.name}</h3>
@@ -398,7 +403,8 @@ export const enhancedHomepage = () => `
                                 \${cat.recent_additions > 0 ? \`<span class="text-green-600 badge-glow px-2 py-1 bg-green-100 rounded">+\${cat.recent_additions} new</span>\` : ''}
                             </div>
                         </a>
-                    \`).join('');
+                        \`;
+                    }).join('');
                 }
             } catch (error) {
                 console.error('Error loading categories:', error);

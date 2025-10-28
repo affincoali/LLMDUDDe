@@ -237,11 +237,13 @@ export const categoriesPage = () => `
       
       // Create Category Card
       function createCategoryCard(category) {
+        const imageHtml = category.image_url 
+          ? \`<img src="\${category.image_url}" alt="\${category.name}" class="w-24 h-24 object-cover rounded-lg mx-auto mb-4" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><div class="text-6xl mb-4" style="display:none">\${category.icon || '📁'}</div>\`
+          : \`<div class="text-6xl mb-4">\${category.icon || '📁'}</div>\`;
+        
         return \`
           <div class="card category-card border rounded-xl p-6 text-center" onclick="window.location='/categories/\${category.slug}'">
-            <div class="text-6xl mb-4">
-              \${category.icon || '📁'}
-            </div>
+            \${imageHtml}
             <h3 class="text-xl font-bold mb-2">\${category.name}</h3>
             <p class="text-sm mb-4" style="color: var(--text-secondary)">
               \${category.description || 'Explore AI agents in this category'}
@@ -443,6 +445,7 @@ export const categoryDetailPage = (slug: string) => `
         
         <!-- Category Header -->
         <div class="card border rounded-xl p-8 mb-8 text-center">
+            <img id="category-image" src="" alt="" class="w-32 h-32 object-cover rounded-lg mx-auto mb-4" loading="lazy" style="display:none" onerror="this.style.display='none';document.getElementById('category-icon').style.display='block'">
             <div class="text-8xl mb-4" id="category-icon">📁</div>
             <h1 class="text-5xl font-bold mb-4" id="category-name">Loading...</h1>
             <p class="text-xl mb-6" style="color: var(--text-secondary)" id="category-description">
@@ -568,7 +571,18 @@ export const categoryDetailPage = (slug: string) => `
             // Update page
             document.getElementById('page-title').textContent = \`\${categoryData.name} - AI Agents Directory\`;
             document.getElementById('breadcrumb-category').textContent = categoryData.name;
-            document.getElementById('category-icon').textContent = categoryData.icon || '📁';
+            
+            // Display image if available, otherwise show icon
+            if (categoryData.image_url) {
+              const imgEl = document.getElementById('category-image');
+              imgEl.src = categoryData.image_url;
+              imgEl.alt = categoryData.name;
+              imgEl.style.display = 'block';
+              document.getElementById('category-icon').style.display = 'none';
+            } else {
+              document.getElementById('category-icon').textContent = categoryData.icon || '📁';
+            }
+            
             document.getElementById('category-name').textContent = categoryData.name;
             document.getElementById('category-description').textContent = categoryData.description || 'Explore AI agents in this category';
             document.getElementById('agent-count').textContent = categoryData.agent_count || 0;
