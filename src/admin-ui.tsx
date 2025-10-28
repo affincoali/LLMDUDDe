@@ -540,7 +540,7 @@ export const agentApprovalQueue = () => `
                         <div class="flex items-center">
                             <div class="h-10 w-10 flex-shrink-0 rounded-lg overflow-hidden">
                                 \${agent.logo_url ? \`
-                                    <img src="\${agent.logo_url}" alt="\${agent.name}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\\'bg-gradient-to-br from-purple-400 to-indigo-600 w-full h-full flex items-center justify-center text-2xl\\'>🤖</div>';">
+                                    <img src="\${agent.logo_url}" alt="\${agent.name}" loading="lazy" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\\'bg-gradient-to-br from-purple-400 to-indigo-600 w-full h-full flex items-center justify-center text-2xl\\'>🤖</div>';">
                                 \` : \`
                                     <div class="bg-gradient-to-br from-purple-400 to-indigo-600 w-full h-full flex items-center justify-center text-2xl">📦</div>
                                 \`}
@@ -776,7 +776,7 @@ export const agentApprovalQueue = () => `
                             <h3 class="font-semibold text-gray-700 mb-3">Logo</h3>
                             <div class="flex items-center gap-4">
                                 \${agent.logo_url ? \`
-                                    <img src="\${agent.logo_url}" alt="\${agent.name}" class="w-20 h-20 rounded-lg object-cover border" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                    <img src="\${agent.logo_url}" alt="\${agent.name}" loading="lazy" class="w-20 h-20 rounded-lg object-cover border" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                     <div class="w-20 h-20 rounded-lg bg-gradient-to-br from-purple-400 to-indigo-600 flex items-center justify-center text-3xl" style="display:none;">🤖</div>
                                 \` : \`
                                     <div class="w-20 h-20 rounded-lg bg-gradient-to-br from-purple-400 to-indigo-600 flex items-center justify-center text-3xl">🤖</div>

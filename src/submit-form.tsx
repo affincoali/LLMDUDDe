@@ -1585,7 +1585,7 @@ export const submitAgentForm = () => `
                         
                         // Replace loading div with actual image
                         loadingDiv.innerHTML = \`
-                            <img src="\${screenshotUrl}" alt="Screenshot" />
+                            <img src="\${screenshotUrl}" alt="Screenshot" loading="lazy" />
                             <button class="screenshot-remove" onclick="removeScreenshot(this, '\${screenshotUrl}')">
                                 <i class="fas fa-times"></i>
                             </button>

@@ -542,35 +542,24 @@ admin.post('/categories', async (c) => {
     const { DB } = c.env;
     const data = await c.req.json();
     
-    const { name, slug, description, icon, color, parent_id, is_active, display_order } = data;
+    const { name, slug, description, icon, image_url, color, parent_id, is_active, display_order } = data;
     
-    // Validate required fields
     if (!name || !slug) {
       return c.json({ success: false, error: 'Name and slug are required' }, 400);
     }
     
-    // Check if slug already exists
-    const existing = await DB.prepare('SELECT id FROM categories WHERE slug = ?')
-      .bind(slug)
-      .first();
-    
+    const existing = await DB.prepare('SELECT id FROM categories WHERE slug = ?').bind(slug).first();
     if (existing) {
       return c.json({ success: false, error: 'Category with this slug already exists' }, 400);
     }
     
-    // Insert new category
     const result = await DB.prepare(`
-      INSERT INTO categories (name, slug, description, icon, color, parent_id, is_active, display_order)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO categories (name, slug, description, icon, image_url, color, parent_id, is_active, display_order)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).bind(
-      name,
-      slug,
-      description || null,
-      icon || null,
-      color || null,
-      parent_id || null,
-      is_active !== undefined ? (is_active ? 1 : 0) : 1,
-      display_order || 0
+      name, slug, description || null, icon || null, image_url || null,
+      color || null, parent_id || null,
+      is_active !== undefined ? (is_active ? 1 : 0) : 1, display_order || 0
     ).run();
     
     return c.json({
@@ -603,37 +592,23 @@ admin.put('/categories/:id', async (c) => {
       return c.json({ success: false, error: 'Category not found' }, 404);
     }
     
-    const { name, slug, description, icon, color, parent_id, is_active, display_order } = data;
+    const { name, slug, description, icon, image_url, color, parent_id, is_active, display_order } = data;
     
-    // If slug is being changed, check for uniqueness
     if (slug && slug !== category.slug) {
-      const existing = await DB.prepare('SELECT id FROM categories WHERE slug = ? AND id != ?')
-        .bind(slug, categoryId)
-        .first();
-      
-      if (existing) {
-        return c.json({ success: false, error: 'Category with this slug already exists' }, 400);
-      }
+      const existing = await DB.prepare('SELECT id FROM categories WHERE slug = ? AND id != ?').bind(slug, categoryId).first();
+      if (existing) return c.json({ success: false, error: 'Category with this slug already exists' }, 400);
     }
     
-    // Update category
     await DB.prepare(`
       UPDATE categories 
-      SET name = ?,
-          slug = ?,
-          description = ?,
-          icon = ?,
-          color = ?,
-          parent_id = ?,
-          is_active = ?,
-          display_order = ?,
-          updated_at = CURRENT_TIMESTAMP
+      SET name = ?, slug = ?, description = ?, icon = ?, image_url = ?, color = ?, parent_id = ?, 
+          is_active = ?, display_order = ?, updated_at = CURRENT_TIMESTAMP
       WHERE id = ?
     `).bind(
-      name || category.name,
-      slug || category.slug,
+      name || category.name, slug || category.slug,
       description !== undefined ? description : category.description,
       icon !== undefined ? icon : category.icon,
+      image_url !== undefined ? image_url : category.image_url,
       color !== undefined ? color : category.color,
       parent_id !== undefined ? parent_id : category.parent_id,
       is_active !== undefined ? (is_active ? 1 : 0) : category.is_active,

@@ -411,7 +411,7 @@ export const enhancedHomepage = () => `
                 <div class="scroll-item w-80 bg-white rounded-lg shadow-md overflow-hidden card-hover cursor-pointer" onclick="window.location='/agents/\${agent.slug}'">
                     <div class="h-48 bg-gradient-to-br from-purple-400 to-indigo-600 flex items-center justify-center overflow-hidden">
                         \${agent.logo_url ? \`
-                            <img src="\${agent.logo_url}" alt="\${agent.name}" class="w-full h-full object-cover" 
+                            <img src="\${agent.logo_url}" alt="\${agent.name}" loading="lazy" class="w-full h-full object-cover" 
                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                             <span class="text-6xl hidden">🤖</span>
                         \` : '<span class="text-6xl">🤖</span>'}
@@ -491,7 +491,7 @@ export const enhancedHomepage = () => `
                             <a href="/agents/\${agent.slug}" class="flex items-center p-4 hover:bg-purple-50 transition border-b border-gray-100 last:border-b-0 cursor-pointer">
                                 <div class="mr-4 flex-shrink-0">
                                     \${agent.logo_url ? \`
-                                        <img src="\${agent.logo_url}" alt="\${agent.name}" class="w-12 h-12 rounded-lg object-cover" 
+                                        <img src="\${agent.logo_url}" alt="\${agent.name}" loading="lazy" class="w-12 h-12 rounded-lg object-cover" 
                                             onerror="this.outerHTML='<div class=\\'text-3xl\\'>🤖</div>'">
                                     \` : '<div class="text-3xl">🤖</div>'}
                                 </div>

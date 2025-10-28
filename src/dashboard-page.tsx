@@ -496,7 +496,7 @@ export const userDashboard = () => `
                 <i class="fas fa-plus"></i>
                 Submit Agent
             </button>
-            <img src="https://ui-avatars.com/api/?name=User&background=3b82f6&color=fff" alt="User Avatar" class="user-avatar" id="user-avatar" />
+            <img src="https://ui-avatars.com/api/?name=User&background=3b82f6&color=fff" alt="User Avatar" loading="lazy" class="user-avatar" id="user-avatar" />
             <button class="btn btn-secondary btn-sm" onclick="logout()">
                 <i class="fas fa-sign-out-alt"></i>
                 Logout
@@ -873,7 +873,7 @@ export const userDashboard = () => `
                 <tr>
                     <td>
                         <div style="display: flex; align-items: center; gap: 0.75rem;">
-                            <img src="\${sub.logo_url}" alt="\${sub.name}" style="width: 40px; height: 40px; border-radius: 8px; object-fit: cover;" />
+                            <img src="\${sub.logo_url}" alt="\${sub.name}" loading="lazy" style="width: 40px; height: 40px; border-radius: 8px; object-fit: cover;" />
                             <strong style="color: var(--text-primary);">\${sub.name}</strong>
                         </div>
                     </td>
@@ -919,7 +919,7 @@ export const userDashboard = () => `
             
             grid.innerHTML = upvotes.map(agent => \`
                 <div class="agent-card">
-                    <img src="\${agent.logo_url}" alt="\${agent.name}" class="agent-card-image" />
+                    <img src="\${agent.logo_url}" alt="\${agent.name}" loading="lazy" class="agent-card-image" />
                     <div class="agent-card-content">
                         <h3 class="agent-card-title">\${agent.name}</h3>
                         <p class="agent-card-tagline">\${agent.tagline}</p>
@@ -954,7 +954,7 @@ export const userDashboard = () => `
                 <div class="review-item">
                     <div class="review-header">
                         <div class="review-agent-info">
-                            <img src="\${review.agent_logo}" alt="\${review.agent_name}" class="review-agent-logo" />
+                            <img src="\${review.agent_logo}" alt="\${review.agent_name}" loading="lazy" class="review-agent-logo" />
                             <div>
                                 <h4 style="font-weight: bold; color: var(--text-primary);">\${review.agent_name}</h4>
                                 <div class="review-rating">

@@ -603,6 +603,11 @@ export const adminCategoriesPage = () => `
                     <input type="text" id="cat-icon" placeholder="📁" class="w-full px-4 py-2 border rounded-lg">
                 </div>
                 <div class="mb-4">
+                    <label class="block text-sm font-medium mb-2">Category Image (Optional)</label>
+                    <input type="file" id="cat-image" accept="image/*" class="w-full px-4 py-2 border rounded-lg text-sm">
+                    <input type="text" id="cat-image-url" placeholder="Or paste URL" class="w-full px-4 py-2 border rounded-lg mt-2 text-sm">
+                </div>
+                <div class="mb-4">
                     <label class="block text-sm font-medium mb-2">Description</label>
                     <textarea id="cat-description" rows="3" class="w-full px-4 py-2 border rounded-lg"></textarea>
                 </div>
@@ -646,25 +651,21 @@ export const adminCategoriesPage = () => `
             grid.innerHTML = categories.map(cat => \`
                 <div class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition">
                     <div class="flex items-center justify-between mb-4">
-                        <div class="text-4xl">\${cat.icon || '📁'}</div>
+                        \${cat.image_url ? \`<img src="\${cat.image_url}" alt="\${cat.name}" loading="lazy" class="w-16 h-16 object-cover rounded-lg" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">\` : ''}<div class="text-4xl" style="display:\${cat.image_url?'none':'block'}">\${cat.icon||'📁'}</div>
                         <span class="px-3 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">
                             \${cat.agent_count} agents
                         </span>
                     </div>
                     <h3 class="text-xl font-bold mb-2">\${cat.name}</h3>
-                    <p class="text-sm text-gray-600 mb-4">\${cat.description || 'No description'}</p>
+                    <p class="text-sm text-gray-600 mb-4">\${cat.description||'No description'}</p>
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-2">
-                            <div class="w-6 h-6 rounded-full" style="background-color: \${cat.color || '#9333ea'}"></div>
+                            <div class="w-6 h-6 rounded-full" style="background-color:\${cat.color||'#9333ea'}"></div>
                             <span class="text-xs text-gray-500">\${cat.slug}</span>
                         </div>
                         <div class="flex space-x-2">
-                            <button onclick="showEditModal(\${cat.id})" class="text-blue-600 hover:text-blue-900 text-sm">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button onclick="deleteCategory(\${cat.id}, '\${cat.name}', \${cat.agent_count})" class="text-red-600 hover:text-red-900 text-sm">
-                                <i class="fas fa-trash"></i>
-                            </button>
+                            <button onclick="showEditModal(\${cat.id})" class="text-blue-600 hover:text-blue-900 text-sm"><i class="fas fa-edit"></i></button>
+                            <button onclick="deleteCategory(\${cat.id},'\${cat.name}',\${cat.agent_count})" class="text-red-600 hover:text-red-900 text-sm"><i class="fas fa-trash"></i></button>
                         </div>
                     </div>
                 </div>
@@ -690,6 +691,7 @@ export const adminCategoriesPage = () => `
                     document.getElementById('modal-title').textContent = 'Edit Category';
                     document.getElementById('cat-name').value = cat.name;
                     document.getElementById('cat-icon').value = cat.icon || '';
+                    document.getElementById('cat-image-url').value = cat.image_url || '';
                     document.getElementById('cat-description').value = cat.description || '';
                     document.getElementById('cat-color').value = cat.color || '#9333ea';
                     document.getElementById('category-modal').classList.remove('hidden');
@@ -744,30 +746,37 @@ export const adminCategoriesPage = () => `
             const description = document.getElementById('cat-description').value.trim();
             const color = document.getElementById('cat-color').value;
             const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+            let imageUrl = document.getElementById('cat-image-url').value.trim();
             
             if (!name) {
                 showToast('Category name is required', 'error');
                 return;
             }
             
-            try {
-                let response;
-                if (editingCategoryId) {
-                    // Update existing category
-                    response = await axios.put('/api/admin/categories/' + editingCategoryId, {
-                        name, slug, icon, description, color
-                    });
-                } else {
-                    // Create new category
-                    response = await axios.post('/api/admin/categories', {
-                        name, slug, icon, description, color
-                    });
+            // Handle image upload if file selected
+            const imageFile = document.getElementById('cat-image').files[0];
+            if (imageFile) {
+                try {
+                    const fd = new FormData();
+                    fd.append('file', imageFile);
+                    const uploadRes = await axios.post('/api/upload/image', fd);
+                    if (uploadRes.data.success) imageUrl = uploadRes.data.data.url;
+                } catch (err) {
+                    showToast('Image upload failed', 'error');
+                    return;
                 }
+            }
+            
+            try {
+                const data = { name, slug, icon, description, color, image_url: imageUrl || null };
+                const response = editingCategoryId
+                    ? await axios.put('/api/admin/categories/' + editingCategoryId, data)
+                    : await axios.post('/api/admin/categories', data);
                 
                 if (response.data.success) {
                     hideCategoryModal();
                     loadCategories();
-                    showToast(editingCategoryId ? 'Category updated successfully!' : 'Category created successfully!', 'success');
+                    showToast(editingCategoryId ? 'Category updated!' : 'Category created!', 'success');
                 }
             } catch (error) {
                 showToast(error.response?.data?.error || 'Failed to save category', 'error');

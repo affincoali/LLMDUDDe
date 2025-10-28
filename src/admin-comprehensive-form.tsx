@@ -1161,7 +1161,7 @@ export const adminComprehensiveEditPage = (agentId: string) => `
                      ondragover="handleDragOver(event)"
                      ondrop="handleDrop(event, \${index})"
                      ondragend="handleDragEnd(event)">
-                    <img src="\${img.url || '/placeholder.png'}" alt="\${img.title}" 
+                    <img src="\${img.url || '/placeholder.png'}" alt="\${img.title}" loading="lazy" 
                          class="w-full h-48 object-cover \${img.uploading ? 'blur-sm' : ''}" />
                     
                     \${img.uploading ? \`

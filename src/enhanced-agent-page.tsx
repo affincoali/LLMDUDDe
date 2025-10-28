@@ -408,7 +408,7 @@ export const enhancedAgentDetailPage = (slug: string) => `
             document.getElementById('page-description').setAttribute('content', agent.tagline || agent.description);
             
             document.getElementById('agent-logo').innerHTML = agent.logo_url ? \`
-                <img src="\${agent.logo_url}" alt="\${agent.name}" class="w-20 h-20 rounded-lg object-cover" 
+                <img src="\${agent.logo_url}" alt="\${agent.name}" loading="lazy" class="w-20 h-20 rounded-lg object-cover" 
                     onerror="this.outerHTML='<span class=\\'text-5xl\\'>🤖</span>'">
             \` : '<span class="text-5xl">🤖</span>';
             document.getElementById('agent-name').textContent = agent.name;
@@ -504,7 +504,7 @@ export const enhancedAgentDetailPage = (slug: string) => `
                 document.getElementById('screenshots-section').style.display = 'block';
                 document.getElementById('screenshots-gallery').innerHTML = screenshots.map(s => \`
                     <div class="screenshot-item">
-                        <img src="\${s.image_url}" alt="\${s.title}" class="w-full h-48 object-cover">
+                        <img src="\${s.image_url}" alt="\${s.title}" loading="lazy" class="w-full h-48 object-cover">
                         <div class="p-2 bg-gray-100 dark:bg-gray-800">
                             <p class="text-sm font-medium">\${s.title}</p>
                         </div>
@@ -629,7 +629,7 @@ export const enhancedAgentDetailPage = (slug: string) => `
                 <a href="/agents/\${agent.slug}" class="card p-4 rounded-lg hover:shadow-lg transition">
                     <div class="mb-3 text-center flex items-center justify-center">
                         \${agent.logo_url ? \`
-                            <img src="\${agent.logo_url}" alt="\${agent.name}" class="w-16 h-16 rounded-lg object-cover" 
+                            <img src="\${agent.logo_url}" alt="\${agent.name}" loading="lazy" class="w-16 h-16 rounded-lg object-cover" 
                                 onerror="this.outerHTML='<span class=\\'text-4xl\\'>🤖</span>'">
                         \` : '<span class="text-4xl">🤖</span>'}
                     </div>
