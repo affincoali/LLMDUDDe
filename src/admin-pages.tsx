@@ -893,16 +893,20 @@ export const adminAllAgentsPage = () => `
                             <span><i class="fas fa-arrow-up"></i> \${agent.upvote_count}</span>
                             <span class="px-2 py-1 bg-gray-100 rounded text-xs">\${agent.pricing_model}</span>
                         </div>
-                        <div class="flex space-x-2">
-                            <button onclick="window.location='/admin/agents/\${agent.id}/edit'" 
+                        <div class="flex space-x-2 mb-2">
+                            <button onclick="window.location='/admin/agents/\${agent.id}/edit-full'" 
                                 class="flex-1 px-3 py-2 text-sm bg-purple-600 text-white rounded hover:bg-purple-700">
-                                <i class="fas fa-edit"></i> Edit
+                                <i class="fas fa-edit"></i> Edit Full
                             </button>
                             <a href="/agents/\${agent.slug}" target="_blank"
                                 class="flex-1 px-3 py-2 text-sm bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-center">
                                 <i class="fas fa-eye"></i> View
                             </a>
                         </div>
+                        <button onclick="window.location='/admin/agents/\${agent.id}/edit'" 
+                            class="w-full px-3 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200">
+                            Quick Edit
+                        </button>
                     </div>
                 </div>
             \`).join('');
