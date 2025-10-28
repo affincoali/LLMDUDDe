@@ -80,6 +80,9 @@ export const enhancedHomepage = () => `
                     <a href="/" class="text-purple-600 font-semibold">Home</a>
                     <a href="/agents" class="text-gray-700 hover:text-purple-600 transition">Browse</a>
                     <a href="/categories" class="text-gray-700 hover:text-purple-600 transition">Categories</a>
+                    <a href="/allstats" class="text-gray-700 hover:text-purple-600 transition">
+                        <i class="fas fa-chart-line mr-1"></i>Stats
+                    </a>
                     <a href="/submit" class="text-gray-700 hover:text-purple-600 transition">Submit</a>
                     <button onclick="showLogin()" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">
                         Login
@@ -96,6 +99,9 @@ export const enhancedHomepage = () => `
                 <a href="/" class="block text-purple-600 font-semibold">Home</a>
                 <a href="/agents" class="block text-gray-700">Browse</a>
                 <a href="/categories" class="block text-gray-700">Categories</a>
+                <a href="/allstats" class="block text-gray-700">
+                    <i class="fas fa-chart-line mr-1"></i>Statistics
+                </a>
                 <a href="/submit" class="block text-gray-700">Submit</a>
                 <button onclick="showLogin()" class="w-full bg-purple-600 text-white px-4 py-2 rounded-lg">
                     Login
