@@ -419,9 +419,10 @@ export const enhancedCategoryDetailPage = (slug: string) => `
         // Load category and agents
         async function loadCategory() {
             try {
-                const response = await axios.get(API_BASE + '/categories?slug=' + CATEGORY_SLUG);
-                if (response.data.success && response.data.data.length > 0) {
-                    currentCategory = response.data.data[0];
+                // Use the category detail endpoint which now returns agents
+                const response = await axios.get(API_BASE + '/categories/' + CATEGORY_SLUG);
+                if (response.data.success) {
+                    currentCategory = response.data.data;
                     
                     document.getElementById('page-title').textContent = currentCategory.name + ' - AI Agents Directory';
                     document.getElementById('page-description').setAttribute('content', currentCategory.description || '');
@@ -429,25 +430,23 @@ export const enhancedCategoryDetailPage = (slug: string) => `
                     document.getElementById('category-icon').textContent = currentCategory.icon || '📁';
                     document.getElementById('category-name').textContent = currentCategory.name;
                     document.getElementById('category-description').textContent = currentCategory.description || 'Explore AI agents in this category';
-                    document.getElementById('agent-count').textContent = currentCategory.agent_count || 0;
                     
-                    await loadAgents();
+                    // Get agents directly from the category response
+                    allAgents = currentCategory.agents || [];
+                    document.getElementById('agent-count').textContent = allAgents.length;
+                    
+                    loadAgentsFromData();
                 }
             } catch (error) {
                 console.error('Error loading category:', error);
             }
         }
         
-        async function loadAgents() {
+        function loadAgentsFromData() {
             try {
-                const response = await axios.get(API_BASE + '/agents?status=APPROVED&limit=100');
-                if (response.data.success) {
-                    // Filter agents for this category
-                    allAgents = response.data.data.filter(agent => {
-                        if (!agent.category_names) return false;
-                        const categories = agent.category_names.split(',');
-                        return categories.some(cat => cat.trim().toLowerCase() === currentCategory.name.toLowerCase());
-                    });
+                if (allAgents.length > 0) {
+                    // Agents already loaded from category endpoint
+                    allAgents = allAgents;
                     
                     document.getElementById('total-count').textContent = allAgents.length;
                     document.getElementById('trending-count').textContent = Math.min(5, allAgents.length);

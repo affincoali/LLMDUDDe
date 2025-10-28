@@ -718,16 +718,12 @@ export const categoryDetailPage = (slug: string) => `
       // Load Agents
       async function loadAgents() {
         try {
-          // Get all approved agents
-          const response = await axios.get(\`\${API_BASE}/public/agents\`);
+          // Get category detail which includes agents
+          const response = await axios.get(\`\${API_BASE}/categories/\${categorySlug}\`);
           
           if (response.data.success) {
-            // Filter agents that belong to this category
-            allAgents = response.data.data.filter(agent => {
-              const categories = agent.category_names ? agent.category_names.split(',') : [];
-              return categories.includes(categoryData.name);
-            });
-            
+            // Get agents directly from category response
+            allAgents = response.data.data.agents || [];
             filteredAgents = [...allAgents];
             renderAgents();
           }

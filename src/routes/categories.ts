@@ -59,7 +59,7 @@ categories.get('/', async (c) => {
 
 /**
  * GET /api/categories/:slug
- * Get single category by slug
+ * Get single category by slug with agents
  */
 categories.get('/:slug', async (c) => {
   try {
@@ -79,11 +79,21 @@ categories.get('/:slug', async (c) => {
       'SELECT * FROM categories WHERE parent_id = ? AND is_active = 1 ORDER BY display_order ASC'
     ).bind(category.id).all<Category>();
     
+    // Get agents in this category
+    const agents = await DB.prepare(`
+      SELECT DISTINCT a.*
+      FROM agents a
+      INNER JOIN agent_categories ac ON a.id = ac.agent_id
+      WHERE ac.category_id = ? AND a.status = 'APPROVED'
+      ORDER BY a.upvote_count DESC, a.view_count DESC, a.created_at DESC
+    `).bind(category.id).all();
+    
     return c.json({
       success: true,
       data: {
         ...category,
-        subcategories: subcategories.results || []
+        subcategories: subcategories.results || [],
+        agents: agents.results || []
       }
     });
   } catch (error) {
