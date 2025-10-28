@@ -50,7 +50,13 @@ export async function checkDuplicateUrl(
   next: Next
 ) {
   try {
-    const body = await c.req.json();
+    // Check if body was already read by previous middleware
+    let body = c.get('sanitizedBody');
+    if (!body) {
+      body = await c.req.json();
+      c.set('sanitizedBody', body); // Store for next middleware
+    }
+    
     const websiteUrl = body.websiteUrl || body.website_url;
 
     if (!websiteUrl) {
@@ -219,7 +225,11 @@ export async function sanitizeRequestBody(
   next: Next
 ) {
   try {
-    const body = await c.req.json();
+    // Check if body was already read by previous middleware
+    let body = c.get('sanitizedBody');
+    if (!body) {
+      body = await c.req.json();
+    }
     
     // Sanitize description field if present
     if (body.description && typeof body.description === 'string') {
