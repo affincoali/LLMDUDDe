@@ -46,6 +46,17 @@ export const adminComprehensiveEditPage = (agentId: string) => `
             border-color: #7c3aed !important;
             background-color: #f5f3ff;
         }
+        .gallery-item {
+            transition: all 0.3s ease;
+            cursor: move;
+        }
+        .gallery-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .gallery-item[draggable="true"]:active {
+            cursor: grabbing;
+        }
     </style>
 </head>
 <body class="bg-gray-100">
@@ -475,13 +486,49 @@ export const adminComprehensiveEditPage = (agentId: string) => `
 
                         <!-- TAB 10: SCREENSHOTS -->
                         <div id="tab-screenshots" class="tab-content">
-                            <h2 class="text-2xl font-bold mb-6">Screenshots</h2>
-                            <p class="text-gray-600 mb-4">Add screenshots to showcase the agent</p>
+                            <h2 class="text-2xl font-bold mb-6">Screenshots Gallery</h2>
+                            <p class="text-gray-600 mb-4">Add and manage screenshots to showcase the agent. Drag to reorder.</p>
                             
-                            <div id="screenshots-container"></div>
-                            <button type="button" onclick="addScreenshot()" class="mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
-                                <i class="fas fa-plus mr-2"></i>Add Screenshot
-                            </button>
+                            <!-- Gallery Upload Area -->
+                            <div class="mb-6">
+                                <div class="upload-area" id="gallery-upload-area" 
+                                     onclick="document.getElementById('gallery-upload').click()"
+                                     ondrop="handleGalleryDrop(event)" 
+                                     ondragover="event.preventDefault(); event.currentTarget.style.borderColor='#7c3aed';"
+                                     ondragleave="event.currentTarget.style.borderColor='#d1d5db';">
+                                    <i class="fas fa-images text-4xl mb-2" style="color: #7c3aed;"></i>
+                                    <p style="color: #6b7280;">
+                                        Drag & drop images here or click to upload
+                                    </p>
+                                    <p class="text-sm" style="color: #6b7280;">
+                                        Max 5MB per image • Up to 10 images • JPEG, PNG, GIF, WebP
+                                    </p>
+                                </div>
+                                <input 
+                                    type="file" 
+                                    id="gallery-upload" 
+                                    accept="image/*" 
+                                    multiple
+                                    style="display: none;"
+                                    onchange="handleGalleryUpload(event)"
+                                />
+                            </div>
+                            
+                            <!-- Gallery Preview with Drag-and-Drop Reordering -->
+                            <div id="screenshots-gallery" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6"></div>
+                            
+                            <!-- Manual URL Entry (Legacy Support) -->
+                            <details class="mb-4">
+                                <summary class="cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    Or add screenshot by URL
+                                </summary>
+                                <div class="mt-4">
+                                    <div id="screenshots-container"></div>
+                                    <button type="button" onclick="addScreenshot()" class="mt-4 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700">
+                                        <i class="fas fa-plus mr-2"></i>Add Screenshot URL
+                                    </button>
+                                </div>
+                            </details>
                         </div>
 
                         <!-- TAB 11: ADMIN SETTINGS -->
@@ -880,14 +927,15 @@ export const adminComprehensiveEditPage = (agentId: string) => `
             }
             
             if (agent.screenshots && agent.screenshots.length > 0) {
-                agent.screenshots.forEach(ss => {
-                    addScreenshot();
-                    const items = document.querySelectorAll('#screenshots-container .dynamic-list-item');
-                    const last = items[items.length - 1];
-                    last.querySelector('.screenshot-url').value = ss.image_url;
-                    last.querySelector('.screenshot-title').value = ss.title || '';
-                    last.querySelector('.screenshot-description').value = ss.description || '';
-                });
+                // Populate gallery with existing screenshots
+                galleryImages = agent.screenshots.map((ss, index) => ({
+                    id: Date.now() + index,
+                    url: ss.image_url,
+                    title: ss.title || 'Screenshot',
+                    description: ss.description || '',
+                    uploading: false
+                }));
+                renderGallery();
             }
             
             if (agent.pricing_plans && agent.pricing_plans.length > 0) {
@@ -1011,6 +1059,186 @@ export const adminComprehensiveEditPage = (agentId: string) => `
             }
         }
 
+        // Gallery Management
+        let galleryImages = [];
+        let draggedIndex = null;
+
+        async function handleGalleryUpload(event) {
+            const files = Array.from(event.target.files);
+            if (files.length === 0) return;
+            
+            // Limit to 10 images total
+            if (galleryImages.length + files.length > 10) {
+                alert('Maximum 10 images allowed in gallery');
+                return;
+            }
+            
+            for (const file of files) {
+                if (file.size > 5 * 1024 * 1024) {
+                    alert(\`\${file.name} is too large. Max 5MB per image.\`);
+                    continue;
+                }
+                
+                await uploadGalleryImage(file);
+            }
+        }
+
+        async function handleGalleryDrop(event) {
+            event.preventDefault();
+            event.currentTarget.style.borderColor = '#d1d5db';
+            
+            const files = Array.from(event.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+            if (files.length === 0) return;
+            
+            // Limit to 10 images total
+            if (galleryImages.length + files.length > 10) {
+                alert('Maximum 10 images allowed in gallery');
+                return;
+            }
+            
+            for (const file of files) {
+                if (file.size > 5 * 1024 * 1024) {
+                    alert(\`\${file.name} is too large. Max 5MB per image.\`);
+                    continue;
+                }
+                
+                await uploadGalleryImage(file);
+            }
+        }
+
+        async function uploadGalleryImage(file) {
+            const tempId = Date.now() + Math.random();
+            
+            // Add placeholder
+            galleryImages.push({
+                id: tempId,
+                url: '',
+                title: '',
+                description: '',
+                uploading: true
+            });
+            renderGallery();
+            
+            try {
+                const formData = new FormData();
+                formData.append('file', file);
+                
+                const response = await axios.post('/api/upload/image', formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                });
+                
+                if (response.data.success) {
+                    // Update with actual URL
+                    const index = galleryImages.findIndex(img => img.id === tempId);
+                    if (index !== -1) {
+                        galleryImages[index] = {
+                            id: tempId,
+                            url: response.data.data.url,
+                            title: file.name.replace(/\\.[^/.]+$/, ''),
+                            description: '',
+                            uploading: false
+                        };
+                        renderGallery();
+                    }
+                }
+            } catch (error) {
+                console.error('Gallery upload error:', error);
+                // Remove failed upload
+                galleryImages = galleryImages.filter(img => img.id !== tempId);
+                renderGallery();
+                alert('Failed to upload: ' + file.name);
+            }
+        }
+
+        function renderGallery() {
+            const container = document.getElementById('screenshots-gallery');
+            if (!container) return;
+            
+            container.innerHTML = galleryImages.map((img, index) => \`
+                <div class="gallery-item relative rounded-lg overflow-hidden border-2 border-gray-200 \${img.uploading ? 'opacity-50' : ''}"
+                     draggable="\${!img.uploading}"
+                     ondragstart="handleDragStart(event, \${index})"
+                     ondragover="handleDragOver(event)"
+                     ondrop="handleDrop(event, \${index})"
+                     ondragend="handleDragEnd(event)">
+                    <img src="\${img.url || '/placeholder.png'}" alt="\${img.title}" 
+                         class="w-full h-48 object-cover \${img.uploading ? 'blur-sm' : ''}" />
+                    
+                    \${img.uploading ? \`
+                        <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                            <i class="fas fa-spinner fa-spin text-white text-3xl"></i>
+                        </div>
+                    \` : \`
+                        <div class="absolute top-2 right-2 flex gap-2">
+                            <button type="button" onclick="editGalleryImage(\${index})" 
+                                    class="p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 shadow-lg">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button type="button" onclick="removeGalleryImage(\${index})" 
+                                    class="p-2 bg-red-600 text-white rounded-full hover:bg-red-700 shadow-lg">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-3">
+                            <div class="text-white text-sm font-semibold truncate">\${img.title || 'Untitled'}</div>
+                            <div class="flex items-center gap-2 text-white text-xs opacity-75">
+                                <i class="fas fa-grip-vertical"></i>
+                                <span>Drag to reorder</span>
+                            </div>
+                        </div>
+                    \`}
+                </div>
+            \`).join('');
+        }
+
+        function handleDragStart(event, index) {
+            draggedIndex = index;
+            event.currentTarget.style.opacity = '0.5';
+        }
+
+        function handleDragOver(event) {
+            event.preventDefault();
+        }
+
+        function handleDrop(event, dropIndex) {
+            event.preventDefault();
+            
+            if (draggedIndex === null || draggedIndex === dropIndex) return;
+            
+            // Reorder array
+            const draggedItem = galleryImages[draggedIndex];
+            galleryImages.splice(draggedIndex, 1);
+            galleryImages.splice(dropIndex, 0, draggedItem);
+            
+            draggedIndex = null;
+            renderGallery();
+        }
+
+        function handleDragEnd(event) {
+            event.currentTarget.style.opacity = '1';
+            draggedIndex = null;
+        }
+
+        function editGalleryImage(index) {
+            const img = galleryImages[index];
+            const title = prompt('Enter image title:', img.title);
+            if (title !== null) {
+                galleryImages[index].title = title;
+                const description = prompt('Enter image description (optional):', img.description);
+                if (description !== null) {
+                    galleryImages[index].description = description;
+                }
+                renderGallery();
+            }
+        }
+
+        function removeGalleryImage(index) {
+            if (confirm('Remove this image from gallery?')) {
+                galleryImages.splice(index, 1);
+                renderGallery();
+            }
+        }
+
         // Form submission
         document.getElementById('edit-form').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -1100,11 +1328,20 @@ export const adminComprehensiveEditPage = (agentId: string) => `
                     content: item.querySelector('.con-content').value
                 })),
                 
-                screenshots: Array.from(document.querySelectorAll('#screenshots-container .dynamic-list-item')).map(item => ({
-                    image_url: item.querySelector('.screenshot-url').value,
-                    title: item.querySelector('.screenshot-title').value || null,
-                    description: item.querySelector('.screenshot-description').value || null
-                })),
+                // Combine gallery images with manual URL entries
+                screenshots: [
+                    ...galleryImages.filter(img => !img.uploading).map((img, index) => ({
+                        image_url: img.url,
+                        title: img.title || null,
+                        description: img.description || null,
+                        display_order: index
+                    })),
+                    ...Array.from(document.querySelectorAll('#screenshots-container .dynamic-list-item')).map(item => ({
+                        image_url: item.querySelector('.screenshot-url').value,
+                        title: item.querySelector('.screenshot-title').value || null,
+                        description: item.querySelector('.screenshot-description').value || null
+                    }))
+                ],
                 
                 pricing_plans: Array.from(document.querySelectorAll('#pricing-plans-container .dynamic-list-item')).map(item => ({
                     name: item.querySelector('.plan-name').value,

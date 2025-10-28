@@ -1,5 +1,6 @@
 import { Hono } from 'hono';
 import type { Bindings } from '../types';
+import { optimizeImage, getImageMetadata } from '../lib/image-optimizer';
 
 const upload = new Hono<{ Bindings: Bindings }>();
 
@@ -53,13 +54,24 @@ upload.post('/image', async (c) => {
     // Convert file to ArrayBuffer for R2
     const arrayBuffer = await file.arrayBuffer();
     
-    await IMAGES.put(key, arrayBuffer, {
+    // Optimize image (for now, passes through but adds metadata)
+    const optimized = await optimizeImage(arrayBuffer, {
+      maxWidth: 1920,
+      maxHeight: 1920,
+      quality: 0.85
+    });
+    
+    await IMAGES.put(key, optimized.buffer, {
       httpMetadata: {
         contentType: file.type,
       },
       customMetadata: {
         originalName: file.name,
         uploadedAt: new Date().toISOString(),
+        optimized: 'true',
+        originalSize: file.size.toString(),
+        width: optimized.metadata.width.toString(),
+        height: optimized.metadata.height.toString(),
       }
     });
     
