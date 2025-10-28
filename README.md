@@ -624,7 +624,7 @@ npx wrangler r2 bucket create lllmdude
 **R2 Configuration:**
 - **Bucket Name**: `lllmdude`
 - **Binding Name**: `IMAGES` (used in code as `c.env.IMAGES`)
-- **Public URL**: `https://pub-0226aad7dbe14d2ba087dca75180dc49.r2.dev`
+- **Public URL**: `https://storage.llmdude.com`
 - **Custom Domain**: `storage.llmdude.com` (optional)
 - **Location**: Asia-Pacific (APAC)
 

@@ -75,8 +75,8 @@ upload.post('/image', async (c) => {
       }
     });
     
-    // Generate public URL using R2 public domain
-    const publicUrl = `https://pub-0226aad7dbe14d2ba087dca75180dc49.r2.dev/${key}`;
+    // Generate public URL using custom domain
+    const publicUrl = `https://storage.llmdude.com/${key}`;
     
     return c.json({
       success: true,
@@ -160,8 +160,8 @@ upload.post('/images', async (c) => {
         }
       });
       
-      // Generate public URL using R2 public domain
-      const publicUrl = `https://pub-0226aad7dbe14d2ba087dca75180dc49.r2.dev/${key}`;
+      // Generate public URL using custom domain
+      const publicUrl = `https://storage.llmdude.com/${key}`;
       
       uploadedImages.push({
         url: publicUrl,

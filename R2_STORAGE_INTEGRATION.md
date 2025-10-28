@@ -8,7 +8,7 @@
 ### 1. R2 Bucket Configuration
 - **Bucket Name**: `lllmdude`
 - **Location**: Asia-Pacific (APAC)
-- **Public URL**: `https://pub-0226aad7dbe14d2ba087dca75180dc49.r2.dev`
+- **Public URL**: `https://storage.llmdude.com`
 - **Custom Domain**: `storage.llmdude.com` (available for use)
 - **Binding Name**: `IMAGES` (accessed in code as `c.env.IMAGES`)
 
@@ -49,7 +49,7 @@ const publicUrl = `https://your-bucket.r2.dev/${key}`;
 
 **After:**
 ```javascript
-const publicUrl = `https://pub-0226aad7dbe14d2ba087dca75180dc49.r2.dev/${key}`;
+const publicUrl = `https://storage.llmdude.com/${key}`;
 ```
 
 ### 4. Upload Handlers Verified
@@ -83,7 +83,7 @@ curl -X POST http://localhost:3000/api/upload/image -F "file=@test-logo.png"
 {
   "success": true,
   "data": {
-    "url": "https://pub-0226aad7dbe14d2ba087dca75180dc49.r2.dev/uploads/1761680566141-r6v7y2mhkj.png",
+    "url": "https://storage.llmdude.com/uploads/1761680566141-r6v7y2mhkj.png",
     "key": "uploads/1761680566141-r6v7y2mhkj.png",
     "filename": "1761680566141-r6v7y2mhkj.png",
     "originalName": "test-logo.png",
@@ -142,7 +142,7 @@ Body: file=@image.png
 {
   "success": true,
   "data": {
-    "url": "https://pub-0226aad7dbe14d2ba087dca75180dc49.r2.dev/uploads/...",
+    "url": "https://storage.llmdude.com/uploads/...",
     "key": "uploads/...",
     "filename": "...",
     "originalName": "image.png",
@@ -256,7 +256,7 @@ curl -X POST https://your-site.pages.dev/api/upload/image \
   -F "file=@test-logo.png"
 
 # Verify image is accessible
-curl -I https://pub-0226aad7dbe14d2ba087dca75180dc49.r2.dev/uploads/<key>
+curl -I https://storage.llmdude.com/uploads/<key>
 # Should return: HTTP/1.1 200 OK
 ```
 

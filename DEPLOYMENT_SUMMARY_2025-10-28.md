@@ -43,7 +43,7 @@
 #### 3. R2 Storage Integration
 - **Bucket**: `lllmdude` (APAC region)
 - **Binding**: `IMAGES` (accessible as `c.env.IMAGES`)
-- **Public URL**: `https://pub-0226aad7dbe14d2ba087dca75180dc49.r2.dev`
+- **Public URL**: `https://storage.llmdude.com`
 - **Features**:
   - Single image upload (max 5MB)
   - Multiple image upload (up to 5 files)
@@ -63,7 +63,7 @@ curl -X POST https://llmdude.com/api/upload/image -F "file=@test-logo.png"
 {
   "success": true,
   "data": {
-    "url": "https://pub-0226aad7dbe14d2ba087dca75180dc49.r2.dev/uploads/1761681120993-ctzk0oul4wd.png",
+    "url": "https://storage.llmdude.com/uploads/1761681120993-ctzk0oul4wd.png",
     "key": "uploads/1761681120993-ctzk0oul4wd.png",
     "filename": "1761681120993-ctzk0oul4wd.png",
     "originalName": "test-logo.png",
@@ -77,7 +77,7 @@ curl -X POST https://llmdude.com/api/upload/image -F "file=@test-logo.png"
 
 #### Public URL Test
 ```bash
-curl -I "https://pub-0226aad7dbe14d2ba087dca75180dc49.r2.dev/uploads/1761681120993-ctzk0oul4wd.png"
+curl -I "https://storage.llmdude.com/uploads/1761681120993-ctzk0oul4wd.png"
 ```
 
 **Response**:
@@ -112,7 +112,7 @@ Content-Type: image/png
 galleryImages = [
   {
     id: 1761681120993,
-    url: "https://pub-0226aad7dbe14d2ba087dca75180dc49.r2.dev/uploads/...",
+    url: "https://storage.llmdude.com/uploads/...",
     title: "Screenshot 1",
     description: "Main dashboard view",
     uploading: false
