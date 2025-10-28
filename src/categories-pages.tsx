@@ -1,4 +1,5 @@
 // Categories Pages - All Categories & Category Detail
+import { getHeader } from './components/header';
 import { getFooter } from './components/footer';
 
 export const categoriesPage = () => `
@@ -105,43 +106,7 @@ export const categoriesPage = () => `
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="card border-b sticky top-0 z-40 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <a href="/" class="flex items-center space-x-3">
-                    <i class="fas fa-robot text-3xl text-purple-600"></i>
-                    <span class="text-xl font-bold">AI Agents Directory</span>
-                </a>
-                
-                <div class="hidden md:flex items-center space-x-6">
-                    <a href="/" class="hover:text-purple-600">Home</a>
-                    <a href="/agents" class="hover:text-purple-600">Agents</a>
-                    <a href="/categories" class="text-purple-600 font-semibold">Categories</a>
-                    <a href="/submit" class="hover:text-purple-600">Submit</a>
-                    <button onclick="toggleDarkMode()" class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700">
-                        <i id="theme-icon" class="fas fa-moon"></i>
-                    </button>
-                </div>
-                
-                <!-- Mobile Menu Button -->
-                <button class="md:hidden p-2" onclick="toggleMobileMenu()">
-                    <i class="fas fa-bars text-xl"></i>
-                </button>
-            </div>
-            
-            <!-- Mobile Menu -->
-            <div id="mobile-menu" class="hidden md:hidden pb-4">
-                <a href="/" class="block py-2 hover:text-purple-600">Home</a>
-                <a href="/agents" class="block py-2 hover:text-purple-600">Agents</a>
-                <a href="/categories" class="block py-2 text-purple-600 font-semibold">Categories</a>
-                <a href="/submit" class="block py-2 hover:text-purple-600">Submit</a>
-                <button onclick="toggleDarkMode()" class="mt-2 p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 w-full text-left">
-                    <i class="fas fa-moon mr-2"></i> Toggle Dark Mode
-                </button>
-            </div>
-        </div>
-    </nav>
+    ${getHeader('categories')}
 
     <!-- Header -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -211,32 +176,6 @@ export const categoriesPage = () => `
       const API_BASE = '/api';
       let allCategories = [];
       let filteredCategories = [];
-      
-      // Dark Mode
-      function toggleDarkMode() {
-        const html = document.documentElement;
-        const currentTheme = html.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        html.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        
-        const icon = document.getElementById('theme-icon');
-        icon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-      }
-      
-      // Initialize theme
-      function initTheme() {
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        const icon = document.getElementById('theme-icon');
-        icon.className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-      }
-      
-      // Mobile Menu
-      function toggleMobileMenu() {
-        const menu = document.getElementById('mobile-menu');
-        menu.classList.toggle('hidden');
-      }
       
       // Toast Notification
       function showToast(message, type = 'info') {
@@ -363,7 +302,6 @@ export const categoriesPage = () => `
       
       // Initialize
       document.addEventListener('DOMContentLoaded', () => {
-        initTheme();
         loadCategories();
       });
     </script>
@@ -490,43 +428,7 @@ export const categoryDetailPage = (slug: string) => `
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="card border-b sticky top-0 z-40 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <a href="/" class="flex items-center space-x-3">
-                    <i class="fas fa-robot text-3xl text-purple-600"></i>
-                    <span class="text-xl font-bold">AI Agents Directory</span>
-                </a>
-                
-                <div class="hidden md:flex items-center space-x-6">
-                    <a href="/" class="hover:text-purple-600">Home</a>
-                    <a href="/agents" class="hover:text-purple-600">Agents</a>
-                    <a href="/categories" class="hover:text-purple-600">Categories</a>
-                    <a href="/submit" class="hover:text-purple-600">Submit</a>
-                    <button onclick="toggleDarkMode()" class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700">
-                        <i id="theme-icon" class="fas fa-moon"></i>
-                    </button>
-                </div>
-                
-                <!-- Mobile Menu Button -->
-                <button class="md:hidden p-2" onclick="toggleMobileMenu()">
-                    <i class="fas fa-bars text-xl"></i>
-                </button>
-            </div>
-            
-            <!-- Mobile Menu -->
-            <div id="mobile-menu" class="hidden md:hidden pb-4">
-                <a href="/" class="block py-2 hover:text-purple-600">Home</a>
-                <a href="/agents" class="block py-2 hover:text-purple-600">Agents</a>
-                <a href="/categories" class="block py-2 hover:text-purple-600">Categories</a>
-                <a href="/submit" class="block py-2 hover:text-purple-600">Submit</a>
-                <button onclick="toggleDarkMode()" class="mt-2 p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 w-full text-left">
-                    <i class="fas fa-moon mr-2"></i> Toggle Dark Mode
-                </button>
-            </div>
-        </div>
-    </nav>
+    ${getHeader('categories')}
 
     <!-- Main Content -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -640,32 +542,6 @@ export const categoryDetailPage = (slug: string) => `
       let allAgents = [];
       let filteredAgents = [];
       
-      // Dark Mode
-      function toggleDarkMode() {
-        const html = document.documentElement;
-        const currentTheme = html.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        html.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        
-        const icon = document.getElementById('theme-icon');
-        icon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-      }
-      
-      // Initialize theme
-      function initTheme() {
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        const icon = document.getElementById('theme-icon');
-        icon.className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-      }
-      
-      // Mobile Menu
-      function toggleMobileMenu() {
-        const menu = document.getElementById('mobile-menu');
-        menu.classList.toggle('hidden');
-      }
-      
       // Toast Notification
       function showToast(message, type = 'info') {
         const toast = document.createElement('div');
@@ -719,7 +595,7 @@ export const categoryDetailPage = (slug: string) => `
       async function loadAgents() {
         try {
           // Get category detail which includes agents
-          const response = await axios.get(\`\${API_BASE}/categories/\${categorySlug}\`);
+          const response = await axios.get(\`\${API_BASE}/categories/\${CATEGORY_SLUG}\`);
           
           if (response.data.success) {
             // Get agents directly from category response
@@ -848,7 +724,6 @@ export const categoryDetailPage = (slug: string) => `
       
       // Initialize
       document.addEventListener('DOMContentLoaded', () => {
-        initTheme();
         loadCategory();
       });
     </script>
