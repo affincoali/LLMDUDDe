@@ -1446,68 +1446,169 @@ export const submitAgentForm = () => `
             document.getElementById('github-url-group').style.display = isChecked ? 'block' : 'none';
         }
 
-        // Image upload handlers
-        function handleLogoUpload(event) {
+        // Image upload handlers - Upload to R2 storage
+        async function handleLogoUpload(event) {
             const file = event.target.files[0];
-            if (file && file.size <= 2 * 1024 * 1024) { // 2MB limit
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    formData.logoUrl = e.target.result;
-                    document.getElementById('logo-preview').innerHTML = \`
-                        <img src="\${e.target.result}" class="preview-image" alt="Logo preview" />
-                    \`;
-                };
-                reader.readAsDataURL(file);
-            } else {
+            if (!file) return;
+            
+            if (file.size > 2 * 1024 * 1024) {
                 alert('Logo file size must be less than 2MB');
+                return;
             }
-        }
-
-        function handleCoverUpload(event) {
-            const file = event.target.files[0];
-            if (file && file.size <= 5 * 1024 * 1024) { // 5MB limit
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    formData.coverUrl = e.target.result;
-                    document.getElementById('cover-preview').innerHTML = \`
-                        <img src="\${e.target.result}" class="preview-image" alt="Cover preview" />
+            
+            // Show loading state
+            document.getElementById('logo-preview').innerHTML = \`
+                <div style="text-align: center; padding: 2rem;">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #667eea;"></i>
+                    <p style="margin-top: 0.5rem; color: #666;">Uploading logo...</p>
+                </div>
+            \`;
+            
+            try {
+                // Upload to server
+                const uploadFormData = new FormData();
+                uploadFormData.append('file', file);
+                
+                const response = await axios.post('/api/upload/image', uploadFormData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                
+                if (response.data.success) {
+                    formData.logoUrl = response.data.data.url;
+                    document.getElementById('logo-preview').innerHTML = \`
+                        <img src="\${response.data.data.url}" class="preview-image" alt="Logo preview" />
+                        <div style="margin-top: 0.5rem; font-size: 0.875rem; color: #10b981;">
+                            <i class="fas fa-check-circle"></i> Logo uploaded successfully
+                        </div>
                     \`;
-                };
-                reader.readAsDataURL(file);
-            } else {
-                alert('Cover image file size must be less than 5MB');
+                } else {
+                    throw new Error(response.data.error || 'Upload failed');
+                }
+            } catch (error) {
+                console.error('Logo upload error:', error);
+                document.getElementById('logo-preview').innerHTML = \`
+                    <div style="color: #ef4444; text-align: center;">
+                        <i class="fas fa-exclamation-circle"></i> Upload failed. Please try again.
+                    </div>
+                \`;
+                alert('Failed to upload logo: ' + (error.response?.data?.error || error.message));
             }
         }
 
-        function handleScreenshotsUpload(event) {
+        async function handleCoverUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Cover image file size must be less than 5MB');
+                return;
+            }
+            
+            // Show loading state
+            document.getElementById('cover-preview').innerHTML = \`
+                <div style="text-align: center; padding: 2rem;">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #667eea;"></i>
+                    <p style="margin-top: 0.5rem; color: #666;">Uploading cover image...</p>
+                </div>
+            \`;
+            
+            try {
+                // Upload to server
+                const uploadFormData = new FormData();
+                uploadFormData.append('file', file);
+                
+                const response = await axios.post('/api/upload/image', uploadFormData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                
+                if (response.data.success) {
+                    formData.coverUrl = response.data.data.url;
+                    document.getElementById('cover-preview').innerHTML = \`
+                        <img src="\${response.data.data.url}" class="preview-image" alt="Cover preview" />
+                        <div style="margin-top: 0.5rem; font-size: 0.875rem; color: #10b981;">
+                            <i class="fas fa-check-circle"></i> Cover uploaded successfully
+                        </div>
+                    \`;
+                } else {
+                    throw new Error(response.data.error || 'Upload failed');
+                }
+            } catch (error) {
+                console.error('Cover upload error:', error);
+                document.getElementById('cover-preview').innerHTML = \`
+                    <div style="color: #ef4444; text-align: center;">
+                        <i class="fas fa-exclamation-circle"></i> Upload failed. Please try again.
+                    </div>
+                \`;
+                alert('Failed to upload cover image: ' + (error.response?.data?.error || error.message));
+            }
+        }
+
+        async function handleScreenshotsUpload(event) {
             const files = Array.from(event.target.files).slice(0, 5); // Max 5 screenshots
             const previewContainer = document.getElementById('screenshots-preview');
             
-            files.forEach((file, index) => {
-                if (file.size <= 5 * 1024 * 1024) { // 5MB limit per file
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        const screenshotId = 'screenshot-' + Date.now() + '-' + index;
-                        formData.screenshots.push(e.target.result);
+            for (const file of files) {
+                if (file.size > 5 * 1024 * 1024) {
+                    alert(\`Screenshot "\${file.name}" is too large. Max 5MB per file.\`);
+                    continue;
+                }
+                
+                // Create loading placeholder
+                const loadingDiv = document.createElement('div');
+                loadingDiv.className = 'screenshot-item';
+                loadingDiv.innerHTML = \`
+                    <div style="text-align: center; padding: 2rem; background: #f3f4f6; border-radius: 8px;">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 1.5rem; color: #667eea;"></i>
+                        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: #666;">Uploading...</p>
+                    </div>
+                \`;
+                previewContainer.appendChild(loadingDiv);
+                
+                try {
+                    // Upload to server
+                    const uploadFormData = new FormData();
+                    uploadFormData.append('file', file);
+                    
+                    const response = await axios.post('/api/upload/image', uploadFormData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    });
+                    
+                    if (response.data.success) {
+                        const screenshotUrl = response.data.data.url;
+                        formData.screenshots.push(screenshotUrl);
                         
-                        const div = document.createElement('div');
-                        div.className = 'screenshot-item';
-                        div.innerHTML = \`
-                            <img src="\${e.target.result}" alt="Screenshot \${index + 1}" />
-                            <button class="screenshot-remove" onclick="removeScreenshot(this, '\${screenshotId}')">
+                        // Replace loading div with actual image
+                        loadingDiv.innerHTML = \`
+                            <img src="\${screenshotUrl}" alt="Screenshot" />
+                            <button class="screenshot-remove" onclick="removeScreenshot(this, '\${screenshotUrl}')">
                                 <i class="fas fa-times"></i>
                             </button>
                         \`;
-                        previewContainer.appendChild(div);
-                    };
-                    reader.readAsDataURL(file);
+                    } else {
+                        throw new Error(response.data.error || 'Upload failed');
+                    }
+                } catch (error) {
+                    console.error('Screenshot upload error:', error);
+                    loadingDiv.innerHTML = \`
+                        <div style="color: #ef4444; text-align: center; padding: 1rem;">
+                            <i class="fas fa-exclamation-circle"></i> Upload failed
+                        </div>
+                    \`;
+                    setTimeout(() => loadingDiv.remove(), 2000);
                 }
             });
         }
 
-        function removeScreenshot(btn, id) {
+        function removeScreenshot(btn, url) {
             btn.parentElement.remove();
-            // Update formData.screenshots array
+            // Remove from formData.screenshots array
+            formData.screenshots = formData.screenshots.filter(s => s !== url);
         }
 
         // Drag and drop setup

@@ -64,8 +64,8 @@ upload.post('/image', async (c) => {
     });
     
     // Generate public URL
-    // In production, replace with your custom R2 public domain
-    const publicUrl = `https://images.webapp.pages.dev/${key}`;
+    // Use our own GET endpoint to serve images from R2
+    const publicUrl = `/api/upload/image/${key}`;
     
     return c.json({
       success: true,
