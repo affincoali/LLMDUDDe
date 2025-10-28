@@ -264,6 +264,7 @@ function showToast(msg,type){
 loadStats();
 loadReviews();
 </script>
+${getFooter()}
 </body>
 </html>
   `;

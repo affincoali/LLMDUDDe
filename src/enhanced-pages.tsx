@@ -1,5 +1,6 @@
 // Enhanced Pages - Categories Main, Leaderboard, and Landscape
 import { getHeader } from './components/header';
+import { getFooter } from './components/footer';
 
 export const enhancedCategoriesPage = () => `
 <!DOCTYPE html>
@@ -492,6 +493,7 @@ export const enhancedCategoriesPage = () => `
         loadCategories();
       });
     </script>
+${getFooter()}
 </body>
 </html>
 `;
@@ -957,6 +959,7 @@ export const leaderboardPage = () => `
         });
       });
     </script>
+${getFooter()}
 </body>
 </html>
 `;
@@ -1640,6 +1643,7 @@ export const landscapePage = () => `
         loadLandscape();
       });
     </script>
+${getFooter()}
 </body>
 </html>
 `;

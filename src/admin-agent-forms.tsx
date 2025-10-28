@@ -2,6 +2,7 @@
 // This file contains pages for admins to create and edit AI agents
 
 import { getSidebar } from './admin-ui';
+import { getFooter } from './components/footer';
 
 export const adminAgentCreatePage = () => `
 <!DOCTYPE html>
@@ -432,6 +433,7 @@ export const adminAgentCreatePage = () => `
             loadCategories();
         });
     </script>
+${getFooter()}
 </body>
 </html>
 `;
@@ -894,6 +896,7 @@ export const adminAgentEditPage = (agentId: string) => `
             loadAgentData();
         });
     </script>
+${getFooter()}
 </body>
 </html>
 `;

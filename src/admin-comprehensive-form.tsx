@@ -2,6 +2,7 @@
 // This form includes ALL database fields organized in logical sections
 
 import { getSidebar } from './admin-ui';
+import { getFooter } from './components/footer';
 
 export const adminComprehensiveEditPage = (agentId: string) => `
 <!DOCTYPE html>
@@ -1412,6 +1413,7 @@ export const adminComprehensiveEditPage = (agentId: string) => `
             initializeDragAndDrop();
         });
     </script>
+${getFooter()}
 </body>
 </html>
 `;

@@ -1,6 +1,7 @@
 // Public-Facing Frontend Pages
 // Modern, high-converting pages with advanced features
 import { getHeader } from './components/header';
+import { getFooter } from './components/footer';
 
 export const enhancedHomepage = () => `
 <!DOCTYPE html>
@@ -608,6 +609,9 @@ export const enhancedHomepage = () => `
             loadCategories();
         });
     </script>
+
+    ${getFooter()}
+
 </body>
 </html>
 `;

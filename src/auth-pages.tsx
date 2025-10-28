@@ -1,4 +1,6 @@
 // Authentication Pages - Login, Signup, Forgot Password, User Dashboard
+import { getHeader } from './components/header';
+import { getFooter } from './components/footer';
 
 export const loginPage = () => `
 <!DOCTYPE html>
@@ -288,6 +290,7 @@ export const loginPage = () => `
         }
       });
     </script>
+${getFooter()}
 </body>
 </html>
 `;
@@ -655,6 +658,7 @@ export const signupPage = () => `
         }
       });
     </script>
+${getFooter()}
 </body>
 </html>
 `;
@@ -769,6 +773,7 @@ export const forgotPasswordPage = () => `
         document.getElementById('email').value = '';
       }
     </script>
+${getFooter()}
 </body>
 </html>
 `;

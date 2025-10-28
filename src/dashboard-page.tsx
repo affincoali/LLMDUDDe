@@ -1,3 +1,6 @@
+import { getHeader } from './components/header';
+import { getFooter } from './components/footer';
+
 export const userDashboard = () => `
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
@@ -1197,6 +1200,7 @@ export const userDashboard = () => `
             window.location.href = '/login';
         }
     </script>
+${getFooter()}
 </body>
 </html>
 `;

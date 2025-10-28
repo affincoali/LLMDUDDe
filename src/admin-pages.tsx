@@ -2,6 +2,7 @@
 // This file contains all admin UI pages that were missing
 
 import { getSidebar } from './admin-ui';
+import { getFooter } from './components/footer';
 
 // Also export getSidebar from this file for convenience
 export { getSidebar };
@@ -228,6 +229,7 @@ export const adminUsersPage = () => `
             if (e.key === 'Enter') loadUsers();
         });
     </script>
+${getFooter()}
 </body>
 </html>
 `;
@@ -379,6 +381,7 @@ export const adminAnalyticsPage = () => `
 
         document.addEventListener('DOMContentLoaded', loadAnalytics);
     </script>
+${getFooter()}
 </body>
 </html>
 `;
@@ -554,6 +557,7 @@ export const adminAuditLogsPage = () => `
 
         document.addEventListener('DOMContentLoaded', loadLogs);
     </script>
+${getFooter()}
 </body>
 </html>
 `;
@@ -790,6 +794,7 @@ export const adminCategoriesPage = () => `
 
         document.addEventListener('DOMContentLoaded', loadCategories);
     </script>
+${getFooter()}
 </body>
 </html>
 `;
@@ -953,6 +958,7 @@ export const adminAllAgentsPage = () => `
             if (e.key === 'Enter') loadAgents();
         });
     </script>
+${getFooter()}
 </body>
 </html>
 `;

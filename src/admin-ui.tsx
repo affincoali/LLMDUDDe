@@ -1,5 +1,6 @@
 // Enhanced Admin UI Pages
 // This file contains all admin panel HTML pages with improved functionality
+import { getFooter } from './components/footer';
 
 export const enhancedAdminDashboard = () => `
 <!DOCTYPE html>
@@ -391,6 +392,7 @@ export const enhancedAdminDashboard = () => `
         // Auto-refresh every 30 seconds
         setInterval(loadDashboard, 30000);
     </script>
+${getFooter()}
 </body>
 </html>
 `;
@@ -916,6 +918,7 @@ export const agentApprovalQueue = () => `
 
         document.addEventListener('DOMContentLoaded', loadAgents);
     </script>
+${getFooter()}
 </body>
 </html>
 `;
