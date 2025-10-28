@@ -92,12 +92,11 @@ submit.post(
         INSERT INTO agents (
           name, slug, tagline, description, website_url,
           pricing_model, is_open_source, github_url,
-          logo_url, cover_image_url,
+          logo_url, cover_image,
           status, submitted_by_id,
           twitter_url, linkedin_url, discord_url,
-          has_affiliate, affiliate_url, allow_backlink,
           created_at, updated_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'PENDING', ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'PENDING', ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
       `).bind(
         data.name,
         slug,
@@ -112,10 +111,7 @@ submit.post(
         user.id,
         data.socialLinks?.twitter || null,
         data.socialLinks?.linkedin || null,
-        data.socialLinks?.discord || null,
-        data.hasAffiliate ? 1 : 0,
-        data.affiliateUrl || null,
-        data.allowBacklink ? 1 : 0
+        data.socialLinks?.discord || null
       ).run();
 
       if (!agentResult.success) {
