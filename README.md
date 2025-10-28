@@ -8,6 +8,17 @@ A comprehensive directory platform for discovering, submitting, and managing AI 
 - **Custom Domain**: https://llmdude.com (Production site)
 - **Development**: https://3000-izrhvxrc8y0zaw0u52v89-2e1b9533.sandbox.novita.ai
 
+### 🎉 LATEST UPDATE - R2 Storage Integration (2025-10-28)
+
+**✅ Cloudflare R2 Storage Now Connected!**
+- ✅ **Logo & Image Uploads**: Working upload handlers in admin and submit forms
+- ✅ **R2 Bucket Configured**: Connected to `lllmdude` bucket in APAC
+- ✅ **Public R2 URLs**: Images served from `https://pub-0226aad7dbe14d2ba087dca75180dc49.r2.dev`
+- ✅ **Custom Domain Available**: `storage.llmdude.com` ready for use
+- ✅ **Upload Endpoints Working**: `/api/upload/image` tested and verified
+- ✅ **Local Development**: R2 works in local mode with `.wrangler` storage
+- ⚠️ **Production Deployment Pending**: Upload functionality will be fully operational after deploying to Cloudflare Pages
+
 ### ✅ All Pages Fully Functional
 
 **Status**: All pages are working and connected to database (Last tested: 2025-10-28 19:20 UTC)
@@ -236,6 +247,7 @@ AI Agents Directory is a lightweight, edge-deployed platform that allows users t
 - **Framework**: Hono (lightweight edge framework)
 - **Runtime**: Cloudflare Workers/Pages
 - **Database**: Cloudflare D1 (SQLite)
+- **Storage**: Cloudflare R2 (Object Storage for images)
 - **Frontend**: Vanilla JavaScript + TailwindCSS + Font Awesome
 - **Authentication**: JWT with Web Crypto API
 - **Deployment**: Cloudflare Pages (edge-first)
@@ -601,6 +613,28 @@ npm run git:commit       # Quick git commit
 
 ## 🌐 Deployment to Cloudflare Pages
 
+### Step 0: Create Cloudflare R2 Bucket (Image Storage)
+
+```bash
+# Create R2 bucket for image storage
+npx wrangler r2 bucket create lllmdude
+
+# The bucket will be automatically bound via wrangler.jsonc
+```
+
+**R2 Configuration:**
+- **Bucket Name**: `lllmdude`
+- **Binding Name**: `IMAGES` (used in code as `c.env.IMAGES`)
+- **Public URL**: `https://pub-0226aad7dbe14d2ba087dca75180dc49.r2.dev`
+- **Custom Domain**: `storage.llmdude.com` (optional)
+- **Location**: Asia-Pacific (APAC)
+
+**Upload Endpoints:**
+- `POST /api/upload/image` - Upload single image (max 5MB)
+- `POST /api/upload/images` - Upload multiple images (max 5 files)
+- `DELETE /api/upload/image` - Delete image from R2
+- `GET /api/upload/image/*` - Serve image from R2 (fallback)
+
 ### Step 1: Create Cloudflare D1 Database
 
 ```bash
@@ -615,11 +649,23 @@ npx wrangler d1 create webapp-production
 Edit `wrangler.jsonc`:
 ```jsonc
 {
+  "name": "webapp",
+  "compatibility_date": "2025-10-27",
+  "pages_build_output_dir": "./dist",
+  
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "webapp-production",
       "database_id": "your-actual-database-id-here"
+    }
+  ],
+  
+  "r2_buckets": [
+    {
+      "binding": "IMAGES",
+      "bucket_name": "lllmdude",
+      "preview_bucket_name": "lllmdude"
     }
   ]
 }
@@ -774,12 +820,14 @@ npx wrangler pages secret put JWT_SECRET --project-name webapp
    - Preview mode before saving
    - Image paste support
 
-3. **Image Upload System**:
-   - Integrate Cloudflare R2 for image storage
-   - Upload agent logos and screenshots
-   - Image optimization and resizing (Sharp or similar)
-   - Gallery management in admin panel
-   - Drag-and-drop reordering
+3. **Image Upload System** ✅ (COMPLETED - 2025-10-28):
+   - ✅ Cloudflare R2 integrated for image storage
+   - ✅ Upload agent logos and screenshots
+   - ✅ Working upload handlers in admin and submit forms
+   - ✅ R2 public URLs with custom domain support
+   - ⚠️ Image optimization and resizing (pending)
+   - ⚠️ Gallery management in admin panel (pending)
+   - ⚠️ Drag-and-drop reordering (pending)
 
 4. **Email Notifications**:
    - Setup Resend API or SendGrid
@@ -833,7 +881,7 @@ npx wrangler pages secret put JWT_SECRET --project-name webapp
 ## 🐛 Known Limitations & Future Enhancements
 
 ### Current Limitations
-1. **No File Uploads**: Logo URLs are stored as text (Cloudflare R2 integration pending)
+1. ~~**No File Uploads**~~: ✅ **FIXED** - Cloudflare R2 integrated, file uploads working (2025-10-28)
 2. **Simple Authentication**: No OAuth providers yet (Google, GitHub integration planned)
 3. **No Real-time Updates**: Uses polling instead of WebSockets (can use Cloudflare Durable Objects)
 4. **Plain Text Descriptions**: Rich text editor not yet integrated (TinyMCE/Quill pending)
@@ -845,7 +893,7 @@ npx wrangler pages secret put JWT_SECRET --project-name webapp
 ### Easy Wins (Can be added quickly)
 - Email notifications via SendGrid/Resend API
 - OAuth providers via Auth0 or Clerk
-- Image uploads to Cloudflare R2
+- ~~Image uploads to Cloudflare R2~~ ✅ **COMPLETED** (2025-10-28)
 - Rich text editor (TinyMCE CDN)
 - Advanced analytics with Chart.js
 - SEO meta tags and sitemaps

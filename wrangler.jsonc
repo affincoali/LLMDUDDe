@@ -16,8 +16,8 @@
   "r2_buckets": [
     {
       "binding": "IMAGES",
-      "bucket_name": "webapp-images",
-      "preview_bucket_name": "webapp-images-dev"
+      "bucket_name": "lllmdude",
+      "preview_bucket_name": "lllmdude"
     }
   ]
 }

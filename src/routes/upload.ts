@@ -63,9 +63,8 @@ upload.post('/image', async (c) => {
       }
     });
     
-    // Generate public URL
-    // Use our own GET endpoint to serve images from R2
-    const publicUrl = `/api/upload/image/${key}`;
+    // Generate public URL using R2 public domain
+    const publicUrl = `https://pub-0226aad7dbe14d2ba087dca75180dc49.r2.dev/${key}`;
     
     return c.json({
       success: true,
@@ -149,8 +148,8 @@ upload.post('/images', async (c) => {
         }
       });
       
-      // Generate public URL
-      const publicUrl = `https://images.webapp.pages.dev/${key}`;
+      // Generate public URL using R2 public domain
+      const publicUrl = `https://pub-0226aad7dbe14d2ba087dca75180dc49.r2.dev/${key}`;
       
       uploadedImages.push({
         url: publicUrl,
