@@ -1,5 +1,6 @@
 // Public-Facing Frontend Pages
 // Modern, high-converting pages with advanced features
+import { getHeader } from './components/header';
 
 export const enhancedHomepage = () => `
 <!DOCTYPE html>
@@ -68,47 +69,7 @@ export const enhancedHomepage = () => `
     </style>
 </head>
 <body class="bg-gray-50">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <div class="flex items-center">
-                    <i class="fas fa-robot text-3xl text-purple-600 mr-3"></i>
-                    <span class="text-xl font-bold text-gray-900">AI Agents Directory</span>
-                </div>
-                <div class="hidden md:flex items-center space-x-6">
-                    <a href="/" class="text-purple-600 font-semibold">Home</a>
-                    <a href="/agents" class="text-gray-700 hover:text-purple-600 transition">Browse</a>
-                    <a href="/categories" class="text-gray-700 hover:text-purple-600 transition">Categories</a>
-                    <a href="/allstats" class="text-gray-700 hover:text-purple-600 transition">
-                        <i class="fas fa-chart-line mr-1"></i>Stats
-                    </a>
-                    <a href="/submit" class="text-gray-700 hover:text-purple-600 transition">Submit</a>
-                    <button onclick="showLogin()" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">
-                        Login
-                    </button>
-                </div>
-                <button class="md:hidden" onclick="toggleMobileMenu()">
-                    <i class="fas fa-bars text-2xl text-gray-700"></i>
-                </button>
-            </div>
-        </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
-            <div class="px-4 py-4 space-y-3">
-                <a href="/" class="block text-purple-600 font-semibold">Home</a>
-                <a href="/agents" class="block text-gray-700">Browse</a>
-                <a href="/categories" class="block text-gray-700">Categories</a>
-                <a href="/allstats" class="block text-gray-700">
-                    <i class="fas fa-chart-line mr-1"></i>Statistics
-                </a>
-                <a href="/submit" class="block text-gray-700">Submit</a>
-                <button onclick="showLogin()" class="w-full bg-purple-600 text-white px-4 py-2 rounded-lg">
-                    Login
-                </button>
-            </div>
-        </div>
-    </nav>
+    ${getHeader('home')}
 
     <!-- Hero Section -->
     <div class="gradient-bg text-white py-20 lg:py-28 hero-animation">
@@ -128,15 +89,18 @@ export const enhancedHomepage = () => `
                             type="text" 
                             id="hero-search"
                             placeholder="Search for AI agents, tools, or categories..." 
-                            class="w-full px-6 py-4 pr-12 rounded-full text-gray-900 focus:outline-none focus:ring-4 focus:ring-purple-300 shadow-xl"
+                            class="w-full px-6 py-4 pr-14 rounded-full text-gray-900 focus:outline-none focus:ring-4 focus:ring-purple-300 shadow-xl text-base"
                             autocomplete="off"
                         >
-                        <button class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-purple-600 text-white w-10 h-10 rounded-full hover:bg-purple-700 transition">
+                        <button 
+                            onclick="performSearch()"
+                            class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-purple-600 text-white w-10 h-10 rounded-full hover:bg-purple-700 transition flex items-center justify-center"
+                        >
                             <i class="fas fa-search"></i>
                         </button>
                     </div>
                     <!-- Search Results Dropdown -->
-                    <div id="search-results" class="hidden mt-2 bg-white rounded-lg shadow-xl text-left max-h-96 overflow-y-auto">
+                    <div id="search-results" class="hidden mt-3 bg-white rounded-xl shadow-2xl text-left max-h-96 overflow-y-auto border border-gray-200 z-50">
                         <!-- Results will be inserted here -->
                     </div>
                 </div>
@@ -466,9 +430,9 @@ export const enhancedHomepage = () => `
             \`;
         }
 
-        // Search functionality
+        // Search functionality - real-time as user types
         document.getElementById('hero-search').addEventListener('input', (e) => {
-            const query = e.target.value;
+            const query = e.target.value.trim();
             
             clearTimeout(searchTimeout);
             
@@ -478,34 +442,78 @@ export const enhancedHomepage = () => `
             }
             
             searchTimeout = setTimeout(async () => {
-                try {
-                    const response = await axios.get(API_BASE + '/public/search?q=' + encodeURIComponent(query));
-                    if (response.data.success) {
-                        const results = response.data.data;
-                        const resultsDiv = document.getElementById('search-results');
-                        
-                        if (results.length === 0) {
-                            resultsDiv.innerHTML = '<div class="p-4 text-gray-500 text-center">No results found</div>';
-                        } else {
-                            resultsDiv.innerHTML = results.slice(0, 5).map(agent => \`
-                                <a href="/agents/\${agent.slug}" class="flex items-center p-4 hover:bg-gray-50 border-b last:border-b-0">
-                                    <div class="text-3xl mr-4">\${agent.logo_url || '🤖'}</div>
-                                    <div class="flex-1">
-                                        <div class="font-semibold text-gray-900">\${agent.name}</div>
-                                        <div class="text-sm text-gray-600 truncate">\${agent.tagline || ''}</div>
-                                    </div>
-                                    <span class="text-xs bg-purple-100 text-purple-600 px-2 py-1 rounded">\${agent.pricing_model}</span>
-                                </a>
-                            \`).join('');
-                        }
-                        
-                        resultsDiv.classList.remove('hidden');
-                    }
-                } catch (error) {
-                    console.error('Search error:', error);
-                }
+                await performSearchQuery(query);
             }, 300);
         });
+
+        // Search on Enter key
+        document.getElementById('hero-search').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                performSearch();
+            }
+        });
+
+        // Perform search function
+        async function performSearch() {
+            const query = document.getElementById('hero-search').value.trim();
+            if (query.length >= 2) {
+                await performSearchQuery(query);
+            }
+        }
+
+        // Search query function
+        async function performSearchQuery(query) {
+            try {
+                const response = await axios.get(API_BASE + '/public/search?q=' + encodeURIComponent(query) + '&limit=10');
+                if (response.data.success) {
+                    const results = response.data.data;
+                    const resultsDiv = document.getElementById('search-results');
+                    
+                    if (results.length === 0) {
+                        resultsDiv.innerHTML = \`
+                            <div class="p-6 text-center">
+                                <i class="fas fa-search text-4xl text-gray-300 mb-3"></i>
+                                <p class="text-gray-500">No results found for "\${query}"</p>
+                                <p class="text-sm text-gray-400 mt-2">Try different keywords</p>
+                            </div>
+                        \`;
+                    } else {
+                        resultsDiv.innerHTML = \`
+                            <div class="p-3 bg-gray-50 border-b border-gray-200">
+                                <p class="text-sm font-semibold text-gray-700">Found \${results.length} result\${results.length !== 1 ? 's' : ''}</p>
+                            </div>
+                        \` + results.map(agent => \`
+                            <a href="/agents/\${agent.slug}" class="flex items-center p-4 hover:bg-purple-50 transition border-b border-gray-100 last:border-b-0 cursor-pointer">
+                                <div class="text-3xl mr-4 flex-shrink-0">\${agent.logo_url || '🤖'}</div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="font-semibold text-gray-900 mb-1">\${agent.name}</div>
+                                    <div class="text-sm text-gray-600 truncate">\${agent.tagline || 'No description available'}</div>
+                                    <div class="flex items-center gap-3 mt-2 text-xs text-gray-500">
+                                        <span><i class="fas fa-eye text-purple-600"></i> \${agent.view_count || 0}</span>
+                                        <span><i class="fas fa-arrow-up text-purple-600"></i> \${agent.upvote_count || 0}</span>
+                                    </div>
+                                </div>
+                                <span class="text-xs bg-purple-100 text-purple-600 px-3 py-1 rounded-full font-semibold ml-3 flex-shrink-0">\${agent.pricing_model || 'N/A'}</span>
+                            </a>
+                        \`).join('');
+                    }
+                    
+                    resultsDiv.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Search error:', error);
+                const resultsDiv = document.getElementById('search-results');
+                resultsDiv.innerHTML = \`
+                    <div class="p-6 text-center">
+                        <i class="fas fa-exclamation-triangle text-4xl text-red-300 mb-3"></i>
+                        <p class="text-red-500">Search failed</p>
+                        <p class="text-sm text-gray-500 mt-2">Please try again</p>
+                    </div>
+                \`;
+                resultsDiv.classList.remove('hidden');
+            }
+        }
 
         // Newsletter subscription
         document.getElementById('newsletter-form').addEventListener('submit', async (e) => {
@@ -568,10 +576,6 @@ export const enhancedHomepage = () => `
             } catch (error) {
                 alert('Login failed: ' + (error.response?.data?.error || 'Unknown error'));
             }
-        }
-
-        function toggleMobileMenu() {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
         }
 
         // Hide search results when clicking outside
