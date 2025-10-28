@@ -24,6 +24,7 @@ import {
   adminAllAgentsPage 
 } from './admin-pages';
 import { adminAgentCreatePage, adminAgentEditPage } from './admin-agent-forms';
+import { adminComprehensiveEditPage } from './admin-comprehensive-form';
 import { enhancedHomepage } from './public-pages';
 import { advancedAgentsListing, individualAgentPage } from './agents-pages';
 import { enhancedAgentDetailPage } from './enhanced-agent-page';
@@ -419,6 +420,12 @@ app.get('/admin/agents/create', (c) => {
 app.get('/admin/agents/:id/edit', (c) => {
   const agentId = c.req.param('id');
   return c.html(adminAgentEditPage(agentId));
+});
+
+// Comprehensive edit form with ALL fields
+app.get('/admin/agents/:id/edit-full', (c) => {
+  const agentId = c.req.param('id');
+  return c.html(adminComprehensiveEditPage(agentId));
 });
 
 app.get('/admin/users', (c) => {
