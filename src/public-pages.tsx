@@ -240,59 +240,7 @@ export const enhancedHomepage = () => `
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-                <div>
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-robot text-3xl text-purple-500 mr-3"></i>
-                        <span class="text-xl font-bold">AI Agents</span>
-                    </div>
-                    <p class="text-gray-400">
-                        Discover the best AI agents and tools for your needs.
-                    </p>
-                </div>
-                <div>
-                    <h3 class="font-bold mb-4">Explore</h3>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="/agents" class="hover:text-white transition">Browse Agents</a></li>
-                        <li><a href="/categories" class="hover:text-white transition">Categories</a></li>
-                        <li><a href="/agents?sort=trending" class="hover:text-white transition">Trending</a></li>
-                        <li><a href="/agents?pricing=FREE" class="hover:text-white transition">Free Agents</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="font-bold mb-4">Resources</h3>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="/submit" class="hover:text-white transition">Submit Agent</a></li>
-                        <li><a href="/blog" class="hover:text-white transition">Blog</a></li>
-                        <li><a href="/api-docs" class="hover:text-white transition">API Docs</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="font-bold mb-4">Connect</h3>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-white transition text-xl">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white transition text-xl">
-                            <i class="fab fa-github"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white transition text-xl">
-                            <i class="fab fa-linkedin"></i>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white transition text-xl">
-                            <i class="fab fa-discord"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="border-t border-gray-800 pt-8 text-center text-gray-400">
-                <p>&copy; 2025 AI Agents Directory. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+
 
     <!-- Login Modal -->
     <div id="login-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">

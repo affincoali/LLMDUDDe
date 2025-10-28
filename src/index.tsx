@@ -351,10 +351,10 @@ app.get('/agents', (c) => {
   return c.html(advancedAgentsListing());
 });
 
-// Agent detail page - Redesigned with dark theme and all new features
+// Agent detail page - Enhanced version with all features
 app.get('/agents/:slug', (c) => {
   const slug = c.req.param('slug');
-  return c.html(redesignedAgentDetailPage(slug));
+  return c.html(enhancedAgentDetailPage(slug));
 });
 
 // Agent detail page - Old version (kept for reference)

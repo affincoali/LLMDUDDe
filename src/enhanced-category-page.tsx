@@ -255,7 +255,9 @@ export const enhancedCategoryDetailPage = (slug: string) => `
             </div>
             
             <div class="flex items-center gap-6 mb-6">
-                <div class="text-7xl" id="category-icon">📁</div>
+                <div id="category-icon-container" class="w-20 h-20 flex items-center justify-center">
+                    <div class="text-7xl" id="category-icon">📁</div>
+                </div>
                 <div>
                     <h1 class="text-5xl font-bold mb-2" id="category-name">Loading...</h1>
                     <p class="text-xl opacity-90" id="category-description">Loading category description...</p>
@@ -427,7 +429,12 @@ export const enhancedCategoryDetailPage = (slug: string) => `
                     document.getElementById('page-title').textContent = currentCategory.name + ' - AI Agents Directory';
                     document.getElementById('page-description').setAttribute('content', currentCategory.description || '');
                     document.getElementById('breadcrumb-category').textContent = currentCategory.name;
-                    document.getElementById('category-icon').textContent = currentCategory.icon || '📁';
+                    // Handle both icon (emoji) and image_url
+                    if (currentCategory.image_url) {
+                        document.getElementById('category-icon-container').innerHTML = \`<img src="\${currentCategory.image_url}" alt="\${currentCategory.name}" class="w-20 h-20 object-contain" onerror="this.parentElement.innerHTML='<div class=\\\\'text-7xl\\\\'>📁</div>'">\`;
+                    } else {
+                        document.getElementById('category-icon').textContent = currentCategory.icon || '📁';
+                    }
                     document.getElementById('category-name').textContent = currentCategory.name;
                     document.getElementById('category-description').textContent = currentCategory.description || 'Explore AI agents in this category';
                     

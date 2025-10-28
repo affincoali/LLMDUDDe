@@ -212,17 +212,26 @@ export const enhancedAgentDetailPage = (slug: string) => `
                         <span><i class="fas fa-star text-yellow-500"></i> <span id="review-count">0</span> reviews</span>
                     </div>
 
-                    <div class="flex gap-4">
-                        <a id="visit-website-btn" href="#" target="_blank" onclick="trackClick()" class="flex-1 bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 text-center">
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                        <a id="visit-website-btn" href="#" target="_blank" onclick="trackClick()" class="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 text-center">
                             <i class="fas fa-external-link-alt mr-2"></i>Visit Website
                         </a>
-                        <button id="upvote-btn" onclick="upvoteAgent()" class="px-6 py-3 bg-gray-200 dark:bg-gray-700 rounded-lg font-semibold hover:bg-gray-300 flex items-center gap-2">
+                        <button id="upvote-btn" onclick="upvoteAgent()" class="px-6 py-3 bg-gray-200 dark:bg-gray-700 rounded-lg font-semibold hover:bg-gray-300 flex items-center justify-center gap-2">
                             <i class="fas fa-arrow-up"></i>
                             <span id="upvote-count">0</span>
                         </button>
-                        <button onclick="shareAgent()" class="px-6 py-3 border-2 border-purple-600 text-purple-600 rounded-lg font-semibold hover:bg-purple-50">
-                            <i class="fas fa-share-alt"></i>
+                        <button id="save-btn" onclick="toggleSave()" class="px-6 py-3 bg-gray-200 dark:bg-gray-700 rounded-lg font-semibold hover:bg-gray-300 flex items-center justify-center gap-2">
+                            <i class="far fa-bookmark"></i>
+                            <span id="save-text">Save</span>
                         </button>
+                        <button onclick="shareAgent()" class="px-6 py-3 border-2 border-purple-600 text-purple-600 rounded-lg font-semibold hover:bg-purple-50">
+                            <i class="fas fa-share-alt mr-2"></i>Share
+                        </button>
+                    </div>
+                    
+                    <!-- Social Media Links -->
+                    <div id="social-links" class="flex gap-3">
+                        <!-- Social icons will be added here -->
                     </div>
                 </div>
 
@@ -461,6 +470,9 @@ export const enhancedAgentDetailPage = (slug: string) => `
                     
                     renderAgent(currentAgent, features, useCases, faqs, pricingPlans, screenshots, pros, cons, similar);
                     
+                    // Check save status
+                    await checkSaveStatus();
+                    
                     // Start vote count polling
                     startVoteCountPolling();
                     
@@ -524,6 +536,9 @@ export const enhancedAgentDetailPage = (slug: string) => `
             
             // Links
             document.getElementById('visit-website-btn').href = agent.website_url;
+            
+            // Social Media Links
+            renderSocialLinks(agent);
             
             // YouTube Video
             if (agent.youtube_url) {
@@ -914,6 +929,91 @@ export const enhancedAgentDetailPage = (slug: string) => `
             }
         }
 
+        function renderSocialLinks(agent) {
+            const socialContainer = document.getElementById('social-links');
+            let links = [];
+            
+            if (agent.twitter_url) {
+                links.push(\`<a href="\${agent.twitter_url}" target="_blank" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 transition" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>\`);
+            }
+            if (agent.linkedin_url) {
+                links.push(\`<a href="\${agent.linkedin_url}" target="_blank" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 transition" title="LinkedIn"><i class="fab fa-linkedin"></i></a>\`);
+            }
+            if (agent.discord_url) {
+                links.push(\`<a href="\${agent.discord_url}" target="_blank" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 transition" title="Discord"><i class="fab fa-discord"></i></a>\`);
+            }
+            if (agent.github_url) {
+                links.push(\`<a href="\${agent.github_url}" target="_blank" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 transition" title="GitHub"><i class="fab fa-github"></i></a>\`);
+            }
+            
+            if (links.length > 0) {
+                socialContainer.innerHTML = '<div class="text-sm text-gray-600 dark:text-gray-400 mb-2">Connect:</div>' + links.join('');
+            }
+        }
+
+        let isSaved = false;
+        async function checkSaveStatus() {
+            const token = localStorage.getItem('token');
+            if (!token || !currentAgent) return;
+            
+            try {
+                const response = await axios.get(API_BASE + '/saves/check/' + currentAgent.id, {
+                    headers: { Authorization: 'Bearer ' + token }
+                });
+                if (response.data.success && response.data.saved) {
+                    isSaved = true;
+                    updateSaveButton();
+                }
+            } catch (error) {
+                console.error('Error checking save status:', error);
+            }
+        }
+
+        async function toggleSave() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                showToast('Please login to save agents', 'error');
+                setTimeout(() => window.location.href = '/login', 1500);
+                return;
+            }
+            
+            try {
+                if (isSaved) {
+                    await axios.delete(API_BASE + '/saves/' + currentAgent.id, {
+                        headers: { Authorization: 'Bearer ' + token }
+                    });
+                    isSaved = false;
+                    showToast('Agent removed from saved list', 'success');
+                } else {
+                    await axios.post(API_BASE + '/saves/' + currentAgent.id, {}, {
+                        headers: { Authorization: 'Bearer ' + token }
+                    });
+                    isSaved = true;
+                    showToast('Agent saved successfully!', 'success');
+                }
+                updateSaveButton();
+            } catch (error) {
+                const errMsg = error.response?.data?.error || 'Error saving agent';
+                showToast(errMsg, 'error');
+            }
+        }
+
+        function updateSaveButton() {
+            const saveBtn = document.getElementById('save-btn');
+            const saveText = document.getElementById('save-text');
+            if (isSaved) {
+                saveBtn.classList.add('bg-purple-600', 'text-white');
+                saveBtn.classList.remove('bg-gray-200', 'dark:bg-gray-700');
+                saveBtn.querySelector('i').className = 'fas fa-bookmark';
+                saveText.textContent = 'Saved';
+            } else {
+                saveBtn.classList.remove('bg-purple-600', 'text-white');
+                saveBtn.classList.add('bg-gray-200', 'dark:bg-gray-700');
+                saveBtn.querySelector('i').className = 'far fa-bookmark';
+                saveText.textContent = 'Save';
+            }
+        }
+
         async function upvoteAgent() {
             const token = localStorage.getItem('token');
             
@@ -939,9 +1039,13 @@ export const enhancedAgentDetailPage = (slug: string) => `
                 );
                 
                 if (response.data.success) {
-                    currentAgent.upvote_count = response.data.data.upvote_count;
-                    document.getElementById('upvote-count').textContent = currentAgent.upvote_count;
-                    document.getElementById('upvotes-display').textContent = currentAgent.upvote_count;
+                    // Fetch updated vote count
+                    const countRes = await axios.get(API_BASE + '/public/' + currentAgent.id + '/vote-count');
+                    if (countRes.data.success) {
+                        currentAgent.upvote_count = countRes.data.data.upvote_count;
+                        document.getElementById('upvote-count').textContent = currentAgent.upvote_count;
+                        document.getElementById('upvotes-display').textContent = currentAgent.upvote_count;
+                    }
                     
                     // Mark as upvoted in session
                     sessionStorage.setItem(upvoteKey, 'true');
