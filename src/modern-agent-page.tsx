@@ -59,13 +59,13 @@ export const modernAgentDetailPage = (slug: string) => `
         .btn-share { background: #f3f4f6; color: #374151; }
         
         /* Tabs */
-        .tabs { border-bottom: 2px solid #e5e7eb; margin-bottom: 24px; display: flex; gap: 32px; }
-        .tab { padding: 12px 0; cursor: pointer; font-weight: 600; color: #6b7280; border-bottom: 3px solid transparent; margin-bottom: -2px; }
+        .tabs { border-bottom: 2px solid #e5e7eb; margin-bottom: 24px; display: flex; gap: 32px; position: sticky; top: 73px; background: #f7f8fa; padding: 12px 0; z-index: 50; }
+        .tab { padding: 12px 0; cursor: pointer; font-weight: 600; color: #6b7280; text-decoration: none; border-bottom: 3px solid transparent; margin-bottom: -2px; }
+        .tab:hover { color: #7c3aed; }
         .tab.active { color: #7c3aed; border-bottom-color: #7c3aed; }
+        html { scroll-behavior: smooth; }
         
-        /* Tab Content */
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+
         .section { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 16px; }
         .section-title { font-size: 20px; font-weight: 700; margin-bottom: 16px; }
         .feature-list { display: grid; gap: 12px; }
@@ -212,56 +212,46 @@ export const modernAgentDetailPage = (slug: string) => `
                             </div>
                         </div>
 
-                        <!-- Tabs -->
+                        <!-- Jump Links -->
                         <div class="tabs">
-                            <div class="tab active" onclick="switchTab('overview')">Overview</div>
-                            <div class="tab" onclick="switchTab('features')">Features</div>
-                            <div class="tab" onclick="switchTab('usecases')">Use Cases</div>
-                            <div class="tab" onclick="switchTab('pricing')">Pricing</div>
-                            <div class="tab" onclick="switchTab('reviews')">Reviews</div>
+                            <a href="#overview" class="tab active">Overview</a>
+                            <a href="#features" class="tab">Features</a>
+                            <a href="#usecases" class="tab">Use Cases</a>
+                            <a href="#pricing" class="tab">Pricing</a>
+                            <a href="#reviews" class="tab">Reviews</a>
                         </div>
 
-                        <!-- Tab Contents -->
-                        <div id="tab-overview" class="tab-content active">
-                            <div class="section">
-                                <h2 class="section-title">Overview</h2>
-                                <div id="agent-description">Loading...</div>
-                            </div>
+                        <!-- All Content Visible -->
+                        <div id="overview" class="section">
+                            <h2 class="section-title">Overview</h2>
+                            <div id="agent-description">Loading...</div>
                         </div>
 
-                        <div id="tab-features" class="tab-content">
-                            <div class="section">
-                                <h2 class="section-title">Key Features</h2>
-                                <div id="features-list" class="feature-list"></div>
-                            </div>
+                        <div id="features" class="section">
+                            <h2 class="section-title">Key Features</h2>
+                            <div id="features-list" class="feature-list"></div>
                         </div>
 
-                        <div id="tab-usecases" class="tab-content">
-                            <div class="section">
-                                <h2 class="section-title">Use Cases</h2>
-                                <div id="usecases-list" class="feature-list"></div>
-                            </div>
+                        <div id="usecases" class="section">
+                            <h2 class="section-title">Use Cases</h2>
+                            <div id="usecases-list" class="feature-list"></div>
                         </div>
 
-                        <div id="tab-pricing" class="tab-content">
-                            <div class="section">
-                                <h2 class="section-title">Pricing</h2>
-                                <div id="pricing-info">
-                                    <div class="feature-item">
-                                        <div class="feature-content">
-                                            <h4>Pricing Model: <span id="pricing-model">-</span></h4>
-                                            <p id="pricing-details"></p>
-                                        </div>
+                        <div id="pricing" class="section">
+                            <h2 class="section-title">Pricing</h2>
+                            <div id="pricing-info">
+                                <div class="feature-item">
+                                    <div class="feature-content">
+                                        <h4>Pricing Model: <span id="pricing-model">-</span></h4>
+                                        <p id="pricing-details"></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div id="tab-reviews" class="tab-content">
-                            <div class="section">
-                                <h2 class="section-title">Reviews</h2>
-                                <div id="reviews-list"></div>
-                            </div>
+                        <div id="reviews" class="section">
+                            <h2 class="section-title">Reviews</h2>
+                            <div id="reviews-list"></div>
                         </div>
                     </div>
 
@@ -351,13 +341,30 @@ export const modernAgentDetailPage = (slug: string) => `
         let currentAgent = null;
         let isSaved = false;
 
-        // Tab switching
-        function switchTab(tab) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.querySelector('.tab[onclick*="' + tab + '"]').classList.add('active');
-            document.getElementById('tab-' + tab).classList.add('active');
-        }
+        // Highlight active tab on scroll
+        window.addEventListener('scroll', function() {
+            const sections = ['overview', 'features', 'usecases', 'pricing', 'reviews'];
+            let current = '';
+            
+            sections.forEach(section => {
+                const element = document.getElementById(section);
+                if (element) {
+                    const rect = element.getBoundingClientRect();
+                    if (rect.top <= 150 && rect.bottom >= 150) {
+                        current = section;
+                    }
+                }
+            });
+            
+            if (current) {
+                document.querySelectorAll('.tab').forEach(tab => {
+                    tab.classList.remove('active');
+                    if (tab.getAttribute('href') === '#' + current) {
+                        tab.classList.add('active');
+                    }
+                });
+            }
+        });
 
         // Load agent data
         async function loadAgent() {

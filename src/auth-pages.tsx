@@ -1,6 +1,5 @@
 // Authentication Pages - Login, Signup, Forgot Password, User Dashboard
 import { getHeader } from './components/header';
-import { getFooter } from './components/footer';
 
 export const loginPage = () => `
 <!DOCTYPE html>
@@ -290,7 +289,11 @@ export const loginPage = () => `
         }
       });
     </script>
-${getFooter()}
+    
+    <!-- Minimal Footer -->
+    <div style="position: fixed; bottom: 0; left: 0; right: 0; text-align: center; padding: 16px; color: rgba(255,255,255,0.7); font-size: 13px; background: rgba(0,0,0,0.1);">
+        <p>&copy; 2025 AI Agents Directory. All rights reserved.</p>
+    </div>
 </body>
 </html>
 `;
@@ -658,7 +661,11 @@ export const signupPage = () => `
         }
       });
     </script>
-${getFooter()}
+    
+    <!-- Minimal Footer -->
+    <div style="position: fixed; bottom: 0; left: 0; right: 0; text-align: center; padding: 16px; color: rgba(255,255,255,0.7); font-size: 13px; background: rgba(0,0,0,0.1);">
+        <p>&copy; 2025 AI Agents Directory. All rights reserved.</p>
+    </div>
 </body>
 </html>
 `;
@@ -773,7 +780,11 @@ export const forgotPasswordPage = () => `
         document.getElementById('email').value = '';
       }
     </script>
-${getFooter()}
+    
+    <!-- Minimal Footer -->
+    <div style="position: fixed; bottom: 0; left: 0; right: 0; text-align: center; padding: 16px; color: rgba(255,255,255,0.7); font-size: 13px; background: rgba(0,0,0,0.1);">
+        <p>&copy; 2025 AI Agents Directory. All rights reserved.</p>
+    </div>
 </body>
 </html>
 `;
