@@ -9,6 +9,7 @@ export const modernAgentDetailPage = (slug: string, data?: any) => `
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page-title">${data ? data.agent.name + ' - AI Agents Directory' : 'Loading... - AI Agents Directory'}</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     ${data ? `<script>window.__AGENT_DATA__ = ${JSON.stringify(data)};</script>` : ''}
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -180,6 +181,23 @@ export const modernAgentDetailPage = (slug: string, data?: any) => `
         /* Toast */
         .toast { position: fixed; bottom: 24px; right: 24px; background: #1f2937; color: #fff; padding: 16px 24px; border-radius: 8px; z-index: 1000; animation: slideIn 0.3s; }
         @keyframes slideIn { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        /* Related Agents Section */
+        .related-section { background: #fff; border-radius: 12px; padding: 32px; margin: 48px auto; max-width: 1200px; }
+        .related-title { font-size: 28px; font-weight: 700; margin-bottom: 24px; color: #1a1a1a; }
+        .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+        .related-card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; transition: all 0.3s; cursor: pointer; text-decoration: none; color: inherit; display: block; }
+        .related-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(124, 58, 237, 0.15); border-color: #7c3aed; }
+        .related-logo { width: 64px; height: 64px; border-radius: 10px; object-fit: cover; margin-bottom: 12px; }
+        .related-name { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: #1a1a1a; }
+        .related-tagline { font-size: 14px; color: #6b7280; margin-bottom: 12px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .related-meta { display: flex; gap: 16px; font-size: 13px; color: #6b7280; }
+        .related-badge { display: inline-block; background: #7c3aed; color: #fff; font-size: 11px; font-weight: 600; padding: 4px 8px; border-radius: 4px; margin-bottom: 8px; text-transform: uppercase; }
+        
+        @media (max-width: 768px) {
+            .related-grid { grid-template-columns: 1fr; }
+            .related-section { padding: 20px; margin: 24px 12px; }
+        }
     </style>
 </head>
 <body>
@@ -413,6 +431,30 @@ export const modernAgentDetailPage = (slug: string, data?: any) => `
             <span class="lightbox-next" onclick="changeLightboxImage(1)">&#10095;</span>
         </div>
     </div>
+
+    <!-- Related Agents Section -->
+    ${data && data.relatedAgents && data.relatedAgents.length > 0 ? `
+    <div class="container">
+        <div class="related-section">
+            <h2 class="related-title">Related AI Agents</h2>
+            <div class="related-grid">
+                ${data.relatedAgents.map((related: any) => `
+                    <a href="/agents/${related.slug}" class="related-card">
+                        <img src="${related.logo_url || 'https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png'}" alt="${related.name}" class="related-logo" onerror="this.src='https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png'">
+                        ${related.pricing_model === 'FREE' ? '<span class="related-badge">Free</span>' : ''}
+                        ${related.pricing_model === 'FREEMIUM' ? '<span class="related-badge" style="background: #10b981;">Freemium</span>' : ''}
+                        <div class="related-name">${related.name}</div>
+                        <div class="related-tagline">${related.tagline || 'AI Agent'}</div>
+                        <div class="related-meta">
+                            <span>👁️ ${related.view_count || 0}</span>
+                            <span>❤️ ${related.upvote_count || 0}</span>
+                        </div>
+                    </a>
+                `).join('')}
+            </div>
+        </div>
+    </div>
+    ` : ''}
 
     ${getFooter()}
 

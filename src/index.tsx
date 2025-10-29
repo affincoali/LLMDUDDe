@@ -378,11 +378,22 @@ app.get('/agents/:slug', async (c) => {
     }
     
     // Fetch related data in parallel
-    const [features, useCases, screenshots, reviewStats] = await Promise.all([
+    const [features, useCases, screenshots, reviewStats, relatedAgents] = await Promise.all([
       DB.prepare('SELECT * FROM features WHERE agent_id = ? ORDER BY display_order ASC LIMIT 10').bind(agent.id).all(),
       DB.prepare('SELECT * FROM use_cases WHERE agent_id = ? ORDER BY display_order ASC LIMIT 5').bind(agent.id).all(),
       DB.prepare('SELECT * FROM agent_screenshots WHERE agent_id = ? ORDER BY display_order ASC LIMIT 8').bind(agent.id).all(),
-      DB.prepare('SELECT COUNT(*) as total_reviews, AVG(rating) as average_rating, SUM(CASE WHEN rating = 5 THEN 1 ELSE 0 END) as rating_5, SUM(CASE WHEN rating = 4 THEN 1 ELSE 0 END) as rating_4, SUM(CASE WHEN rating = 3 THEN 1 ELSE 0 END) as rating_3, SUM(CASE WHEN rating = 2 THEN 1 ELSE 0 END) as rating_2, SUM(CASE WHEN rating = 1 THEN 1 ELSE 0 END) as rating_1 FROM reviews WHERE agent_id = ? AND status = "APPROVED"').bind(agent.id).first()
+      DB.prepare('SELECT COUNT(*) as total_reviews, AVG(rating) as average_rating, SUM(CASE WHEN rating = 5 THEN 1 ELSE 0 END) as rating_5, SUM(CASE WHEN rating = 4 THEN 1 ELSE 0 END) as rating_4, SUM(CASE WHEN rating = 3 THEN 1 ELSE 0 END) as rating_3, SUM(CASE WHEN rating = 2 THEN 1 ELSE 0 END) as rating_2, SUM(CASE WHEN rating = 1 THEN 1 ELSE 0 END) as rating_1 FROM reviews WHERE agent_id = ? AND status = "APPROVED"').bind(agent.id).first(),
+      // Fetch 4 related agents from same category (excluding current agent)
+      DB.prepare(`
+        SELECT DISTINCT a.id, a.name, a.slug, a.tagline, a.logo_url, a.pricing_model, a.upvote_count, a.view_count
+        FROM agents a
+        INNER JOIN agent_categories ac ON a.id = ac.agent_id
+        WHERE ac.category_id IN (SELECT category_id FROM agent_categories WHERE agent_id = ?)
+        AND a.id != ?
+        AND a.status = 'APPROVED'
+        ORDER BY a.upvote_count DESC, a.view_count DESC
+        LIMIT 4
+      `).bind(agent.id, agent.id).all()
     ]);
     
     const data = {
@@ -390,7 +401,8 @@ app.get('/agents/:slug', async (c) => {
       features: features.results || [],
       useCases: useCases.results || [],
       screenshots: screenshots.results || [],
-      reviewStats: reviewStats || {}
+      reviewStats: reviewStats || {},
+      relatedAgents: relatedAgents.results || []
     };
     
     // Render with pre-loaded data
