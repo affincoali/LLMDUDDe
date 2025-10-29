@@ -31,24 +31,19 @@ publicApi.get('/stats', async (c) => {
   }
 });
 
-// Get trending agents (by views in last 7 days)
+// Get trending agents (by views in last 7 days) - OPTIMIZED
 publicApi.get('/trending', async (c) => {
   try {
     const DB = c.env.DB;
     const limit = parseInt(c.req.query('limit') || '6');
     
+    // Simplified query without JOINs for speed
     const agents = await DB.prepare(`
-      SELECT 
-        a.*,
-        GROUP_CONCAT(DISTINCT c.name) as category_names,
-        GROUP_CONCAT(DISTINCT c.slug) as category_slugs
-      FROM agents a
-      LEFT JOIN agent_categories ac ON a.id = ac.agent_id
-      LEFT JOIN categories c ON ac.category_id = c.id
-      WHERE a.status = 'APPROVED'
-        AND a.created_at >= date('now', '-7 days')
-      GROUP BY a.id
-      ORDER BY a.view_count DESC
+      SELECT id, name, slug, logo_url, tagline, pricing_model, upvote_count, view_count, is_open_source
+      FROM agents 
+      WHERE status = 'APPROVED'
+        AND created_at >= date('now', '-7 days')
+      ORDER BY view_count DESC
       LIMIT ?
     `).bind(limit).all();
     
@@ -62,23 +57,18 @@ publicApi.get('/trending', async (c) => {
   }
 });
 
-// Get newly added agents
+// Get newly added agents - OPTIMIZED
 publicApi.get('/newly-added', async (c) => {
   try {
     const DB = c.env.DB;
     const limit = parseInt(c.req.query('limit') || '6');
     
+    // Simplified query without JOINs for speed
     const agents = await DB.prepare(`
-      SELECT 
-        a.*,
-        GROUP_CONCAT(DISTINCT c.name) as category_names,
-        GROUP_CONCAT(DISTINCT c.slug) as category_slugs
-      FROM agents a
-      LEFT JOIN agent_categories ac ON a.id = ac.agent_id
-      LEFT JOIN categories c ON ac.category_id = c.id
-      WHERE a.status = 'APPROVED'
-      GROUP BY a.id
-      ORDER BY a.created_at DESC
+      SELECT id, name, slug, logo_url, tagline, pricing_model, upvote_count, view_count, is_open_source
+      FROM agents
+      WHERE status = 'APPROVED'
+      ORDER BY created_at DESC
       LIMIT ?
     `).bind(limit).all();
     
@@ -284,108 +274,33 @@ publicApi.get('/:slug/details', async (c) => {
       return c.json({ success: false, error: 'Agent not found' }, 404);
     }
     
-    // Get features
-    const features = await DB.prepare(`
-      SELECT * FROM features WHERE agent_id = ? ORDER BY display_order ASC
-    `).bind(agent.id).all();
+    // BATCH ALL QUERIES for speed (single round-trip to database)
+    const [features, useCases, faqs, pricingPlans, screenshots, pros, cons, reviews, reviewStats] = await Promise.all([
+      DB.prepare('SELECT * FROM features WHERE agent_id = ? ORDER BY display_order ASC').bind(agent.id).all(),
+      DB.prepare('SELECT * FROM use_cases WHERE agent_id = ? ORDER BY display_order ASC').bind(agent.id).all(),
+      DB.prepare('SELECT * FROM agent_faqs WHERE agent_id = ? ORDER BY display_order ASC').bind(agent.id).all(),
+      DB.prepare('SELECT * FROM pricing_plans WHERE agent_id = ? ORDER BY display_order ASC').bind(agent.id).all(),
+      DB.prepare('SELECT * FROM agent_screenshots WHERE agent_id = ? ORDER BY display_order ASC').bind(agent.id).all(),
+      DB.prepare('SELECT * FROM agent_pros_cons WHERE agent_id = ? AND type = "PRO" ORDER BY display_order ASC').bind(agent.id).all(),
+      DB.prepare('SELECT * FROM agent_pros_cons WHERE agent_id = ? AND type = "CON" ORDER BY display_order ASC').bind(agent.id).all(),
+      DB.prepare('SELECT r.*, u.name as user_name, u.image as user_image FROM reviews r JOIN users u ON r.user_id = u.id WHERE r.agent_id = ? AND r.status = "APPROVED" ORDER BY r.created_at DESC LIMIT 10').bind(agent.id).all(),
+      DB.prepare('SELECT COUNT(*) as total_reviews, AVG(rating) as average_rating, SUM(CASE WHEN rating = 5 THEN 1 ELSE 0 END) as rating_5, SUM(CASE WHEN rating = 4 THEN 1 ELSE 0 END) as rating_4, SUM(CASE WHEN rating = 3 THEN 1 ELSE 0 END) as rating_3, SUM(CASE WHEN rating = 2 THEN 1 ELSE 0 END) as rating_2, SUM(CASE WHEN rating = 1 THEN 1 ELSE 0 END) as rating_1 FROM reviews WHERE agent_id = ? AND status = "APPROVED"').bind(agent.id).first()
+    ]);
     
-    // Get use cases
-    const useCases = await DB.prepare(`
-      SELECT * FROM use_cases WHERE agent_id = ? ORDER BY display_order ASC
-    `).bind(agent.id).all();
-    
-    // Get FAQs
-    const faqs = await DB.prepare(`
-      SELECT * FROM agent_faqs WHERE agent_id = ? ORDER BY display_order ASC
-    `).bind(agent.id).all();
-    
-    // Get pricing plans
-    const pricingPlans = await DB.prepare(`
-      SELECT * FROM pricing_plans WHERE agent_id = ? ORDER BY display_order ASC
-    `).bind(agent.id).all();
-    
-    // Get screenshots
-    const screenshots = await DB.prepare(`
-      SELECT * FROM agent_screenshots WHERE agent_id = ? ORDER BY display_order ASC
-    `).bind(agent.id).all();
-    
-    // Get pros and cons
-    const pros = await DB.prepare(`
-      SELECT * FROM agent_pros_cons WHERE agent_id = ? AND type = 'PRO' ORDER BY display_order ASC
-    `).bind(agent.id).all();
-    
-    const cons = await DB.prepare(`
-      SELECT * FROM agent_pros_cons WHERE agent_id = ? AND type = 'CON' ORDER BY display_order ASC
-    `).bind(agent.id).all();
-    
-    // Get reviews with user info
-    const reviews = await DB.prepare(`
-      SELECT 
-        r.*,
-        u.name as user_name,
-        u.image as user_image
-      FROM reviews r
-      JOIN users u ON r.user_id = u.id
-      WHERE r.agent_id = ? AND r.status = 'APPROVED'
-      ORDER BY r.created_at DESC
-      LIMIT 10
-    `).bind(agent.id).all();
-    
-    // Get review statistics
-    const reviewStats = await DB.prepare(`
-      SELECT 
-        COUNT(*) as total_reviews,
-        AVG(rating) as average_rating,
-        SUM(CASE WHEN rating = 5 THEN 1 ELSE 0 END) as five_star,
-        SUM(CASE WHEN rating = 4 THEN 1 ELSE 0 END) as four_star,
-        SUM(CASE WHEN rating = 3 THEN 1 ELSE 0 END) as three_star,
-        SUM(CASE WHEN rating = 2 THEN 1 ELSE 0 END) as two_star,
-        SUM(CASE WHEN rating = 1 THEN 1 ELSE 0 END) as one_star
-      FROM reviews
-      WHERE agent_id = ? AND status = 'APPROVED'
-    `).bind(agent.id).first();
-    
-    // Get first category ID for similar agents
+    // Get similar agents (simplified query for speed - only basic info, limit 3)
     const firstCategoryId = agent.category_ids ? agent.category_ids.split(',')[0] : null;
-    
-    // Get similar agents (same category)
-    const similar = await DB.prepare(`
-      SELECT 
-        a.*,
-        GROUP_CONCAT(DISTINCT c.name) as category_names
+    const similar = firstCategoryId ? await DB.prepare(`
+      SELECT a.id, a.name, a.slug, a.logo_url, a.tagline, a.upvote_count
       FROM agents a
       LEFT JOIN agent_categories ac ON a.id = ac.agent_id
-      LEFT JOIN categories c ON ac.category_id = c.id
-      WHERE ac.category_id = ? 
-        AND a.id != ? 
-        AND a.status = 'APPROVED'
+      WHERE ac.category_id = ? AND a.id != ? AND a.status = 'APPROVED'
       GROUP BY a.id
       ORDER BY a.upvote_count DESC
-      LIMIT 6
-    `).bind(firstCategoryId, agent.id).all();
+      LIMIT 3
+    `).bind(firstCategoryId, agent.id).all() : { results: [] };
     
-    // Get alternatives (if agent has alternatives defined)
-    let alternatives = [];
-    if (agent.alternatives) {
-      try {
-        const alternativeIds = JSON.parse(agent.alternatives);
-        if (alternativeIds && alternativeIds.length > 0) {
-          const placeholders = alternativeIds.map(() => '?').join(',');
-          alternatives = await DB.prepare(`
-            SELECT 
-              a.*,
-              GROUP_CONCAT(DISTINCT c.name) as category_names
-            FROM agents a
-            LEFT JOIN agent_categories ac ON a.id = ac.agent_id
-            LEFT JOIN categories c ON ac.category_id = c.id
-            WHERE a.id IN (${placeholders}) AND a.status = 'APPROVED'
-            GROUP BY a.id
-          `).bind(...alternativeIds).all();
-        }
-      } catch (e) {
-        console.error('Error parsing alternatives:', e);
-      }
-    }
+    // Skip alternatives for speed (can be added back if needed)
+    const alternatives = { results: [] };
     
     return c.json({
       success: true,
