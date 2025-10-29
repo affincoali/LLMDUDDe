@@ -400,7 +400,7 @@ export const advancedAgentsListing = () => `
         // Create Grid Card
         function createGridCard(agent) {
             const logoHtml = agent.logo_url 
-                ? \`<img src="\${agent.logo_url}" alt="\${agent.name}" loading="lazy" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png';">
+                ? \`<img src="\${agent.logo_url}" alt="\${agent.name}" loading="lazy" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png';">\`
                 : \`<img src="https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png" alt="\${agent.name}" loading="lazy" class="w-full h-full object-contain">\`;
             
             return \`
@@ -431,7 +431,7 @@ export const advancedAgentsListing = () => `
         // Create List Card - Optimized and Clean
         function createListCard(agent) {
             const logoHtml = agent.logo_url 
-                ? \`<img src="\${agent.logo_url}" alt="\${agent.name}" loading="lazy" class="w-full h-full object-contain rounded-lg" onerror="this.onerror=null; this.src='https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png';">
+                ? \`<img src="\${agent.logo_url}" alt="\${agent.name}" loading="lazy" class="w-full h-full object-contain rounded-lg" onerror="this.onerror=null; this.src='https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png';">\`
                 : \`<img src="https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png" alt="\${agent.name}" loading="lazy" class="w-full h-full object-contain rounded-lg">\`;
             
             return \`
