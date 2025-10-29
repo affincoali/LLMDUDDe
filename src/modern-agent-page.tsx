@@ -594,10 +594,11 @@ export const modernAgentDetailPage = (slug: string) => `
         // Extract YouTube video ID from various URL formats
         function extractYouTubeID(url) {
             if (!url) return null;
+            // Use string-based regex to avoid template string issues
             const patterns = [
-                /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/,
-                /youtube\.com\/embed\/([^&\n?#]+)/,
-                /youtube\.com\/v\/([^&\n?#]+)/
+                new RegExp('(?:youtube\\\\.com\\\\/watch\\\\?v=|youtu\\\\.be\\\\/)([^&\\\\n?#]+)'),
+                new RegExp('youtube\\\\.com\\\\/embed\\\\/([^&\\\\n?#]+)'),
+                new RegExp('youtube\\\\.com\\\\/v\\\\/([^&\\\\n?#]+)')
             ];
             for (const pattern of patterns) {
                 const match = url.match(pattern);
