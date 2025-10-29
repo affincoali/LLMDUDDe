@@ -32,6 +32,7 @@ import { enhancedHomepage } from './public-pages';
 import { advancedAgentsListing, individualAgentPage } from './agents-pages';
 import { enhancedAgentDetailPage } from './enhanced-agent-page';
 import { redesignedAgentDetailPage } from './redesigned-agent-page';
+import { modernAgentDetailPage } from './modern-agent-page';
 import { enhancedCategoryDetailPage } from './enhanced-category-page';
 import { categoriesPage, categoryDetailPage } from './categories-pages';
 import { enhancedCategoriesPage, leaderboardPage, landscapePage } from './enhanced-pages';
@@ -351,8 +352,14 @@ app.get('/agents', (c) => {
   return c.html(advancedAgentsListing());
 });
 
-// Agent detail page - Enhanced version with all features
+// Agent detail page - Modern version matching aiagentsdirectory.com design
 app.get('/agents/:slug', (c) => {
+  const slug = c.req.param('slug');
+  return c.html(modernAgentDetailPage(slug));
+});
+
+// Agent detail page - Enhanced version (kept for reference)
+app.get('/agents-enhanced/:slug', (c) => {
   const slug = c.req.param('slug');
   return c.html(enhancedAgentDetailPage(slug));
 });
