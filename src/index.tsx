@@ -40,6 +40,7 @@ import { loginPage, signupPage, forgotPasswordPage } from './auth-pages';
 import { submitAgentForm } from './submit-form';
 import { userDashboard } from './dashboard-page';
 import { comprehensiveStatsPage } from './stats-page';
+import { aboutPage } from './about-page';
 
 const app = new Hono<{ Bindings: Bindings }>();
 
@@ -85,6 +86,11 @@ app.get('/api/tags', async (c) => {
 // Homepage - Enhanced
 app.get('/', (c) => {
   return c.html(enhancedHomepage());
+});
+
+// About Us Page
+app.get('/about', (c) => {
+  return c.html(aboutPage());
 });
 
 // Old Homepage (backup - keeping for reference)
