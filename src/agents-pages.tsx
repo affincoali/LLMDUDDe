@@ -212,12 +212,12 @@ export const advancedAgentsListing = () => `
 
                 <!-- Agents Grid/List -->
                 <div id="agents-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                    <!-- Loading Skeletons -->
-                    ${Array(9).fill(0).map(() => `
+                    <!-- Loading Skeletons - Reduced for faster perceived load -->
+                    ${Array(6).fill(0).map(() => `
                         <div class="card rounded-lg overflow-hidden">
                             <div class="h-48 skeleton"></div>
-                            <div class="p-6">
-                                <div class="h-6 skeleton rounded mb-3"></div>
+                            <div class="p-4">
+                                <div class="h-6 skeleton rounded mb-2"></div>
                                 <div class="h-4 skeleton rounded mb-2"></div>
                                 <div class="h-4 skeleton rounded w-2/3"></div>
                             </div>
@@ -298,10 +298,11 @@ export const advancedAgentsListing = () => `
             }
         }
 
-        // Load Agents
+        // Load Agents - OPTIMIZED: Use faster public API endpoint
         async function loadAgents() {
             try {
-                let url = API_BASE + '/agents?status=APPROVED&limit=1000';
+                // Use optimized public endpoint instead of slow /api/agents
+                let url = API_BASE + '/public/agents';
                 const response = await axios.get(url);
                 
                 if (response.data.success) {
@@ -310,6 +311,14 @@ export const advancedAgentsListing = () => `
                 }
             } catch (error) {
                 console.error('Error loading agents:', error);
+                // Show error message
+                document.getElementById('agents-container').innerHTML = \`
+                    <div class="col-span-full text-center py-12">
+                        <i class="fas fa-exclamation-triangle text-6xl text-red-500 mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2">Failed to load agents</h3>
+                        <p class="text-gray-600">Please refresh the page to try again</p>
+                    </div>
+                \`;
             }
         }
 
@@ -391,8 +400,8 @@ export const advancedAgentsListing = () => `
         // Create Grid Card
         function createGridCard(agent) {
             const logoHtml = agent.logo_url 
-                ? \`<img src="\${agent.logo_url}" alt="\${agent.name}" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png';">
-                : \`<img src="https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png" alt="\${agent.name}" class="w-full h-full object-contain">\`;
+                ? \`<img src="\${agent.logo_url}" alt="\${agent.name}" loading="lazy" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png';">
+                : \`<img src="https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png" alt="\${agent.name}" loading="lazy" class="w-full h-full object-contain">\`;
             
             return \`
                 <div class="card rounded-lg overflow-hidden card-hover cursor-pointer" onclick="window.location='/agents/\${agent.slug}'">
@@ -422,8 +431,8 @@ export const advancedAgentsListing = () => `
         // Create List Card - Optimized and Clean
         function createListCard(agent) {
             const logoHtml = agent.logo_url 
-                ? \`<img src="\${agent.logo_url}" alt="\${agent.name}" class="w-full h-full object-contain rounded-lg" onerror="this.onerror=null; this.src='https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png';">
-                : \`<img src="https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png" alt="\${agent.name}" class="w-full h-full object-contain rounded-lg">\`;
+                ? \`<img src="\${agent.logo_url}" alt="\${agent.name}" loading="lazy" class="w-full h-full object-contain rounded-lg" onerror="this.onerror=null; this.src='https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png';">
+                : \`<img src="https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png" alt="\${agent.name}" loading="lazy" class="w-full h-full object-contain rounded-lg">\`;
             
             return \`
                 <div class="card rounded-lg p-4 card-hover cursor-pointer" onclick="window.location='/agents/\${agent.slug}'">
@@ -527,10 +536,13 @@ export const advancedAgentsListing = () => `
             }, 3000);
         }
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            loadCategories();
-            loadAgents();
+        // Initialize - Load categories and agents in parallel for faster page load
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Load both simultaneously for better performance
+            await Promise.all([
+                loadCategories(),
+                loadAgents()
+            ]);
         });
     </script>
 
