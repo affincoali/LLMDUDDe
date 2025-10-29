@@ -1,15 +1,16 @@
-// Modern Agent Detail Page - Clean & Fast
+// Modern Agent Detail Page - SERVER-SIDE RENDERED
 import { getFooter } from './components/footer';
 
-export const modernAgentDetailPage = (slug: string) => `
+export const modernAgentDetailPage = (slug: string, data?: any) => `
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">Loading... - AI Agents Directory</title>
+    <title id="page-title">${data ? data.agent.name + ' - AI Agents Directory' : 'Loading... - AI Agents Directory'}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    ${data ? `<script>window.__AGENT_DATA__ = ${JSON.stringify(data)};</script>` : ''}
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f7f8fa; color: #1a1a1a; line-height: 1.6; }
@@ -448,18 +449,25 @@ export const modernAgentDetailPage = (slug: string) => `
             }
         });
 
-        // Load agent data - fastest method with preload
+        // Load agent data - INSTANT if server-side rendered
         async function loadAgent() {
             try {
-                // Start fetching immediately (no delay)
-                const response = await axios.get(API_BASE + '/public/' + SLUG + '/details');
-                
-                if (!response.data.success) {
-                    document.getElementById('loading').innerHTML = '<div class="loading"><p style="color: #ef4444;">Agent not found</p></div>';
-                    return;
+                // Check for server-side rendered data (INSTANT LOAD)
+                let data;
+                if (window.__AGENT_DATA__) {
+                    // Data already loaded server-side - NO API CALL NEEDED!
+                    data = window.__AGENT_DATA__;
+                } else {
+                    // Fallback to API if no server-side data
+                    const response = await axios.get(API_BASE + '/public/' + SLUG + '/details');
+                    if (!response.data.success) {
+                        document.getElementById('loading').innerHTML = '<div class="loading"><p style="color: #ef4444;">Agent not found</p></div>';
+                        return;
+                    }
+                    data = response.data.data;
                 }
-
-                const data = response.data.data;
+                
+                // Use the data (either server-side or from API)
                 currentAgent = data.agent;
                 
                 // Update page title

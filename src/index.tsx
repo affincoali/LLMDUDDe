@@ -352,10 +352,53 @@ app.get('/agents', (c) => {
   return c.html(advancedAgentsListing());
 });
 
-// Agent detail page - Modern version matching aiagentsdirectory.com design
-app.get('/agents/:slug', (c) => {
+// Agent detail page - SERVER-SIDE RENDERED for instant load
+app.get('/agents/:slug', async (c) => {
   const slug = c.req.param('slug');
-  return c.html(modernAgentDetailPage(slug));
+  const DB = c.env.DB;
+  
+  try {
+    // Fetch agent data server-side (BEFORE rendering HTML)
+    const agent = await DB.prepare(`
+      SELECT 
+        a.*,
+        GROUP_CONCAT(DISTINCT c.name) as category_names,
+        GROUP_CONCAT(DISTINCT c.id) as category_ids,
+        u.name as submitter_name
+      FROM agents a
+      LEFT JOIN agent_categories ac ON a.id = ac.agent_id
+      LEFT JOIN categories c ON ac.category_id = c.id
+      LEFT JOIN users u ON a.submitted_by_id = u.id
+      WHERE a.slug = ? AND a.status = 'APPROVED'
+      GROUP BY a.id
+    `).bind(slug).first();
+    
+    if (!agent) {
+      return c.html('<h1>Agent not found</h1><a href="/agents">← Back to Agents</a>');
+    }
+    
+    // Fetch related data in parallel
+    const [features, useCases, screenshots, reviewStats] = await Promise.all([
+      DB.prepare('SELECT * FROM features WHERE agent_id = ? ORDER BY display_order ASC LIMIT 10').bind(agent.id).all(),
+      DB.prepare('SELECT * FROM use_cases WHERE agent_id = ? ORDER BY display_order ASC LIMIT 5').bind(agent.id).all(),
+      DB.prepare('SELECT * FROM agent_screenshots WHERE agent_id = ? ORDER BY display_order ASC LIMIT 8').bind(agent.id).all(),
+      DB.prepare('SELECT COUNT(*) as total_reviews, AVG(rating) as average_rating, SUM(CASE WHEN rating = 5 THEN 1 ELSE 0 END) as rating_5, SUM(CASE WHEN rating = 4 THEN 1 ELSE 0 END) as rating_4, SUM(CASE WHEN rating = 3 THEN 1 ELSE 0 END) as rating_3, SUM(CASE WHEN rating = 2 THEN 1 ELSE 0 END) as rating_2, SUM(CASE WHEN rating = 1 THEN 1 ELSE 0 END) as rating_1 FROM reviews WHERE agent_id = ? AND status = "APPROVED"').bind(agent.id).first()
+    ]);
+    
+    const data = {
+      agent,
+      features: features.results || [],
+      useCases: useCases.results || [],
+      screenshots: screenshots.results || [],
+      reviewStats: reviewStats || {}
+    };
+    
+    // Render with pre-loaded data
+    return c.html(modernAgentDetailPage(slug, data));
+  } catch (error) {
+    console.error('Error loading agent:', error);
+    return c.html('<h1>Error loading agent</h1><a href="/agents">← Back to Agents</a>');
+  }
 });
 
 // Old versions removed to optimize bundle size (103KB saved!)
