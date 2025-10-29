@@ -10,9 +10,20 @@ A comprehensive directory platform for discovering, submitting, and managing AI 
 - **Local Test**: https://3000-izrhvxrc8y0zaw0u52v89-2e1b9533.sandbox.novita.ai
 - **Previous Deployment**: https://371c8b83.webapp-ds7.pages.dev (All placeholders removed)
 
-### 🎉 LATEST - Agents Page FIXED & Working (2025-10-29 09:30 UTC)
+### 🎉 LATEST - Agent Page Video & Lightbox Gallery (2025-10-29 10:05 UTC)
 
-**✅ Agents Page Now Loading Properly with Thumbnails!**
+**✅ YouTube Video in Sidebar + Lightbox Screenshot Gallery!**
+- ✅ **YouTube Video Sidebar**: Video now displays in sidebar instead of screenshots
+- ✅ **Responsive Video Player**: 16:9 aspect ratio with padding-bottom technique
+- ✅ **Video ID Extraction**: Supports all YouTube URL formats (watch?v=, youtu.be, embed)
+- ✅ **Lightbox Gallery**: Full-screen modal for browsing screenshots
+- ✅ **Prev/Next Navigation**: Arrow buttons and keyboard support (←/→)
+- ✅ **Keyboard Controls**: ESC to close, arrow keys to navigate
+- ✅ **Click-to-Enlarge**: Screenshots moved to main content before reviews
+- ✅ **Smooth Animations**: Hover effects and modal transitions
+- ✅ **Mobile Responsive**: Touch-friendly lightbox controls
+
+**Previous Update - Agents Page FIXED & Working (2025-10-29 09:30 UTC):**
 - ✅ **Fixed Syntax Error**: Corrected malformed template strings in createGridCard/createListCard
 - ✅ **Added Missing Endpoint**: Created GET /api/public/agents endpoint (was 404)
 - ✅ **Agents Loading**: All 16 agents now display with proper thumbnails and cards
@@ -155,12 +166,16 @@ AI Agents Directory is a lightweight, edge-deployed platform that allows users t
   - Skeleton loaders for better UX
   - Responsive design with hamburger menu
   
-- **Modern Agent Detail** (`/agents/[slug]`) - **LATEST DESIGN MATCHING REFERENCE**:
+- **Modern Agent Detail** (`/agents/[slug]`) - **LATEST DESIGN WITH VIDEO + LIGHTBOX**:
   - **Tab Navigation System**: 6 tabs (Overview, Features, Use Cases, Pricing, Alternatives, Reviews)
   - **Stats Badges**: Views, likes, rating displayed prominently
   - **Breadcrumb Navigation**: Home > Categories > Category > Agent
   - **2-Column Layout**: Left content (2/3 width) + Right sidebar (1/3 width)
-  - **Image Gallery Sidebar**: 2x2 grid with click-to-enlarge modal
+  - **YouTube Video Sidebar**: Responsive 16:9 video player (NEW - replaces screenshots)
+  - **Video URL Support**: Works with watch?v=, youtu.be/, and embed URLs
+  - **Lightbox Screenshot Gallery**: Full-screen modal with prev/next navigation (NEW)
+  - **Keyboard Navigation**: ESC to close, arrow keys to browse (NEW)
+  - **Screenshots Section**: Grid layout before reviews with click-to-enlarge (NEW)
   - **Rating Summary**: Large average rating with star distribution progress bars (5★, 4★, 3★, 2★, 1★)
   - **Company Information Sidebar**: Founded year, headquarters, size, website
   - **Social Links Sidebar**: Twitter, LinkedIn, Discord, GitHub icons

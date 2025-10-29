@@ -80,10 +80,25 @@ export const modernAgentDetailPage = (slug: string) => `
         .sidebar-section { background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
         .sidebar-title { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
         
-        /* Gallery */
-        .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .gallery img { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; cursor: pointer; transition: transform 0.2s; }
-        .gallery img:hover { transform: scale(1.05); }
+        /* YouTube Video */
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        
+        /* Gallery Lightbox */
+        .screenshots-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+        .screenshot-thumb { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
+        .screenshot-thumb:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        
+        /* Lightbox Modal */
+        .lightbox { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); align-items: center; justify-content: center; }
+        .lightbox.active { display: flex; }
+        .lightbox-content { max-width: 90%; max-height: 90%; position: relative; }
+        .lightbox-img { max-width: 100%; max-height: 90vh; object-fit: contain; border-radius: 8px; }
+        .lightbox-close { position: absolute; top: -40px; right: 0; color: #fff; font-size: 36px; cursor: pointer; }
+        .lightbox-prev, .lightbox-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.2); color: #fff; padding: 16px; cursor: pointer; font-size: 24px; border-radius: 4px; }
+        .lightbox-prev { left: -60px; }
+        .lightbox-next { right: -60px; }
+        .lightbox-prev:hover, .lightbox-next:hover { background: rgba(255,255,255,0.3); }
         
         /* Company Info */
         .info-grid { display: grid; gap: 12px; }
@@ -250,6 +265,12 @@ export const modernAgentDetailPage = (slug: string) => `
                             </div>
                         </div>
 
+                        <!-- Screenshots Gallery -->
+                        <div id="screenshots" class="section" style="display: none;">
+                            <h2 class="section-title">Screenshots</h2>
+                            <div id="screenshots-grid" class="screenshots-grid"></div>
+                        </div>
+
                         <div id="reviews" class="section">
                             <h2 class="section-title">Reviews</h2>
                             <div id="reviews-list"></div>
@@ -258,10 +279,10 @@ export const modernAgentDetailPage = (slug: string) => `
 
                     <!-- Right Sidebar -->
                     <div class="sidebar">
-                        <!-- Screenshots Gallery -->
-                        <div class="sidebar-section">
-                            <h3 class="sidebar-title">Screenshots</h3>
-                            <div id="gallery" class="gallery"></div>
+                        <!-- YouTube Video -->
+                        <div class="sidebar-section" id="video-section" style="display: none;">
+                            <h3 class="sidebar-title">Video</h3>
+                            <div id="youtube-container" class="video-container"></div>
                         </div>
 
                         <!-- Company Info -->
@@ -330,6 +351,16 @@ export const modernAgentDetailPage = (slug: string) => `
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+            <span class="lightbox-prev" onclick="changeLightboxImage(-1)">&#10094;</span>
+            <img id="lightbox-img" class="lightbox-img" src="" alt="">
+            <span class="lightbox-next" onclick="changeLightboxImage(1)">&#10095;</span>
         </div>
     </div>
 
@@ -444,17 +475,30 @@ export const modernAgentDetailPage = (slug: string) => `
                 if (currentAgent.free_trial_available) pricingDetails += '<span style="color: #10b981;"><i class="fas fa-check"></i> Free trial available</span>';
                 document.getElementById('pricing-details').innerHTML = pricingDetails || 'Contact for pricing details';
                 
-                // Screenshots
-                const screenshots = data.screenshots || [];
-                let galleryHTML = '';
-                if (screenshots.length > 0) {
-                    screenshots.forEach(s => {
-                        galleryHTML += '<img src="' + s.image_url + '" alt="' + (s.title || 'Screenshot') + '" onclick="window.open(this.src)">';
-                    });
-                } else {
-                    galleryHTML = '<p style="color: #6b7280; grid-column: 1/-1;">No screenshots available</p>';
+                // YouTube Video
+                if (currentAgent.youtube_url) {
+                    const videoId = extractYouTubeID(currentAgent.youtube_url);
+                    if (videoId) {
+                        document.getElementById('video-section').style.display = 'block';
+                        document.getElementById('youtube-container').innerHTML = 
+                            '<iframe src="https://www.youtube.com/embed/' + videoId + '" ' +
+                            'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" ' +
+                            'allowfullscreen></iframe>';
+                    }
                 }
-                document.getElementById('gallery').innerHTML = galleryHTML;
+                
+                // Screenshots Gallery with Lightbox
+                const screenshots = data.screenshots || [];
+                window.screenshotsData = screenshots; // Store globally for lightbox
+                if (screenshots.length > 0) {
+                    document.getElementById('screenshots').style.display = 'block';
+                    let screenshotsHTML = '';
+                    screenshots.forEach((s, index) => {
+                        screenshotsHTML += '<img src="' + s.image_url + '" alt="' + (s.title || 'Screenshot') + '" ' +
+                            'class="screenshot-thumb" onclick="openLightbox(' + index + ')">';
+                    });
+                    document.getElementById('screenshots-grid').innerHTML = screenshotsHTML;
+                }
                 
                 // Company Info
                 document.getElementById('company-name').textContent = currentAgent.company_name || currentAgent.name;
@@ -527,6 +571,60 @@ export const modernAgentDetailPage = (slug: string) => `
                 document.getElementById('loading').innerHTML = '<div class="loading"><p style="color: #ef4444;">Error loading agent. Please try again.</p></div>';
             }
         }
+
+        // Extract YouTube video ID from various URL formats
+        function extractYouTubeID(url) {
+            if (!url) return null;
+            const patterns = [
+                /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/,
+                /youtube\.com\/embed\/([^&\n?#]+)/,
+                /youtube\.com\/v\/([^&\n?#]+)/
+            ];
+            for (const pattern of patterns) {
+                const match = url.match(pattern);
+                if (match && match[1]) return match[1];
+            }
+            return null;
+        }
+
+        // Lightbox functionality
+        let currentLightboxIndex = 0;
+        
+        function openLightbox(index) {
+            currentLightboxIndex = index;
+            const screenshots = window.screenshotsData || [];
+            if (screenshots[index]) {
+                document.getElementById('lightbox-img').src = screenshots[index].image_url;
+                document.getElementById('lightbox').classList.add('active');
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            }
+        }
+        
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+        
+        function changeLightboxImage(direction) {
+            const screenshots = window.screenshotsData || [];
+            currentLightboxIndex += direction;
+            
+            // Loop around
+            if (currentLightboxIndex < 0) currentLightboxIndex = screenshots.length - 1;
+            if (currentLightboxIndex >= screenshots.length) currentLightboxIndex = 0;
+            
+            document.getElementById('lightbox-img').src = screenshots[currentLightboxIndex].image_url;
+        }
+        
+        // Keyboard navigation for lightbox
+        document.addEventListener('keydown', function(e) {
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox.classList.contains('active')) {
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowLeft') changeLightboxImage(-1);
+                if (e.key === 'ArrowRight') changeLightboxImage(1);
+            }
+        });
 
         // Save/Bookmark functionality
         async function checkSaveStatus() {
