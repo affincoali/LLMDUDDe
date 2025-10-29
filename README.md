@@ -4,17 +4,26 @@ A comprehensive directory platform for discovering, submitting, and managing AI 
 
 ## 🚀 Live Demo
 
-- **Production**: https://809cc0c5.webapp-ds7.pages.dev (Latest - Oct 29, 2025 - ENHANCED DESIGN)
+- **Production**: https://ded91573.webapp-ds7.pages.dev (Latest - Oct 29, 2025 - WORKING!)
 - **Custom Domain**: https://llmdude.com (Production site - auto-updates)
 - **Image CDN**: https://storage.llmdude.com (R2 Custom Domain)
 - **Local Test**: https://3000-izrhvxrc8y0zaw0u52v89-2e1b9533.sandbox.novita.ai
 - **Previous Deployments**: 
+  - https://809cc0c5.webapp-ds7.pages.dev (Enhanced design - regex error)
   - https://97bcdc6b.webapp-ds7.pages.dev (Agents page fixed)
   - https://371c8b83.webapp-ds7.pages.dev (Placeholders removed)
 
-### 🎉 LATEST - Enhanced Agent Page Design (2025-10-29 10:20 UTC)
+### 🎉 LATEST - Agent Pages FIXED & Working (2025-10-29 10:35 UTC)
 
-**✅ Beautiful Company Info & Social Links Design!**
+**✅ Fixed JavaScript Regex Error - All Agent Pages Now Loading!**
+- ✅ **Regex Fix**: Changed regex literals to new RegExp() constructor
+- ✅ **Proper Escaping**: Fixed backslash escaping in template strings
+- ✅ **Pages Loading**: Agent detail pages now load correctly
+- ✅ **YouTube Video**: Video player working with fixed regex
+- ✅ **All Features**: Lightbox, company info, social links all functional
+
+**Previous Update - Enhanced Agent Page Design (2025-10-29 10:20 UTC):**
+- ✅ **Beautiful Company Info & Social Links Design!**
 - ✅ **Gradient Info Cards**: Stunning gradient backgrounds for company information
 - ✅ **Icon Integration**: Font Awesome icons for each info field (briefcase, calendar, location)
 - ✅ **Hover Animations**: Smooth slide and shadow effects on hover
