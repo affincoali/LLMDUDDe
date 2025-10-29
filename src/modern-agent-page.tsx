@@ -1,4 +1,4 @@
-// Modern Agent Detail Page - Matches aiagentsdirectory.com design
+// Modern Agent Detail Page - Clean & Fast
 import { getFooter } from './components/footer';
 
 export const modernAgentDetailPage = (slug: string) => `
@@ -7,393 +7,334 @@ export const modernAgentDetailPage = (slug: string) => `
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">Agent Details - AI Agents Directory</title>
-    <meta name="description" id="page-description" content="Detailed information about this AI agent">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title id="page-title">Loading... - AI Agents Directory</title>
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        .tab-active {
-            border-bottom: 3px solid #7c3aed;
-            color: #7c3aed;
-            font-weight: 600;
-        }
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
-        .image-gallery {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-        }
-        .image-gallery img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        .image-gallery img:hover {
-            transform: scale(1.05);
-        }
-        .stats-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: #f3f4f6;
-            border-radius: 8px;
-            font-size: 0.875rem;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 10px;
-            font-weight: 600;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(124, 58, 237, 0.3);
-        }
-        .btn-secondary {
-            background: #f3f4f6;
-            color: #374151;
-            padding: 12px 24px;
-            border-radius: 10px;
-            font-weight: 600;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .btn-secondary:hover {
-            background: #e5e7eb;
-        }
-        .feature-card {
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 20px;
-            transition: all 0.3s;
-        }
-        .feature-card:hover {
-            border-color: #7c3aed;
-            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.1);
-        }
-        .review-card {
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 16px;
-        }
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: #f3f4f6;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #10b981 0%, #059669 100%);
-            transition: width 0.3s;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f7f8fa; color: #1a1a1a; line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        /* Header */
+        .header { background: #fff; border-bottom: 1px solid #e5e7eb; padding: 16px 0; position: sticky; top: 0; z-index: 100; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 700; color: #7c3aed; text-decoration: none; }
+        .nav { display: flex; gap: 32px; align-items: center; }
+        .nav a { color: #6b7280; text-decoration: none; font-weight: 500; }
+        .nav a:hover { color: #7c3aed; }
+        .btn-primary { background: #7c3aed; color: #fff; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; }
+        .btn-primary:hover { background: #6d28d9; }
+        
+        /* Breadcrumb */
+        .breadcrumb { background: #fff; border-bottom: 1px solid #e5e7eb; padding: 12px 0; }
+        .breadcrumb-list { display: flex; gap: 8px; align-items: center; font-size: 14px; color: #6b7280; }
+        .breadcrumb-list a { color: #6b7280; text-decoration: none; }
+        .breadcrumb-list a:hover { color: #7c3aed; }
+        
+        /* Main Content */
+        .main { padding: 32px 0; }
+        .grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+        
+        /* Agent Header */
+        .agent-header { background: #fff; border-radius: 12px; padding: 32px; margin-bottom: 24px; }
+        .agent-top { display: flex; gap: 24px; align-items: start; margin-bottom: 24px; }
+        .agent-logo { width: 96px; height: 96px; border-radius: 12px; object-fit: cover; flex-shrink: 0; }
+        .agent-info { flex: 1; }
+        .agent-name { font-size: 32px; font-weight: 700; margin-bottom: 8px; }
+        .agent-tagline { font-size: 16px; color: #6b7280; margin-bottom: 16px; }
+        .agent-stats { display: flex; gap: 16px; flex-wrap: wrap; }
+        .stat-badge { display: inline-flex; align-items: center; gap: 6px; background: #f3f4f6; padding: 6px 12px; border-radius: 6px; font-size: 14px; }
+        .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+        .badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 12px; border-radius: 6px; font-size: 13px; font-weight: 600; }
+        .badge-category { background: #dbeafe; color: #1e40af; }
+        .badge-opensource { background: #d1fae5; color: #065f46; }
+        .badge-verified { background: #fef3c7; color: #92400e; }
+        
+        /* Action Buttons */
+        .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+        .btn { padding: 12px 24px; border-radius: 8px; font-weight: 600; text-align: center; cursor: pointer; border: none; text-decoration: none; display: inline-block; }
+        .btn-website { background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%); color: #fff; }
+        .btn-upvote { background: #f3f4f6; color: #374151; }
+        .btn-save { background: #f3f4f6; color: #374151; }
+        .btn-share { background: #f3f4f6; color: #374151; }
+        
+        /* Tabs */
+        .tabs { border-bottom: 2px solid #e5e7eb; margin-bottom: 24px; display: flex; gap: 32px; }
+        .tab { padding: 12px 0; cursor: pointer; font-weight: 600; color: #6b7280; border-bottom: 3px solid transparent; margin-bottom: -2px; }
+        .tab.active { color: #7c3aed; border-bottom-color: #7c3aed; }
+        
+        /* Tab Content */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .section { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 16px; }
+        .section-title { font-size: 20px; font-weight: 700; margin-bottom: 16px; }
+        .feature-list { display: grid; gap: 12px; }
+        .feature-item { display: flex; gap: 12px; padding: 16px; background: #f9fafb; border-radius: 8px; }
+        .feature-icon { color: #7c3aed; font-size: 20px; flex-shrink: 0; }
+        .feature-content h4 { font-weight: 600; margin-bottom: 4px; }
+        .feature-content p { color: #6b7280; font-size: 14px; }
+        
+        /* Sidebar */
+        .sidebar { }
+        .sidebar-section { background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+        .sidebar-title { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
+        
+        /* Gallery */
+        .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .gallery img { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; cursor: pointer; transition: transform 0.2s; }
+        .gallery img:hover { transform: scale(1.05); }
+        
+        /* Company Info */
+        .info-grid { display: grid; gap: 12px; }
+        .info-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f3f4f6; }
+        .info-label { color: #6b7280; font-size: 14px; }
+        .info-value { font-weight: 600; font-size: 14px; }
+        
+        /* Social Links */
+        .social-links { display: flex; gap: 8px; flex-wrap: wrap; }
+        .social-link { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: #f3f4f6; border-radius: 8px; color: #374151; text-decoration: none; }
+        .social-link:hover { background: #e5e7eb; }
+        
+        /* Rating */
+        .rating-summary { text-align: center; margin-bottom: 24px; }
+        .rating-number { font-size: 48px; font-weight: 700; color: #7c3aed; }
+        .rating-stars { color: #fbbf24; font-size: 24px; }
+        .rating-bars { margin-top: 16px; }
+        .rating-bar { display: flex; gap: 12px; align-items: center; margin-bottom: 8px; }
+        .bar-label { width: 40px; font-size: 14px; color: #6b7280; }
+        .bar-fill { flex: 1; height: 8px; background: #f3f4f6; border-radius: 4px; overflow: hidden; }
+        .bar-progress { height: 100%; background: #10b981; transition: width 0.3s; }
+        .bar-count { width: 40px; text-align: right; font-size: 14px; color: #6b7280; }
+        
+        /* Reviews */
+        .review-card { padding: 20px; background: #f9fafb; border-radius: 8px; margin-bottom: 16px; }
+        .review-header { display: flex; gap: 12px; margin-bottom: 12px; }
+        .review-avatar { width: 48px; height: 48px; border-radius: 50%; background: #ddd; }
+        .review-author { flex: 1; }
+        .review-name { font-weight: 600; }
+        .review-date { font-size: 13px; color: #6b7280; }
+        .review-rating { color: #fbbf24; }
+        
+        /* Loading */
+        .loading { text-align: center; padding: 60px 20px; }
+        .spinner { width: 50px; height: 50px; border: 4px solid #f3f4f6; border-top-color: #7c3aed; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* Toast */
+        .toast { position: fixed; bottom: 24px; right: 24px; background: #1f2937; color: #fff; padding: 16px 24px; border-radius: 8px; z-index: 1000; animation: slideIn 0.3s; }
+        @keyframes slideIn { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     </style>
 </head>
-<body class="bg-gray-50">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <div class="flex items-center gap-8">
-                    <a href="/" class="flex items-center">
-                        <i class="fas fa-robot text-3xl text-purple-600 mr-3"></i>
-                        <span class="text-xl font-bold">AI Agents Directory</span>
-                    </a>
-                    <div class="hidden md:flex items-center space-x-6">
-                        <a href="/" class="text-gray-700 hover:text-purple-600 transition">Home</a>
-                        <a href="/agents" class="text-gray-700 hover:text-purple-600 transition">Agents</a>
-                        <a href="/categories" class="text-gray-700 hover:text-purple-600 transition">Categories</a>
-                    </div>
-                </div>
-                <div class="flex items-center gap-4">
-                    <a href="/login" class="text-gray-700 hover:text-purple-600 transition">Login</a>
-                    <a href="/submit" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition">
-                        Submit Agent
-                    </a>
-                </div>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="container header-content">
+            <a href="/" class="logo">
+                <i class="fas fa-robot"></i>
+                AI Agents Directory
+            </a>
+            <div class="nav">
+                <a href="/">Home</a>
+                <a href="/agents">Agents</a>
+                <a href="/categories">Categories</a>
+                <a href="/submit" class="btn-primary">Submit Agent</a>
             </div>
         </div>
-    </nav>
+    </div>
 
     <!-- Breadcrumb -->
-    <div class="bg-white border-b">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-            <div class="flex items-center gap-2 text-sm">
-                <a href="/" class="text-gray-600 hover:text-purple-600">Home</a>
-                <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
-                <a href="/categories" class="text-gray-600 hover:text-purple-600">Categories</a>
-                <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
-                <span id="breadcrumb-category" class="text-gray-600">NSFW</span>
-                <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
-                <span id="breadcrumb-agent" class="text-gray-900 font-medium">Loading...</span>
+    <div class="breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-list">
+                <a href="/">Home</a>
+                <i class="fas fa-chevron-right" style="font-size: 10px;"></i>
+                <a href="/categories">Categories</a>
+                <i class="fas fa-chevron-right" style="font-size: 10px;"></i>
+                <span id="breadcrumb-category">NSFW</span>
+                <i class="fas fa-chevron-right" style="font-size: 10px;"></i>
+                <span id="breadcrumb-agent">Loading...</span>
             </div>
         </div>
     </div>
 
-    <div id="loading" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="text-center py-20">
-            <i class="fas fa-spinner fa-spin text-6xl text-purple-600 mb-4"></i>
-            <p class="text-gray-600">Loading agent details...</p>
-        </div>
+    <!-- Loading State -->
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <p>Loading agent details...</p>
     </div>
 
-    <div id="agent-content" class="hidden">
-        <!-- Main Content -->
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Left Column (2/3) -->
-                <div class="lg:col-span-2">
-                    <!-- Agent Header -->
-                    <div class="bg-white rounded-xl p-8 shadow-sm mb-6">
-                        <div class="flex items-start gap-6">
-                            <!-- Logo -->
-                            <div id="agent-logo" class="w-24 h-24 flex-shrink-0 bg-gradient-to-br from-purple-400 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
-                                <span class="text-5xl">🤖</span>
+    <!-- Main Content (hidden initially) -->
+    <div id="content" style="display: none;">
+        <div class="main">
+            <div class="container">
+                <div class="grid">
+                    <!-- Left Column -->
+                    <div>
+                        <!-- Agent Header -->
+                        <div class="agent-header">
+                            <div class="agent-top">
+                                <img id="agent-logo" class="agent-logo" src="" alt="" onerror="this.src='https://via.placeholder.com/96'">
+                                <div class="agent-info">
+                                    <h1 id="agent-name" class="agent-name">Agent Name</h1>
+                                    <p id="agent-tagline" class="agent-tagline">Loading...</p>
+                                    <div id="agent-badges" class="badges"></div>
+                                    <div class="agent-stats">
+                                        <div class="stat-badge">
+                                            <i class="fas fa-eye"></i>
+                                            <span id="view-count">0</span> views
+                                        </div>
+                                        <div class="stat-badge">
+                                            <i class="fas fa-heart"></i>
+                                            <span id="like-count">0</span> likes
+                                        </div>
+                                        <div class="stat-badge">
+                                            <i class="fas fa-star" style="color: #fbbf24;"></i>
+                                            <span id="rating-display">0.0</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            
-                            <!-- Info -->
-                            <div class="flex-1">
-                                <div class="flex items-start justify-between mb-3">
-                                    <div>
-                                        <h1 id="agent-name" class="text-4xl font-bold mb-2">Agent Name</h1>
-                                        <div class="flex flex-wrap items-center gap-3 mb-3">
-                                            <span id="rating-badge" class="badge bg-yellow-100 text-yellow-800">
-                                                <i class="fas fa-star"></i>
-                                                <span>4.3</span>
-                                                <span class="text-gray-600">(9)</span>
-                                            </span>
-                                            <a href="#" class="text-purple-600 hover:text-purple-700 text-sm font-medium">Write a Review</a>
+
+                            <!-- Action Buttons -->
+                            <div class="actions">
+                                <a id="visit-btn" href="#" target="_blank" class="btn btn-website">
+                                    <i class="fas fa-external-link-alt"></i> Visit Website
+                                </a>
+                                <button id="upvote-btn" class="btn btn-upvote" onclick="upvoteAgent()">
+                                    <i class="fas fa-arrow-up"></i> Upvote (<span id="upvote-count">0</span>)
+                                </button>
+                                <button id="save-btn" class="btn btn-save" onclick="toggleSave()">
+                                    <i class="fas fa-bookmark"></i> <span id="save-text">Save</span>
+                                </button>
+                                <button class="btn btn-share" onclick="shareAgent()">
+                                    <i class="fas fa-share-alt"></i> Share
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Tabs -->
+                        <div class="tabs">
+                            <div class="tab active" onclick="switchTab('overview')">Overview</div>
+                            <div class="tab" onclick="switchTab('features')">Features</div>
+                            <div class="tab" onclick="switchTab('usecases')">Use Cases</div>
+                            <div class="tab" onclick="switchTab('pricing')">Pricing</div>
+                            <div class="tab" onclick="switchTab('reviews')">Reviews</div>
+                        </div>
+
+                        <!-- Tab Contents -->
+                        <div id="tab-overview" class="tab-content active">
+                            <div class="section">
+                                <h2 class="section-title">Overview</h2>
+                                <div id="agent-description">Loading...</div>
+                            </div>
+                        </div>
+
+                        <div id="tab-features" class="tab-content">
+                            <div class="section">
+                                <h2 class="section-title">Key Features</h2>
+                                <div id="features-list" class="feature-list"></div>
+                            </div>
+                        </div>
+
+                        <div id="tab-usecases" class="tab-content">
+                            <div class="section">
+                                <h2 class="section-title">Use Cases</h2>
+                                <div id="usecases-list" class="feature-list"></div>
+                            </div>
+                        </div>
+
+                        <div id="tab-pricing" class="tab-content">
+                            <div class="section">
+                                <h2 class="section-title">Pricing</h2>
+                                <div id="pricing-info">
+                                    <div class="feature-item">
+                                        <div class="feature-content">
+                                            <h4>Pricing Model: <span id="pricing-model">-</span></h4>
+                                            <p id="pricing-details"></p>
                                         </div>
-                                        <div id="agent-badges" class="flex flex-wrap gap-2">
-                                            <!-- Badges will be loaded here -->
-                                        </div>
-                                    </div>
-                                    <button onclick="shareAgent()" class="p-2 hover:bg-gray-100 rounded-lg transition">
-                                        <i class="fas fa-share-alt text-gray-600"></i>
-                                    </button>
-                                </div>
-                                
-                                <p id="agent-tagline" class="text-gray-600 text-lg mb-4">Agent tagline goes here</p>
-                                
-                                <!-- Stats -->
-                                <div class="flex flex-wrap gap-4 mb-4">
-                                    <div class="stats-badge">
-                                        <i class="fas fa-eye text-gray-600"></i>
-                                        <span id="view-count">0</span>
-                                    </div>
-                                    <div class="stats-badge">
-                                        <i class="fas fa-thumbs-up text-gray-600"></i>
-                                        <span id="like-count">0</span>
-                                    </div>
-                                    <div class="stats-badge">
-                                        <i class="fas fa-times text-gray-600"></i>
-                                        <span>0</span>
                                     </div>
                                 </div>
-                                
-                                <!-- Action Buttons -->
-                                <div class="flex flex-wrap gap-3">
-                                    <a id="visit-website-btn" href="#" target="_blank" class="btn-primary">
-                                        <i class="fas fa-external-link-alt"></i>
-                                        Visit Website
-                                    </a>
-                                    <button onclick="toggleSave()" id="save-btn" class="btn-secondary">
-                                        <i class="far fa-bookmark"></i>
-                                        <span id="save-text">Save</span>
-                                    </button>
-                                    <button class="btn-secondary">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                    <button onclick="copyLink()" class="btn-secondary">
-                                        Copy
-                                    </button>
-                                </div>
+                            </div>
+                        </div>
+
+                        <div id="tab-reviews" class="tab-content">
+                            <div class="section">
+                                <h2 class="section-title">Reviews</h2>
+                                <div id="reviews-list"></div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Tabs -->
-                    <div class="bg-white rounded-xl shadow-sm mb-6">
-                        <div class="border-b">
-                            <div class="flex gap-8 px-8 overflow-x-auto">
-                                <button onclick="switchTab('overview')" id="tab-overview" class="py-4 tab-active whitespace-nowrap">
-                                    <i class="fas fa-info-circle mr-2"></i>Overview
-                                </button>
-                                <button onclick="switchTab('features')" id="tab-features" class="py-4 text-gray-600 hover:text-purple-600 whitespace-nowrap">
-                                    <i class="fas fa-list-check mr-2"></i>Features
-                                </button>
-                                <button onclick="switchTab('use-cases')" id="tab-use-cases" class="py-4 text-gray-600 hover:text-purple-600 whitespace-nowrap">
-                                    <i class="fas fa-lightbulb mr-2"></i>Use Cases
-                                </button>
-                                <button onclick="switchTab('pricing')" id="tab-pricing" class="py-4 text-gray-600 hover:text-purple-600 whitespace-nowrap">
-                                    <i class="fas fa-dollar-sign mr-2"></i>Pricing
-                                </button>
-                                <button onclick="switchTab('alternatives')" id="tab-alternatives" class="py-4 text-gray-600 hover:text-purple-600 whitespace-nowrap">
-                                    <i class="fas fa-exchange-alt mr-2"></i>Alternatives
-                                </button>
-                                <button onclick="switchTab('reviews')" id="tab-reviews" class="py-4 text-gray-600 hover:text-purple-600 whitespace-nowrap">
-                                    <i class="fas fa-star mr-2"></i>Reviews <span id="review-count-tab" class="ml-1 text-gray-500">0</span>
-                                </button>
+                    <!-- Right Sidebar -->
+                    <div class="sidebar">
+                        <!-- Screenshots Gallery -->
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">Screenshots</h3>
+                            <div id="gallery" class="gallery"></div>
+                        </div>
+
+                        <!-- Company Info -->
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">Company Information</h3>
+                            <div class="info-grid">
+                                <div class="info-row">
+                                    <span class="info-label">Company</span>
+                                    <span class="info-value" id="company-name">-</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Founded</span>
+                                    <span class="info-value" id="company-founded">-</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Headquarters</span>
+                                    <span class="info-value" id="company-hq">-</span>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Tab Content -->
-                        <div class="p-8">
-                            <!-- Overview Tab -->
-                            <div id="content-overview">
-                                <h2 class="text-2xl font-bold mb-4">Overview</h2>
-                                <div id="agent-description" class="prose max-w-none text-gray-700 leading-relaxed">
-                                    <p>Loading description...</p>
-                                </div>
-                            </div>
-
-                            <!-- Features Tab -->
-                            <div id="content-features" class="hidden">
-                                <h2 class="text-2xl font-bold mb-6">Key Features</h2>
-                                <div id="features-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <!-- Features will be loaded here -->
-                                </div>
-                            </div>
-
-                            <!-- Use Cases Tab -->
-                            <div id="content-use-cases" class="hidden">
-                                <h2 class="text-2xl font-bold mb-6">Use Cases</h2>
-                                <div id="use-cases-list" class="space-y-4">
-                                    <!-- Use cases will be loaded here -->
-                                </div>
-                            </div>
-
-                            <!-- Pricing Tab -->
-                            <div id="content-pricing" class="hidden">
-                                <h2 class="text-2xl font-bold mb-6">Pricing</h2>
-                                <div id="pricing-content">
-                                    <!-- Pricing will be loaded here -->
-                                </div>
-                            </div>
-
-                            <!-- Alternatives Tab -->
-                            <div id="content-alternatives" class="hidden">
-                                <h2 class="text-2xl font-bold mb-6">Alternative AI Agents</h2>
-                                <div id="alternatives-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <!-- Alternatives will be loaded here -->
-                                </div>
-                            </div>
-
-                            <!-- Reviews Tab -->
-                            <div id="content-reviews" class="hidden">
-                                <div class="flex justify-between items-center mb-6">
-                                    <h2 class="text-2xl font-bold">Reviews & Ratings</h2>
-                                    <button onclick="showReviewForm()" class="btn-primary">
-                                        <i class="fas fa-pencil-alt"></i>
-                                        Write a Review
-                                    </button>
-                                </div>
-                                
-                                <!-- Rating Summary -->
-                                <div class="bg-gray-50 rounded-xl p-6 mb-6">
-                                    <div class="flex items-center gap-8">
-                                        <div class="text-center">
-                                            <div class="text-5xl font-bold mb-2" id="avg-rating">0.0</div>
-                                            <div class="text-yellow-500 text-2xl mb-1" id="star-display">☆☆☆☆☆</div>
-                                            <div class="text-sm text-gray-600" id="total-reviews">0 reviews</div>
-                                        </div>
-                                        <div class="flex-1">
-                                            <div class="space-y-2">
-                                                <div class="flex items-center gap-3">
-                                                    <span class="text-sm w-8">5★</span>
-                                                    <div class="flex-1 progress-bar">
-                                                        <div id="progress-5" class="progress-fill" style="width: 0%"></div>
-                                                    </div>
-                                                    <span class="text-sm text-gray-600 w-8" id="count-5">0</span>
-                                                </div>
-                                                <div class="flex items-center gap-3">
-                                                    <span class="text-sm w-8">4★</span>
-                                                    <div class="flex-1 progress-bar">
-                                                        <div id="progress-4" class="progress-fill" style="width: 0%"></div>
-                                                    </div>
-                                                    <span class="text-sm text-gray-600 w-8" id="count-4">0</span>
-                                                </div>
-                                                <div class="flex items-center gap-3">
-                                                    <span class="text-sm w-8">3★</span>
-                                                    <div class="flex-1 progress-bar">
-                                                        <div id="progress-3" class="progress-fill" style="width: 0%"></div>
-                                                    </div>
-                                                    <span class="text-sm text-gray-600 w-8" id="count-3">0</span>
-                                                </div>
-                                                <div class="flex items-center gap-3">
-                                                    <span class="text-sm w-8">2★</span>
-                                                    <div class="flex-1 progress-bar">
-                                                        <div id="progress-2" class="progress-fill" style="width: 0%"></div>
-                                                    </div>
-                                                    <span class="text-sm text-gray-600 w-8" id="count-2">0</span>
-                                                </div>
-                                                <div class="flex items-center gap-3">
-                                                    <span class="text-sm w-8">1★</span>
-                                                    <div class="flex-1 progress-bar">
-                                                        <div id="progress-1" class="progress-fill" style="width: 0%"></div>
-                                                    </div>
-                                                    <span class="text-sm text-gray-600 w-8" id="count-1">0</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Reviews List -->
-                                <div id="reviews-list" class="space-y-4">
-                                    <!-- Reviews will be loaded here -->
-                                </div>
-                            </div>
+                        <!-- Social Links -->
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">Connect</h3>
+                            <div id="social-links" class="social-links"></div>
                         </div>
-                    </div>
-                </div>
 
-                <!-- Right Column (1/3) -->
-                <div class="lg:col-span-1">
-                    <!-- Image Gallery -->
-                    <div class="bg-white rounded-xl p-6 shadow-sm mb-6">
-                        <h3 class="font-bold text-lg mb-4">Screenshots</h3>
-                        <div id="image-gallery" class="image-gallery">
-                            <!-- Images will be loaded here -->
-                        </div>
-                    </div>
-
-                    <!-- Company Info -->
-                    <div id="company-section" class="bg-white rounded-xl p-6 shadow-sm mb-6 hidden">
-                        <h3 class="font-bold text-lg mb-4">Company Information</h3>
-                        <div id="company-info" class="space-y-3 text-sm">
-                            <!-- Company info will be loaded here -->
-                        </div>
-                    </div>
-
-                    <!-- Social Links -->
-                    <div id="social-section" class="bg-white rounded-xl p-6 shadow-sm hidden">
-                        <h3 class="font-bold text-lg mb-4">Connect</h3>
-                        <div id="social-links" class="flex flex-wrap gap-3">
-                            <!-- Social links will be loaded here -->
+                        <!-- Rating Summary -->
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">User Ratings</h3>
+                            <div class="rating-summary">
+                                <div class="rating-number" id="avg-rating">0.0</div>
+                                <div class="rating-stars" id="rating-stars"></div>
+                                <p style="color: #6b7280; font-size: 14px; margin-top: 8px;">
+                                    <span id="review-count">0</span> reviews
+                                </p>
+                            </div>
+                            <div class="rating-bars">
+                                <div class="rating-bar">
+                                    <span class="bar-label">5★</span>
+                                    <div class="bar-fill"><div class="bar-progress" id="bar-5" style="width: 0%"></div></div>
+                                    <span class="bar-count" id="count-5">0</span>
+                                </div>
+                                <div class="rating-bar">
+                                    <span class="bar-label">4★</span>
+                                    <div class="bar-fill"><div class="bar-progress" id="bar-4" style="width: 0%"></div></div>
+                                    <span class="bar-count" id="count-4">0</span>
+                                </div>
+                                <div class="rating-bar">
+                                    <span class="bar-label">3★</span>
+                                    <div class="bar-fill"><div class="bar-progress" id="bar-3" style="width: 0%"></div></div>
+                                    <span class="bar-count" id="count-3">0</span>
+                                </div>
+                                <div class="rating-bar">
+                                    <span class="bar-label">2★</span>
+                                    <div class="bar-fill"><div class="bar-progress" id="bar-2" style="width: 0%"></div></div>
+                                    <span class="bar-count" id="count-2">0</span>
+                                </div>
+                                <div class="rating-bar">
+                                    <span class="bar-label">1★</span>
+                                    <div class="bar-fill"><div class="bar-progress" id="bar-1" style="width: 0%"></div></div>
+                                    <span class="bar-count" id="count-1">0</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -408,250 +349,191 @@ export const modernAgentDetailPage = (slug: string) => `
         const API_BASE = '/api';
         const SLUG = '${slug}';
         let currentAgent = null;
-        let currentTab = 'overview';
         let isSaved = false;
 
         // Tab switching
         function switchTab(tab) {
-            currentTab = tab;
-            
-            // Update tab buttons
-            document.querySelectorAll('[id^="tab-"]').forEach(btn => {
-                btn.classList.remove('tab-active', 'text-purple-600');
-                btn.classList.add('text-gray-600');
-            });
-            document.getElementById('tab-' + tab).classList.add('tab-active');
-            document.getElementById('tab-' + tab).classList.remove('text-gray-600');
-            
-            // Update content
-            document.querySelectorAll('[id^="content-"]').forEach(content => {
-                content.classList.add('hidden');
-            });
-            document.getElementById('content-' + tab).classList.remove('hidden');
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelector('.tab[onclick*="' + tab + '"]').classList.add('active');
+            document.getElementById('tab-' + tab).classList.add('active');
         }
 
-        // Load agent details
+        // Load agent data
         async function loadAgent() {
             try {
                 const response = await axios.get(API_BASE + '/public/' + SLUG + '/details');
-                if (response.data.success) {
-                    currentAgent = response.data.data.agent;
-                    const features = response.data.data.features || [];
-                    const useCases = response.data.data.useCases || [];
-                    const screenshots = response.data.data.screenshots || [];
-                    const similar = response.data.data.similar || [];
-                    
-                    // Track view
-                    axios.post(API_BASE + '/public/' + currentAgent.id + '/view').catch(console.error);
-                    
-                    renderAgent(currentAgent, features, useCases, screenshots, similar);
-                    await loadReviews();
-                    await checkSaveStatus();
-                    
-                    document.getElementById('loading').classList.add('hidden');
-                    document.getElementById('agent-content').classList.remove('hidden');
+                
+                if (!response.data.success) {
+                    document.getElementById('loading').innerHTML = '<div class="loading"><p style="color: #ef4444;">Agent not found</p></div>';
+                    return;
                 }
+
+                const data = response.data.data;
+                currentAgent = data.agent;
+                
+                // Update page title
+                document.getElementById('page-title').textContent = currentAgent.name + ' - AI Agents Directory';
+                document.getElementById('breadcrumb-agent').textContent = currentAgent.name;
+                document.getElementById('breadcrumb-category').textContent = currentAgent.category_names || 'NSFW';
+                
+                // Update agent info
+                document.getElementById('agent-logo').src = currentAgent.logo_url || 'https://via.placeholder.com/96';
+                document.getElementById('agent-name').textContent = currentAgent.name;
+                document.getElementById('agent-tagline').textContent = currentAgent.tagline || '';
+                document.getElementById('view-count').textContent = currentAgent.view_count || 0;
+                document.getElementById('like-count').textContent = currentAgent.upvote_count || 0;
+                document.getElementById('upvote-count').textContent = currentAgent.upvote_count || 0;
+                
+                // Update badges
+                let badges = '';
+                if (currentAgent.category_names) {
+                    badges += '<span class="badge badge-category"><i class="fas fa-tag"></i> ' + currentAgent.category_names + '</span>';
+                }
+                if (currentAgent.is_open_source) {
+                    badges += '<span class="badge badge-opensource"><i class="fas fa-code-branch"></i> Open Source</span>';
+                }
+                if (currentAgent.is_verified) {
+                    badges += '<span class="badge badge-verified"><i class="fas fa-check-circle"></i> Verified</span>';
+                }
+                document.getElementById('agent-badges').innerHTML = badges;
+                
+                // Visit button
+                document.getElementById('visit-btn').href = currentAgent.website_url;
+                
+                // Description
+                document.getElementById('agent-description').innerHTML = currentAgent.long_description || currentAgent.description || 'No description available.';
+                
+                // Features
+                const features = data.features || [];
+                let featuresHTML = '';
+                if (features.length > 0) {
+                    features.forEach(f => {
+                        featuresHTML += '<div class="feature-item"><div class="feature-icon"><i class="fas fa-check-circle"></i></div><div class="feature-content"><h4>' + f.title + '</h4><p>' + (f.description || '') + '</p></div></div>';
+                    });
+                } else {
+                    featuresHTML = '<p style="color: #6b7280;">No features listed.</p>';
+                }
+                document.getElementById('features-list').innerHTML = featuresHTML;
+                
+                // Use Cases
+                const useCases = data.useCases || [];
+                let useCasesHTML = '';
+                if (useCases.length > 0) {
+                    useCases.forEach((uc, i) => {
+                        useCasesHTML += '<div class="feature-item"><div class="feature-icon"><strong>' + (i+1) + '</strong></div><div class="feature-content"><h4>' + uc.title + '</h4><p>' + (uc.description || '') + '</p></div></div>';
+                    });
+                } else {
+                    useCasesHTML = '<p style="color: #6b7280;">No use cases listed.</p>';
+                }
+                document.getElementById('usecases-list').innerHTML = useCasesHTML;
+                
+                // Pricing
+                document.getElementById('pricing-model').textContent = currentAgent.pricing_model || 'Contact';
+                let pricingDetails = '';
+                if (currentAgent.pricing_starts_at) pricingDetails += 'Starting at ' + currentAgent.pricing_starts_at + '<br>';
+                if (currentAgent.free_plan_available) pricingDetails += '<span style="color: #10b981;"><i class="fas fa-check"></i> Free plan available</span><br>';
+                if (currentAgent.free_trial_available) pricingDetails += '<span style="color: #10b981;"><i class="fas fa-check"></i> Free trial available</span>';
+                document.getElementById('pricing-details').innerHTML = pricingDetails || 'Contact for pricing details';
+                
+                // Screenshots
+                const screenshots = data.screenshots || [];
+                let galleryHTML = '';
+                if (screenshots.length > 0) {
+                    screenshots.forEach(s => {
+                        galleryHTML += '<img src="' + s.image_url + '" alt="' + (s.title || 'Screenshot') + '" onclick="window.open(this.src)">';
+                    });
+                } else {
+                    galleryHTML = '<p style="color: #6b7280; grid-column: 1/-1;">No screenshots available</p>';
+                }
+                document.getElementById('gallery').innerHTML = galleryHTML;
+                
+                // Company Info
+                document.getElementById('company-name').textContent = currentAgent.company_name || currentAgent.name;
+                document.getElementById('company-founded').textContent = currentAgent.founded_year || '-';
+                document.getElementById('company-hq').textContent = currentAgent.headquarters || '-';
+                
+                // Social Links
+                let socialHTML = '';
+                if (currentAgent.twitter_url) socialHTML += '<a href="' + currentAgent.twitter_url + '" target="_blank" class="social-link" title="Twitter"><i class="fab fa-twitter"></i></a>';
+                if (currentAgent.linkedin_url) socialHTML += '<a href="' + currentAgent.linkedin_url + '" target="_blank" class="social-link" title="LinkedIn"><i class="fab fa-linkedin"></i></a>';
+                if (currentAgent.discord_url) socialHTML += '<a href="' + currentAgent.discord_url + '" target="_blank" class="social-link" title="Discord"><i class="fab fa-discord"></i></a>';
+                if (currentAgent.github_url) socialHTML += '<a href="' + currentAgent.github_url + '" target="_blank" class="social-link" title="GitHub"><i class="fab fa-github"></i></a>';
+                if (socialHTML) {
+                    document.getElementById('social-links').innerHTML = socialHTML;
+                } else {
+                    document.getElementById('social-links').innerHTML = '<p style="color: #6b7280; font-size: 14px;">No social links available</p>';
+                }
+                
+                // Rating
+                const reviewStats = data.reviewStats || {};
+                const avgRating = reviewStats.average_rating || 0;
+                const totalReviews = reviewStats.total_reviews || 0;
+                document.getElementById('avg-rating').textContent = avgRating.toFixed(1);
+                document.getElementById('rating-display').textContent = avgRating.toFixed(1);
+                document.getElementById('review-count').textContent = totalReviews;
+                
+                let starsHTML = '';
+                for (let i = 1; i <= 5; i++) {
+                    starsHTML += i <= Math.round(avgRating) ? '<i class="fas fa-star"></i>' : '<i class="far fa-star"></i>';
+                }
+                document.getElementById('rating-stars').innerHTML = starsHTML;
+                
+                // Rating bars
+                const total = totalReviews || 1;
+                for (let i = 1; i <= 5; i++) {
+                    const count = reviewStats['rating_' + i] || 0;
+                    const percent = (count / total * 100).toFixed(0);
+                    document.getElementById('bar-' + i).style.width = percent + '%';
+                    document.getElementById('count-' + i).textContent = count;
+                }
+                
+                // Reviews
+                const reviews = data.reviews || [];
+                let reviewsHTML = '';
+                if (reviews.length > 0) {
+                    reviews.forEach(r => {
+                        let stars = '';
+                        for (let i = 1; i <= 5; i++) {
+                            stars += i <= r.rating ? '<i class="fas fa-star"></i>' : '<i class="far fa-star"></i>';
+                        }
+                        reviewsHTML += '<div class="review-card"><div class="review-header"><div class="review-avatar"></div><div class="review-author"><div class="review-name">' + r.user_name + '</div><div class="review-rating">' + stars + '</div><div class="review-date">' + new Date(r.created_at).toLocaleDateString() + '</div></div></div><p>' + r.comment + '</p></div>';
+                    });
+                } else {
+                    reviewsHTML = '<p style="color: #6b7280;">No reviews yet. Be the first to review!</p>';
+                }
+                document.getElementById('reviews-list').innerHTML = reviewsHTML;
+                
+                // Check save status
+                checkSaveStatus();
+                
+                // Track view
+                axios.post(API_BASE + '/public/' + currentAgent.id + '/view').catch(console.error);
+                
+                // Show content
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+                
             } catch (error) {
                 console.error('Error loading agent:', error);
-                document.getElementById('loading').innerHTML = '<div class="text-center py-12"><p class="text-red-600">Error loading agent.</p></div>';
+                document.getElementById('loading').innerHTML = '<div class="loading"><p style="color: #ef4444;">Error loading agent. Please try again.</p></div>';
             }
         }
 
-        function renderAgent(agent, features, useCases, screenshots, similar) {
-            // Update meta
-            document.getElementById('page-title').textContent = agent.name + ' - AI Agents Directory';
-            document.getElementById('breadcrumb-agent').textContent = agent.name;
-            
-            // Logo
-            if (agent.logo_url) {
-                document.getElementById('agent-logo').innerHTML = \`<img src="\${agent.logo_url}" alt="\${agent.name}" class="w-full h-full object-cover rounded-xl" onerror="this.outerHTML='<span class=\\'text-5xl\\'>🤖</span>'">\`;
-            }
-            
-            // Basic info
-            document.getElementById('agent-name').textContent = agent.name;
-            document.getElementById('agent-tagline').textContent = agent.tagline || '';
-            document.getElementById('view-count').textContent = agent.view_count || 0;
-            document.getElementById('like-count').textContent = agent.upvote_count || 0;
-            
-            // Badges
-            let badges = [];
-            badges.push(\`<span class="badge bg-blue-100 text-blue-800"><i class="fas fa-tag"></i>\${agent.category_names || 'NSFW'}</span>\`);
-            if (agent.is_open_source) {
-                badges.push('<span class="badge bg-green-100 text-green-800"><i class="fas fa-code-branch"></i>Open Source</span>');
-            }
-            document.getElementById('agent-badges').innerHTML = badges.join('');
-            
-            // Website
-            document.getElementById('visit-website-btn').href = agent.website_url;
-            
-            // Description
-            document.getElementById('agent-description').innerHTML = agent.long_description || agent.description || 'No description available.';
-            
-            // Features
-            if (features.length > 0) {
-                document.getElementById('features-grid').innerHTML = features.map(f => \`
-                    <div class="feature-card">
-                        <div class="flex items-start gap-3">
-                            <i class="fas fa-check-circle text-purple-600 text-xl mt-1"></i>
-                            <div>
-                                <h4 class="font-semibold mb-1">\${f.title}</h4>
-                                <p class="text-sm text-gray-600">\${f.description || ''}</p>
-                            </div>
-                        </div>
-                    </div>
-                \`).join('');
-            } else {
-                document.getElementById('features-grid').innerHTML = '<p class="text-gray-600">No features listed.</p>';
-            }
-            
-            // Use Cases
-            if (useCases.length > 0) {
-                document.getElementById('use-cases-list').innerHTML = useCases.map((uc, i) => \`
-                    <div class="feature-card">
-                        <div class="flex items-start gap-3">
-                            <div class="w-8 h-8 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center font-bold flex-shrink-0">
-                                \${i + 1}
-                            </div>
-                            <div>
-                                <h4 class="font-semibold mb-1">\${uc.title}</h4>
-                                <p class="text-sm text-gray-600">\${uc.description}</p>
-                            </div>
-                        </div>
-                    </div>
-                \`).join('');
-            } else {
-                document.getElementById('use-cases-list').innerHTML = '<p class="text-gray-600">No use cases listed.</p>';
-            }
-            
-            // Pricing
-            document.getElementById('pricing-content').innerHTML = \`
-                <div class="feature-card">
-                    <div class="flex items-center gap-4 mb-4">
-                        <span class="text-3xl font-bold text-purple-600">\${agent.pricing_model}</span>
-                        \${agent.pricing_starts_at ? \`<span class="text-gray-600">Starting at \${agent.pricing_starts_at}</span>\` : ''}
-                    </div>
-                    \${agent.free_plan_available ? '<p class="text-green-600"><i class="fas fa-check mr-2"></i>Free plan available</p>' : ''}
-                    \${agent.free_trial_available ? '<p class="text-green-600"><i class="fas fa-check mr-2"></i>Free trial available</p>' : ''}
-                </div>
-            \`;
-            
-            // Screenshots
-            if (screenshots.length > 0) {
-                document.getElementById('image-gallery').innerHTML = screenshots.map(s => \`
-                    <img src="\${s.image_url}" alt="\${s.title}" onclick="openImage('\${s.image_url}')">
-                \`).join('');
-            } else if (agent.video_thumbnail) {
-                document.getElementById('image-gallery').innerHTML = \`<img src="\${agent.video_thumbnail}" alt="Thumbnail" class="col-span-2">\`;
-            }
-            
-            // Alternatives
-            if (similar.length > 0) {
-                document.getElementById('alternatives-grid').innerHTML = similar.map(a => \`
-                    <a href="/agents/\${a.slug}" class="feature-card block">
-                        <div class="flex items-center gap-4">
-                            <img src="\${a.logo_url || 'https://via.placeholder.com/50'}" alt="\${a.name}" class="w-12 h-12 rounded-lg">
-                            <div>
-                                <h4 class="font-semibold">\${a.name}</h4>
-                                <p class="text-sm text-gray-600">\${a.tagline || ''}</p>
-                            </div>
-                        </div>
-                    </a>
-                \`).join('');
-            } else {
-                document.getElementById('alternatives-grid').innerHTML = '<p class="text-gray-600">No alternatives found.</p>';
-            }
-            
-            // Company info
-            if (agent.company_name) {
-                document.getElementById('company-section').classList.remove('hidden');
-                let companyHtml = [];
-                if (agent.company_name) companyHtml.push(\`<div class="flex justify-between"><span class="text-gray-600">Company</span><span class="font-medium">\${agent.company_name}</span></div>\`);
-                if (agent.founded_year) companyHtml.push(\`<div class="flex justify-between"><span class="text-gray-600">Founded</span><span class="font-medium">\${agent.founded_year}</span></div>\`);
-                if (agent.headquarters) companyHtml.push(\`<div class="flex justify-between"><span class="text-gray-600">Location</span><span class="font-medium">\${agent.headquarters}</span></div>\`);
-                document.getElementById('company-info').innerHTML = companyHtml.join('');
-            }
-            
-            // Social links
-            let socialLinks = [];
-            if (agent.twitter_url) socialLinks.push(\`<a href="\${agent.twitter_url}" target="_blank" class="btn-secondary"><i class="fab fa-x-twitter"></i></a>\`);
-            if (agent.linkedin_url) socialLinks.push(\`<a href="\${agent.linkedin_url}" target="_blank" class="btn-secondary"><i class="fab fa-linkedin"></i></a>\`);
-            if (agent.discord_url) socialLinks.push(\`<a href="\${agent.discord_url}" target="_blank" class="btn-secondary"><i class="fab fa-discord"></i></a>\`);
-            if (agent.github_url) socialLinks.push(\`<a href="\${agent.github_url}" target="_blank" class="btn-secondary"><i class="fab fa-github"></i></a>\`);
-            
-            if (socialLinks.length > 0) {
-                document.getElementById('social-section').classList.remove('hidden');
-                document.getElementById('social-links').innerHTML = socialLinks.join('');
-            }
-        }
-
-        // Reviews
-        async function loadReviews() {
-            if (!currentAgent) return;
-            try {
-                const res = await axios.get(\`\${API_BASE}/reviews/agent/\${currentAgent.id}?page=1&limit=10\`);
-                if (res.data.success) {
-                    const {reviews, stats} = res.data.data;
-                    
-                    document.getElementById('avg-rating').textContent = (stats.average_rating || 0).toFixed(1);
-                    const starDisplay = '★'.repeat(Math.round(stats.average_rating || 0)) + '☆'.repeat(5 - Math.round(stats.average_rating || 0));
-                    document.getElementById('star-display').textContent = starDisplay;
-                    document.getElementById('total-reviews').textContent = \`\${stats.total_reviews || 0} reviews\`;
-                    document.getElementById('review-count-tab').textContent = stats.total_reviews || 0;
-                    
-                    // Rating breakdown
-                    const total = stats.total_reviews || 1;
-                    for (let i = 1; i <= 5; i++) {
-                        const count = stats[\`rating_\${i}\`] || 0;
-                        const percent = (count / total * 100).toFixed(0);
-                        document.getElementById(\`progress-\${i}\`).style.width = percent + '%';
-                        document.getElementById(\`count-\${i}\`).textContent = count;
-                    }
-                    
-                    if (reviews.length > 0) {
-                        document.getElementById('reviews-list').innerHTML = reviews.map(r => \`
-                            <div class="review-card">
-                                <div class="flex items-start gap-4">
-                                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-indigo-600 flex items-center justify-center text-white font-bold text-lg">
-                                        \${r.user_name.charAt(0).toUpperCase()}
-                                    </div>
-                                    <div class="flex-1">
-                                        <div class="flex items-center justify-between mb-2">
-                                            <div>
-                                                <div class="font-bold">\${r.user_name}</div>
-                                                <div class="text-yellow-500 text-sm">\${'★'.repeat(r.rating)}\${'☆'.repeat(5-r.rating)}</div>
-                                            </div>
-                                            <div class="text-sm text-gray-500">
-                                                \${new Date(r.created_at).toLocaleDateString()}
-                                            </div>
-                                        </div>
-                                        <h4 class="font-semibold mb-2">\${r.review_title}</h4>
-                                        <p class="text-gray-600">\${r.review_summary}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        \`).join('');
-                    } else {
-                        document.getElementById('reviews-list').innerHTML = '<div class="text-center py-12 text-gray-500">No reviews yet. Be the first to review!</div>';
-                    }
-                }
-            } catch (err) {
-                console.error('Error loading reviews:', err);
-            }
-        }
-
-        // Save functionality
-        let isSaved = false;
+        // Save/Bookmark functionality
         async function checkSaveStatus() {
             const token = localStorage.getItem('token');
             if (!token || !currentAgent) return;
             
             try {
-                const response = await axios.get(API_BASE + '/saves/check/' + currentAgent.id, {
+                const res = await axios.get(API_BASE + '/saves/check/' + currentAgent.id, {
                     headers: { Authorization: 'Bearer ' + token }
                 });
-                if (response.data.success && response.data.saved) {
+                if (res.data.success && res.data.saved) {
                     isSaved = true;
-                    updateSaveButton();
+                    document.getElementById('save-text').textContent = 'Saved';
+                    document.getElementById('save-btn').style.background = '#7c3aed';
+                    document.getElementById('save-btn').style.color = '#fff';
                 }
             } catch (error) {
                 console.error('Error checking save status:', error);
@@ -661,7 +543,8 @@ export const modernAgentDetailPage = (slug: string) => `
         async function toggleSave() {
             const token = localStorage.getItem('token');
             if (!token) {
-                window.location.href = '/login';
+                showToast('Please login to save agents');
+                setTimeout(() => window.location.href = '/login', 1500);
                 return;
             }
             
@@ -671,61 +554,75 @@ export const modernAgentDetailPage = (slug: string) => `
                         headers: { Authorization: 'Bearer ' + token }
                     });
                     isSaved = false;
+                    document.getElementById('save-text').textContent = 'Save';
+                    document.getElementById('save-btn').style.background = '#f3f4f6';
+                    document.getElementById('save-btn').style.color = '#374151';
+                    showToast('Removed from saved list');
                 } else {
                     await axios.post(API_BASE + '/saves/' + currentAgent.id, {}, {
                         headers: { Authorization: 'Bearer ' + token }
                     });
                     isSaved = true;
+                    document.getElementById('save-text').textContent = 'Saved';
+                    document.getElementById('save-btn').style.background = '#7c3aed';
+                    document.getElementById('save-btn').style.color = '#fff';
+                    showToast('Agent saved successfully!');
                 }
-                updateSaveButton();
             } catch (error) {
-                console.error('Error saving agent:', error);
+                showToast('Error saving agent');
             }
         }
 
-        function updateSaveButton() {
-            const saveBtn = document.getElementById('save-btn');
-            if (isSaved) {
-                saveBtn.querySelector('i').className = 'fas fa-bookmark';
-                document.getElementById('save-text').textContent = 'Saved';
-            } else {
-                saveBtn.querySelector('i').className = 'far fa-bookmark';
-                document.getElementById('save-text').textContent = 'Save';
-            }
-        }
-
-        function shareAgent() {
-            if (navigator.share && currentAgent) {
-                navigator.share({
-                    title: currentAgent.name,
-                    text: currentAgent.tagline,
-                    url: window.location.href
-                }).catch(console.error);
-            } else {
-                copyLink();
-            }
-        }
-
-        function copyLink() {
-            navigator.clipboard.writeText(window.location.href);
-            alert('Link copied to clipboard!');
-        }
-
-        function openImage(url) {
-            window.open(url, '_blank');
-        }
-
-        function showReviewForm() {
+        // Upvote
+        async function upvoteAgent() {
             const token = localStorage.getItem('token');
             if (!token) {
-                window.location.href = '/login';
+                showToast('Please login to upvote');
+                setTimeout(() => window.location.href = '/login', 1500);
                 return;
             }
-            alert('Review form will be implemented here');
+            
+            try {
+                await axios.post(API_BASE + '/agents/' + currentAgent.id + '/upvote', {}, {
+                    headers: { Authorization: 'Bearer ' + token }
+                });
+                
+                // Fetch updated count
+                const res = await axios.get(API_BASE + '/public/' + currentAgent.id + '/vote-count');
+                if (res.data.success) {
+                    const newCount = res.data.data.upvote_count;
+                    document.getElementById('upvote-count').textContent = newCount;
+                    document.getElementById('like-count').textContent = newCount;
+                    showToast('Upvote recorded!');
+                }
+            } catch (error) {
+                showToast('Error upvoting agent');
+            }
         }
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', loadAgent);
+        // Share
+        function shareAgent() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                showToast('Link copied to clipboard!');
+            });
+        }
+
+        // Toast notification
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // Load on page ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadAgent);
+        } else {
+            loadAgent();
+        }
     </script>
 </body>
 </html>
