@@ -4,11 +4,13 @@ A comprehensive directory platform for discovering, submitting, and managing AI 
 
 ## 🚀 Live Demo
 
-- **Production**: https://97bcdc6b.webapp-ds7.pages.dev (Latest - Oct 29, 2025 - AGENTS PAGE FIXED & WORKING)
+- **Production**: https://809cc0c5.webapp-ds7.pages.dev (Latest - Oct 29, 2025 - ENHANCED DESIGN)
 - **Custom Domain**: https://llmdude.com (Production site - auto-updates)
 - **Image CDN**: https://storage.llmdude.com (R2 Custom Domain)
 - **Local Test**: https://3000-izrhvxrc8y0zaw0u52v89-2e1b9533.sandbox.novita.ai
-- **Previous Deployment**: https://371c8b83.webapp-ds7.pages.dev (All placeholders removed)
+- **Previous Deployments**: 
+  - https://97bcdc6b.webapp-ds7.pages.dev (Agents page fixed)
+  - https://371c8b83.webapp-ds7.pages.dev (Placeholders removed)
 
 ### 🎉 LATEST - Enhanced Agent Page Design (2025-10-29 10:20 UTC)
 
