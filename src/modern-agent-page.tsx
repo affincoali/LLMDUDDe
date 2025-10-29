@@ -100,16 +100,26 @@ export const modernAgentDetailPage = (slug: string) => `
         .lightbox-next { right: -60px; }
         .lightbox-prev:hover, .lightbox-next:hover { background: rgba(255,255,255,0.3); }
         
-        /* Company Info */
-        .info-grid { display: grid; gap: 12px; }
-        .info-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f3f4f6; }
-        .info-label { color: #6b7280; font-size: 14px; }
-        .info-value { font-weight: 600; font-size: 14px; }
+        /* Company Info - Enhanced Design */
+        .info-grid { display: grid; gap: 16px; }
+        .info-row { display: flex; align-items: center; gap: 12px; padding: 14px; background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%); border-radius: 10px; transition: all 0.3s; }
+        .info-row:hover { transform: translateX(4px); box-shadow: 0 2px 8px rgba(124, 58, 237, 0.1); }
+        .info-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%); color: #fff; border-radius: 8px; font-size: 16px; flex-shrink: 0; }
+        .info-content { flex: 1; }
+        .info-label { color: #6b7280; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .info-value { font-weight: 600; font-size: 15px; color: #1f2937; }
         
-        /* Social Links */
-        .social-links { display: flex; gap: 8px; flex-wrap: wrap; }
-        .social-link { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: #f3f4f6; border-radius: 8px; color: #374151; text-decoration: none; }
-        .social-link:hover { background: #e5e7eb; }
+        /* Social Links - Enhanced Design */
+        .social-links { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 12px; }
+        .social-link { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; background: #fff; border: 2px solid #e5e7eb; border-radius: 10px; color: #374151; text-decoration: none; font-size: 18px; transition: all 0.3s; position: relative; overflow: hidden; }
+        .social-link:before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%); transition: left 0.3s; }
+        .social-link:hover { border-color: #7c3aed; color: #7c3aed; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2); }
+        .social-link:hover:before { left: 0; }
+        .social-link i { position: relative; z-index: 1; }
+        .social-link.twitter:hover { border-color: #1da1f2; color: #1da1f2; }
+        .social-link.linkedin:hover { border-color: #0077b5; color: #0077b5; }
+        .social-link.github:hover { border-color: #333; color: #333; }
+        .social-link.discord:hover { border-color: #5865f2; color: #5865f2; }
         
         /* Rating */
         .rating-summary { text-align: center; margin-bottom: 24px; }
@@ -281,38 +291,47 @@ export const modernAgentDetailPage = (slug: string) => `
                     <div class="sidebar">
                         <!-- YouTube Video -->
                         <div class="sidebar-section" id="video-section" style="display: none;">
-                            <h3 class="sidebar-title">Video</h3>
+                            <h3 class="sidebar-title"><i class="fab fa-youtube" style="margin-right: 8px; color: #ff0000;"></i>Video Demo</h3>
                             <div id="youtube-container" class="video-container"></div>
                         </div>
 
                         <!-- Company Info -->
                         <div class="sidebar-section">
-                            <h3 class="sidebar-title">Company Information</h3>
+                            <h3 class="sidebar-title"><i class="fas fa-building" style="margin-right: 8px; color: #7c3aed;"></i>Company Information</h3>
                             <div class="info-grid">
                                 <div class="info-row">
-                                    <span class="info-label">Company</span>
-                                    <span class="info-value" id="company-name">-</span>
+                                    <div class="info-icon"><i class="fas fa-briefcase"></i></div>
+                                    <div class="info-content">
+                                        <div class="info-label">Company</div>
+                                        <div class="info-value" id="company-name">-</div>
+                                    </div>
                                 </div>
                                 <div class="info-row">
-                                    <span class="info-label">Founded</span>
-                                    <span class="info-value" id="company-founded">-</span>
+                                    <div class="info-icon"><i class="fas fa-calendar-alt"></i></div>
+                                    <div class="info-content">
+                                        <div class="info-label">Founded</div>
+                                        <div class="info-value" id="company-founded">-</div>
+                                    </div>
                                 </div>
                                 <div class="info-row">
-                                    <span class="info-label">Headquarters</span>
-                                    <span class="info-value" id="company-hq">-</span>
+                                    <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
+                                    <div class="info-content">
+                                        <div class="info-label">Headquarters</div>
+                                        <div class="info-value" id="company-hq">-</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Social Links -->
                         <div class="sidebar-section">
-                            <h3 class="sidebar-title">Connect</h3>
+                            <h3 class="sidebar-title"><i class="fas fa-share-alt" style="margin-right: 8px; color: #7c3aed;"></i>Connect</h3>
                             <div id="social-links" class="social-links"></div>
                         </div>
 
                         <!-- Rating Summary -->
                         <div class="sidebar-section">
-                            <h3 class="sidebar-title">User Ratings</h3>
+                            <h3 class="sidebar-title"><i class="fas fa-star" style="margin-right: 8px; color: #fbbf24;"></i>User Ratings</h3>
                             <div class="rating-summary">
                                 <div class="rating-number" id="avg-rating">0.0</div>
                                 <div class="rating-stars" id="rating-stars"></div>
@@ -505,16 +524,16 @@ export const modernAgentDetailPage = (slug: string) => `
                 document.getElementById('company-founded').textContent = currentAgent.founded_year || '-';
                 document.getElementById('company-hq').textContent = currentAgent.headquarters || '-';
                 
-                // Social Links
+                // Social Links with enhanced styling
                 let socialHTML = '';
-                if (currentAgent.twitter_url) socialHTML += '<a href="' + currentAgent.twitter_url + '" target="_blank" class="social-link" title="Twitter"><i class="fab fa-twitter"></i></a>';
-                if (currentAgent.linkedin_url) socialHTML += '<a href="' + currentAgent.linkedin_url + '" target="_blank" class="social-link" title="LinkedIn"><i class="fab fa-linkedin"></i></a>';
-                if (currentAgent.discord_url) socialHTML += '<a href="' + currentAgent.discord_url + '" target="_blank" class="social-link" title="Discord"><i class="fab fa-discord"></i></a>';
-                if (currentAgent.github_url) socialHTML += '<a href="' + currentAgent.github_url + '" target="_blank" class="social-link" title="GitHub"><i class="fab fa-github"></i></a>';
+                if (currentAgent.twitter_url) socialHTML += '<a href="' + currentAgent.twitter_url + '" target="_blank" class="social-link twitter" title="Twitter"><i class="fab fa-twitter"></i></a>';
+                if (currentAgent.linkedin_url) socialHTML += '<a href="' + currentAgent.linkedin_url + '" target="_blank" class="social-link linkedin" title="LinkedIn"><i class="fab fa-linkedin"></i></a>';
+                if (currentAgent.discord_url) socialHTML += '<a href="' + currentAgent.discord_url + '" target="_blank" class="social-link discord" title="Discord"><i class="fab fa-discord"></i></a>';
+                if (currentAgent.github_url) socialHTML += '<a href="' + currentAgent.github_url + '" target="_blank" class="social-link github" title="GitHub"><i class="fab fa-github"></i></a>';
                 if (socialHTML) {
                     document.getElementById('social-links').innerHTML = socialHTML;
                 } else {
-                    document.getElementById('social-links').innerHTML = '<p style="color: #6b7280; font-size: 14px;">No social links available</p>';
+                    document.getElementById('social-links').innerHTML = '<p style="color: #6b7280; font-size: 14px; text-align: center;">No social links available</p>';
                 }
                 
                 // Rating
