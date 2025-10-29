@@ -82,6 +82,30 @@ publicApi.get('/newly-added', async (c) => {
   }
 });
 
+// Get all approved agents - OPTIMIZED for agents listing page
+publicApi.get('/agents', async (c) => {
+  try {
+    const DB = c.env.DB;
+    
+    // Simple query without JOINs for maximum speed
+    const agents = await DB.prepare(`
+      SELECT id, name, slug, logo_url, tagline, description, pricing_model, 
+             upvote_count, view_count, is_open_source, created_at, review_count
+      FROM agents
+      WHERE status = 'APPROVED'
+      ORDER BY view_count DESC
+    `).all();
+    
+    return c.json({
+      success: true,
+      data: agents.results || []
+    });
+  } catch (error) {
+    console.error('Error fetching agents:', error);
+    return c.json({ success: false, error: 'Failed to fetch agents' }, 500);
+  }
+});
+
 // Get popular categories
 publicApi.get('/categories/popular', async (c) => {
   try {
