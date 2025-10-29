@@ -29,9 +29,9 @@ import { adminAgentCreatePage, adminAgentEditPage } from './admin-agent-forms';
 import { adminComprehensiveEditPage } from './admin-comprehensive-form';
 import { adminReviewsPage } from './admin-reviews';
 import { enhancedHomepage } from './public-pages';
-import { advancedAgentsListing, individualAgentPage } from './agents-pages';
-import { enhancedAgentDetailPage } from './enhanced-agent-page';
-import { redesignedAgentDetailPage } from './redesigned-agent-page';
+import { advancedAgentsListing } from './agents-pages'; // individualAgentPage removed - not used
+// import { enhancedAgentDetailPage } from './enhanced-agent-page'; // OLD - removed for bundle optimization
+// import { redesignedAgentDetailPage } from './redesigned-agent-page'; // REJECTED - removed for bundle optimization  
 import { modernAgentDetailPage } from './modern-agent-page';
 import { enhancedCategoryDetailPage } from './enhanced-category-page';
 import { categoriesPage, categoryDetailPage } from './categories-pages';
@@ -358,17 +358,8 @@ app.get('/agents/:slug', (c) => {
   return c.html(modernAgentDetailPage(slug));
 });
 
-// Agent detail page - Enhanced version (kept for reference)
-app.get('/agents-enhanced/:slug', (c) => {
-  const slug = c.req.param('slug');
-  return c.html(enhancedAgentDetailPage(slug));
-});
-
-// Agent detail page - Old version (kept for reference)
-app.get('/agents-old/:slug', (c) => {
-  const slug = c.req.param('slug');
-  return c.html(individualAgentPage(slug));
-});
+// Old versions removed to optimize bundle size (103KB saved!)
+// Use previous deployment for old design: https://0a42491e.webapp-ds7.pages.dev/
 
 // Categories page - KEEPING OLD FOR BACKWARD COMPATIBILITY
 // Use /categories-old for simple version

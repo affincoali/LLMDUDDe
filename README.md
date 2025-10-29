@@ -4,14 +4,17 @@ A comprehensive directory platform for discovering, submitting, and managing AI 
 
 ## 🚀 Live Demo
 
-- **Production**: https://f7627254.webapp-ds7.pages.dev (Latest - Oct 29, 2025 - MODERN DESIGN)
-- **Custom Domain**: https://llmdude.com (Production site)
+- **Production**: https://60872c91.webapp-ds7.pages.dev (Latest - Oct 29, 2025 - OPTIMIZED 841KB)
+- **Custom Domain**: https://llmdude.com (Production site - auto-updates)
 - **Image CDN**: https://storage.llmdude.com (R2 Custom Domain)
 - **Local Test**: https://3000-izrhvxrc8y0zaw0u52v89-2e1b9533.sandbox.novita.ai
+- **Old Design**: https://0a42491e.webapp-ds7.pages.dev (Previous light theme)
 
-### 🎉 LATEST - Modern Agent Detail Page Design (2025-10-29 07:10 UTC)
+### 🎉 LATEST - Optimized Modern Design (2025-10-29 07:15 UTC)
 
-**✅ Complete UI Redesign Matching aiagentsdirectory.com!**
+**✅ 80KB Bundle Reduction + Complete UI Redesign!**
+- ✅ **Bundle Size**: 841KB (down from 921KB) - **80KB smaller, 8.7% reduction!**
+- ✅ **Removed Old Pages**: Enhanced and redesigned agent pages removed from bundle
 - ✅ **Modern Tab Navigation**: Overview, Features, Use Cases, Pricing, Alternatives, Reviews
 - ✅ **Stats Badges**: Views, likes, rating with star display
 - ✅ **2-Column Layout**: 2/3 left content area, 1/3 right sidebar
@@ -23,8 +26,8 @@ A comprehensive directory platform for discovering, submitting, and managing AI 
 - ✅ **Breadcrumb Navigation**: Clear navigation path at top
 - ✅ **Individual Review Cards**: User avatars, ratings, and review content
 - ✅ **Action Buttons**: Visit Website, Save, and other CTAs styled consistently
-- ✅ **Bundle Size**: 921KB (comprehensive features included)
 - ✅ **Previous Features Retained**: Save functionality, upvoting, social media integration
+- ✅ **Faster Load Times**: Smaller bundle = faster page loads globally
 
 ### ✅ All Pages Fully Functional
 
@@ -60,11 +63,14 @@ A comprehensive directory platform for discovering, submitting, and managing AI 
 - ✅ **Submit Form** - Multi-step agent submission
 - ✅ **Admin panel** - Full CRUD for Categories, Users, Agents (FIXED - 2025-10-27)
 
-**Test URLs**:
-- Homepage: https://3000-izrhvxrc8y0zaw0u52v89-2e1b9533.sandbox.novita.ai/
-- ChatGPT: https://3000-izrhvxrc8y0zaw0u52v89-2e1b9533.sandbox.novita.ai/agents/chatgpt
-- Jasper AI: https://3000-izrhvxrc8y0zaw0u52v89-2e1b9533.sandbox.novita.ai/agents/jasper-ai
-- Categories: https://3000-izrhvxrc8y0zaw0u52v89-2e1b9533.sandbox.novita.ai/categories
+**Test URLs (Optimized Modern Design - Latest)**:
+- Homepage: https://llmdude.com/ or https://60872c91.webapp-ds7.pages.dev/
+- ChatGPT: https://llmdude.com/agents/chatgpt
+- Claude: https://llmdude.com/agents/claude
+- Midjourney: https://llmdude.com/agents/midjourney
+- GitHub Copilot: https://llmdude.com/agents/github-copilot
+- Perplexity AI: https://llmdude.com/agents/perplexity-ai
+- Categories: https://llmdude.com/categories
 
 ### 🔑 Admin Credentials
 
