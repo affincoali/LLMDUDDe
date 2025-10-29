@@ -390,10 +390,14 @@ export const advancedAgentsListing = () => `
 
         // Create Grid Card
         function createGridCard(agent) {
+            const logoHtml = agent.logo_url 
+                ? \`<img src="\${agent.logo_url}" alt="\${agent.name}" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png';">
+                : \`<img src="https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png" alt="\${agent.name}" class="w-full h-full object-contain">\`;
+            
             return \`
                 <div class="card rounded-lg overflow-hidden card-hover cursor-pointer" onclick="window.location='/agents/\${agent.slug}'">
-                    <div class="h-48 bg-gradient-to-br from-purple-400 to-indigo-600 flex items-center justify-center">
-                        <span class="text-6xl">\${agent.logo_url || '🤖'}</span>
+                    <div class="h-48 bg-white flex items-center justify-center p-4">
+                        \${logoHtml}
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold mb-2 truncate">\${agent.name}</h3>
@@ -415,32 +419,32 @@ export const advancedAgentsListing = () => `
             \`;
         }
 
-        // Create List Card
+        // Create List Card - Optimized and Clean
         function createListCard(agent) {
+            const logoHtml = agent.logo_url 
+                ? \`<img src="\${agent.logo_url}" alt="\${agent.name}" class="w-full h-full object-contain rounded-lg" onerror="this.onerror=null; this.src='https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png';">
+                : \`<img src="https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png" alt="\${agent.name}" class="w-full h-full object-contain rounded-lg">\`;
+            
             return \`
-                <div class="card rounded-lg p-6 card-hover cursor-pointer" onclick="window.location='/agents/\${agent.slug}'">
-                    <div class="flex gap-6">
-                        <div class="w-32 h-32 flex-shrink-0 bg-gradient-to-br from-purple-400 to-indigo-600 rounded-lg flex items-center justify-center">
-                            <span class="text-5xl">\${agent.logo_url || '🤖'}</span>
+                <div class="card rounded-lg p-4 card-hover cursor-pointer" onclick="window.location='/agents/\${agent.slug}'">
+                    <div class="flex gap-4">
+                        <div class="w-20 h-20 flex-shrink-0 bg-white rounded-lg flex items-center justify-center p-2">
+                            \${logoHtml}
                         </div>
-                        <div class="flex-1">
-                            <div class="flex items-start justify-between mb-2">
-                                <div>
-                                    <h3 class="text-2xl font-bold mb-1">\${agent.name}</h3>
-                                    <p class="text-gray-600 dark:text-gray-400 mb-3">\${agent.tagline || ''}</p>
-                                </div>
-                                <button onclick="event.stopPropagation(); upvoteAgent(\${agent.id})" class="upvote-btn px-4 py-2 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-start justify-between gap-2 mb-1">
+                                <h3 class="text-lg font-bold truncate">\${agent.name}</h3>
+                                <button onclick="event.stopPropagation(); upvoteAgent(\${agent.id})" class="upvote-btn px-3 py-1 text-sm rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900 flex-shrink-0">
                                     <i class="fas fa-arrow-up"></i> \${agent.upvote_count || 0}
                                 </button>
                             </div>
-                            <p class="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2">\${agent.description || ''}</p>
-                            <div class="flex items-center gap-4">
-                                <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 text-xs font-semibold rounded-full">
+                            <p class="text-gray-600 dark:text-gray-400 text-sm mb-2 truncate">\${agent.tagline || ''}</p>
+                            <div class="flex items-center gap-3 text-xs">
+                                <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 font-semibold rounded">
                                     \${agent.pricing_model}
                                 </span>
-                                \${agent.is_open_source ? '<span class="text-xs text-green-600"><i class="fas fa-code"></i> Open Source</span>' : ''}
-                                <span class="text-sm text-gray-500"><i class="fas fa-eye text-purple-600"></i> \${agent.view_count || 0}</span>
-                                <span class="text-sm text-gray-500"><i class="fas fa-star text-yellow-500"></i> \${agent.review_count || 0} reviews</span>
+                                <span class="text-gray-500"><i class="fas fa-eye text-purple-600"></i> \${agent.view_count || 0}</span>
+                                \${agent.is_open_source ? '<span class="text-green-600"><i class="fas fa-code"></i></span>' : ''}
                             </div>
                         </div>
                     </div>

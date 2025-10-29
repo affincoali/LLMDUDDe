@@ -173,7 +173,7 @@ export const modernAgentDetailPage = (slug: string) => `
                         <!-- Agent Header -->
                         <div class="agent-header">
                             <div class="agent-top">
-                                <img id="agent-logo" class="agent-logo" src="" alt="" onerror="this.src='https://via.placeholder.com/96'">
+                                <img id="agent-logo" class="agent-logo" src="" alt="" onerror="this.src='https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png'">
                                 <div class="agent-info">
                                     <h1 id="agent-name" class="agent-name">Agent Name</h1>
                                     <p id="agent-tagline" class="agent-tagline">Loading...</p>
@@ -385,7 +385,7 @@ export const modernAgentDetailPage = (slug: string) => `
                 document.getElementById('breadcrumb-category').textContent = currentAgent.category_names || 'NSFW';
                 
                 // Update agent info
-                document.getElementById('agent-logo').src = currentAgent.logo_url || 'https://via.placeholder.com/96';
+                document.getElementById('agent-logo').src = currentAgent.logo_url || 'https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png';
                 document.getElementById('agent-name').textContent = currentAgent.name;
                 document.getElementById('agent-tagline').textContent = currentAgent.tagline || '';
                 document.getElementById('view-count').textContent = currentAgent.view_count || 0;

@@ -362,14 +362,15 @@ export const enhancedHomepage = () => `
 
         // Create agent card HTML
         function createAgentCard(agent) {
+            const logoHtml = agent.logo_url 
+                ? \`<img src="\${agent.logo_url}" alt="\${agent.name}" loading="lazy" class="w-full h-full object-contain p-4" 
+                        onerror="this.onerror=null; this.src='https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png';">\`
+                : \`<img src="https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png" alt="\${agent.name}" loading="lazy" class="w-full h-full object-contain p-4">\`;
+            
             return \`
                 <div class="scroll-item w-80 bg-white rounded-lg shadow-md overflow-hidden card-hover cursor-pointer" onclick="window.location='/agents/\${agent.slug}'">
-                    <div class="h-48 bg-gradient-to-br from-purple-400 to-indigo-600 flex items-center justify-center overflow-hidden">
-                        \${agent.logo_url ? \`
-                            <img src="\${agent.logo_url}" alt="\${agent.name}" loading="lazy" class="w-full h-full object-cover" 
-                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <span class="text-6xl hidden">🤖</span>
-                        \` : '<span class="text-6xl">🤖</span>'}
+                    <div class="h-48 bg-white flex items-center justify-center overflow-hidden">
+                        \${logoHtml}
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-900 mb-2 truncate">\${agent.name}</h3>
@@ -442,13 +443,16 @@ export const enhancedHomepage = () => `
                             <div class="p-3 bg-gray-50 border-b border-gray-200">
                                 <p class="text-sm font-semibold text-gray-700">Found \${results.length} result\${results.length !== 1 ? 's' : ''}</p>
                             </div>
-                        \` + results.map(agent => \`
+                        \` + results.map(agent => {
+                            const logoHtml = agent.logo_url 
+                                ? \`<img src="\${agent.logo_url}" alt="\${agent.name}" loading="lazy" class="w-12 h-12 rounded-lg object-contain" 
+                                        onerror="this.onerror=null; this.src='https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png';">\`
+                                : \`<img src="https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png" alt="\${agent.name}" loading="lazy" class="w-12 h-12 rounded-lg object-contain">\`;
+                            
+                            return \`
                             <a href="/agents/\${agent.slug}" class="flex items-center p-4 hover:bg-purple-50 transition border-b border-gray-100 last:border-b-0 cursor-pointer">
-                                <div class="mr-4 flex-shrink-0">
-                                    \${agent.logo_url ? \`
-                                        <img src="\${agent.logo_url}" alt="\${agent.name}" loading="lazy" class="w-12 h-12 rounded-lg object-cover" 
-                                            onerror="this.outerHTML='<div class=\\'text-3xl\\'>🤖</div>'">
-                                    \` : '<div class="text-3xl">🤖</div>'}
+                                <div class="mr-4 flex-shrink-0 bg-white p-1 rounded-lg">
+                                    \${logoHtml}
                                 </div>
                                 <div class="flex-1 min-w-0">
                                     <div class="font-semibold text-gray-900 mb-1">\${agent.name}</div>
@@ -460,7 +464,8 @@ export const enhancedHomepage = () => `
                                 </div>
                                 <span class="text-xs bg-purple-100 text-purple-600 px-3 py-1 rounded-full font-semibold ml-3 flex-shrink-0">\${agent.pricing_model || 'N/A'}</span>
                             </a>
-                        \`).join('');
+                        \`;
+                        }).join('');
                     }
                     
                     resultsDiv.classList.remove('hidden');
