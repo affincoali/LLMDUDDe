@@ -311,14 +311,13 @@ publicApi.get('/:slug/details', async (c) => {
       DB.prepare('SELECT COUNT(*) as total_reviews, AVG(rating) as average_rating, SUM(CASE WHEN rating = 5 THEN 1 ELSE 0 END) as rating_5, SUM(CASE WHEN rating = 4 THEN 1 ELSE 0 END) as rating_4, SUM(CASE WHEN rating = 3 THEN 1 ELSE 0 END) as rating_3, SUM(CASE WHEN rating = 2 THEN 1 ELSE 0 END) as rating_2, SUM(CASE WHEN rating = 1 THEN 1 ELSE 0 END) as rating_1 FROM reviews WHERE agent_id = ? AND status = "APPROVED"').bind(agent.id).first()
     ]);
     
-    // Get similar agents (simplified query for speed - only basic info, limit 3)
+    // Get similar agents (ultra-fast query - indexed columns only, limit 3)
     const firstCategoryId = agent.category_ids ? agent.category_ids.split(',')[0] : null;
     const similar = firstCategoryId ? await DB.prepare(`
       SELECT a.id, a.name, a.slug, a.logo_url, a.tagline, a.upvote_count
       FROM agents a
-      LEFT JOIN agent_categories ac ON a.id = ac.agent_id
+      JOIN agent_categories ac ON a.id = ac.agent_id
       WHERE ac.category_id = ? AND a.id != ? AND a.status = 'APPROVED'
-      GROUP BY a.id
       ORDER BY a.upvote_count DESC
       LIMIT 3
     `).bind(firstCategoryId, agent.id).all() : { results: [] };

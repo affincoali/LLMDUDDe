@@ -417,9 +417,13 @@ export const modernAgentDetailPage = (slug: string) => `
             }
         });
 
-        // Load agent data
+        // Load agent data - optimized for speed
         async function loadAgent() {
             try {
+                // Hide loading immediately and show content skeleton
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+                
                 const response = await axios.get(API_BASE + '/public/' + SLUG + '/details');
                 
                 if (!response.data.success) {
@@ -575,15 +579,11 @@ export const modernAgentDetailPage = (slug: string) => `
                 }
                 document.getElementById('reviews-list').innerHTML = reviewsHTML;
                 
-                // Check save status
+                // Check save status (async, non-blocking)
                 checkSaveStatus();
                 
-                // Track view
+                // Track view (async, non-blocking)
                 axios.post(API_BASE + '/public/' + currentAgent.id + '/view').catch(console.error);
-                
-                // Show content
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('content').style.display = 'block';
                 
             } catch (error) {
                 console.error('Error loading agent:', error);
@@ -594,15 +594,19 @@ export const modernAgentDetailPage = (slug: string) => `
         // Extract YouTube video ID from various URL formats
         function extractYouTubeID(url) {
             if (!url) return null;
-            // Use string-based regex to avoid template string issues
-            const patterns = [
-                new RegExp('(?:youtube\\\\.com\\\\/watch\\\\?v=|youtu\\\\.be\\\\/)([^&\\\\n?#]+)'),
-                new RegExp('youtube\\\\.com\\\\/embed\\\\/([^&\\\\n?#]+)'),
-                new RegExp('youtube\\\\.com\\\\/v\\\\/([^&\\\\n?#]+)')
-            ];
-            for (const pattern of patterns) {
-                const match = url.match(pattern);
-                if (match && match[1]) return match[1];
+            // Simple string parsing - faster and no regex issues
+            if (url.includes('youtube.com/watch?v=')) {
+                const params = new URLSearchParams(url.split('?')[1]);
+                return params.get('v');
+            }
+            if (url.includes('youtu.be/')) {
+                return url.split('youtu.be/')[1].split('?')[0].split('&')[0];
+            }
+            if (url.includes('youtube.com/embed/')) {
+                return url.split('youtube.com/embed/')[1].split('?')[0].split('&')[0];
+            }
+            if (url.includes('youtube.com/v/')) {
+                return url.split('youtube.com/v/')[1].split('?')[0].split('&')[0];
             }
             return null;
         }
