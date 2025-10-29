@@ -462,14 +462,14 @@ export const modernAgentDetailPage = (slug: string, data?: any) => `
         <h2 style="font-size: 28px; font-weight: 700; margin-bottom: 24px; color: #1a1a1a;">
             <i class="fas fa-link" style="margin-right: 12px; color: #7c3aed;"></i>Related Agents
         </h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; max-width: 1000px;">
             ${data.relatedAgents.map((agent: any) => `
                 <a href="/agents/${agent.slug}" class="related-agent-card" style="text-decoration: none; color: inherit;">
-                    <div style="background: white; border-radius: 12px; padding: 20px; transition: all 0.3s; border: 1px solid #e5e7eb; height: 100%;">
-                        <div style="display: flex; align-items: start; gap: 16px; margin-bottom: 12px;">
-                            <img src="${agent.logo_url || 'https://via.placeholder.com/64'}" 
+                    <div style="background: white; border-radius: 12px; padding: 24px; transition: all 0.3s; border: 1px solid #e5e7eb; height: 100%;">
+                        <div style="display: flex; align-items: start; gap: 16px; margin-bottom: 16px;">
+                            <img src="${agent.logo_url || 'https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png'}" 
                                  alt="${agent.name}" 
-                                 style="width: 64px; height: 64px; border-radius: 8px; object-fit: cover; flex-shrink: 0;"
+                                 style="width: 80px; height: 80px; border-radius: 12px; object-fit: contain; background: #f9fafb; padding: 8px; flex-shrink: 0; border: 1px solid #e5e7eb;"
                                  onerror="this.src='https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png'">
                             <div style="flex: 1; min-width: 0;">
                                 <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 4px; color: #1a1a1a; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
