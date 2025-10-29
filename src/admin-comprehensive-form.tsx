@@ -1162,7 +1162,7 @@ export const adminComprehensiveEditPage = (agentId: string) => `
                      ondragover="handleDragOver(event)"
                      ondrop="handleDrop(event, \${index})"
                      ondragend="handleDragEnd(event)">
-                    <img src="\${img.url || '/placeholder.png'}" alt="\${img.title}" loading="lazy" 
+                    <img src="\${img.url || 'https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png'}" alt="\${img.title}" loading="lazy" 
                          class="w-full h-48 object-cover \${img.uploading ? 'blur-sm' : ''}" />
                     
                     \${img.uploading ? \`
