@@ -8,8 +8,7 @@ export const modernAgentDetailPage = (slug: string, data?: any) => `
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page-title">${data ? data.agent.name + ' - AI Agents Directory' : 'Loading... - AI Agents Directory'}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
     ${data ? `<script>window.__AGENT_DATA__ = ${JSON.stringify(data)};</script>` : ''}
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
