@@ -4,15 +4,23 @@ A comprehensive directory platform for discovering, submitting, and managing AI 
 
 ## 🚀 Live Demo
 
-- **Production**: https://60872c91.webapp-ds7.pages.dev (Latest - Oct 29, 2025 - OPTIMIZED 841KB)
+- **Production**: https://1e27c776.webapp-ds7.pages.dev (Latest - Oct 29, 2025 - PLACEHOLDER FIX + OPTIMIZED LIST VIEW)
 - **Custom Domain**: https://llmdude.com (Production site - auto-updates)
 - **Image CDN**: https://storage.llmdude.com (R2 Custom Domain)
 - **Local Test**: https://3000-izrhvxrc8y0zaw0u52v89-2e1b9533.sandbox.novita.ai
-- **Old Design**: https://0a42491e.webapp-ds7.pages.dev (Previous light theme)
+- **Previous Deployment**: https://60872c91.webapp-ds7.pages.dev (Performance optimizations)
 
-### 🎉 LATEST - Optimized Modern Design (2025-10-29 07:15 UTC)
+### 🎉 LATEST - Placeholder Image Fix + List View Optimization (2025-10-29 08:30 UTC)
 
-**✅ 80KB Bundle Reduction + Complete UI Redesign!**
+**✅ Console Errors Fixed + Image Loading Improved!**
+- ✅ **Placeholder Image Fix**: All via.placeholder.com references replaced with proper fallback image
+- ✅ **Agent Thumbnails Fixed**: Logos now display correctly on /agents listing page
+- ✅ **List View Optimized**: Cleaner, simpler, faster list view with compact design
+- ✅ **Image Fallbacks**: Proper error handling with storage.llmdude.com/uploads/ fallback image
+- ✅ **Performance**: Reduced card size, better object-contain rendering
+- ✅ **No Console Errors**: Eliminated ERR_NAME_NOT_RESOLVED errors from placeholder service
+
+**Previous Update - 80KB Bundle Reduction + Complete UI Redesign (2025-10-29 07:15 UTC):**
 - ✅ **Bundle Size**: 841KB (down from 921KB) - **80KB smaller, 8.7% reduction!**
 - ✅ **Removed Old Pages**: Enhanced and redesigned agent pages removed from bundle
 - ✅ **Modern Tab Navigation**: Overview, Features, Use Cases, Pricing, Alternatives, Reviews
