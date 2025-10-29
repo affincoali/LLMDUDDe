@@ -298,16 +298,16 @@ publicApi.get('/:slug/details', async (c) => {
       return c.json({ success: false, error: 'Agent not found' }, 404);
     }
     
-    // BATCH ALL QUERIES for speed (single round-trip to database)
+    // OPTIMIZED BATCH QUERY - reduced limits for speed
     const [features, useCases, faqs, pricingPlans, screenshots, pros, cons, reviews, reviewStats] = await Promise.all([
-      DB.prepare('SELECT * FROM features WHERE agent_id = ? ORDER BY display_order ASC').bind(agent.id).all(),
-      DB.prepare('SELECT * FROM use_cases WHERE agent_id = ? ORDER BY display_order ASC').bind(agent.id).all(),
-      DB.prepare('SELECT * FROM agent_faqs WHERE agent_id = ? ORDER BY display_order ASC').bind(agent.id).all(),
-      DB.prepare('SELECT * FROM pricing_plans WHERE agent_id = ? ORDER BY display_order ASC').bind(agent.id).all(),
-      DB.prepare('SELECT * FROM agent_screenshots WHERE agent_id = ? ORDER BY display_order ASC').bind(agent.id).all(),
-      DB.prepare('SELECT * FROM agent_pros_cons WHERE agent_id = ? AND type = "PRO" ORDER BY display_order ASC').bind(agent.id).all(),
-      DB.prepare('SELECT * FROM agent_pros_cons WHERE agent_id = ? AND type = "CON" ORDER BY display_order ASC').bind(agent.id).all(),
-      DB.prepare('SELECT r.*, u.name as user_name, u.image as user_image FROM reviews r JOIN users u ON r.user_id = u.id WHERE r.agent_id = ? AND r.status = "APPROVED" ORDER BY r.created_at DESC LIMIT 10').bind(agent.id).all(),
+      DB.prepare('SELECT * FROM features WHERE agent_id = ? ORDER BY display_order ASC LIMIT 10').bind(agent.id).all(),
+      DB.prepare('SELECT * FROM use_cases WHERE agent_id = ? ORDER BY display_order ASC LIMIT 5').bind(agent.id).all(),
+      DB.prepare('SELECT * FROM agent_faqs WHERE agent_id = ? ORDER BY display_order ASC LIMIT 5').bind(agent.id).all(),
+      DB.prepare('SELECT * FROM pricing_plans WHERE agent_id = ? ORDER BY display_order ASC LIMIT 5').bind(agent.id).all(),
+      DB.prepare('SELECT * FROM agent_screenshots WHERE agent_id = ? ORDER BY display_order ASC LIMIT 8').bind(agent.id).all(),
+      DB.prepare('SELECT * FROM agent_pros_cons WHERE agent_id = ? AND type = "PRO" ORDER BY display_order ASC LIMIT 5').bind(agent.id).all(),
+      DB.prepare('SELECT * FROM agent_pros_cons WHERE agent_id = ? AND type = "CON" ORDER BY display_order ASC LIMIT 5').bind(agent.id).all(),
+      DB.prepare('SELECT r.*, u.name as user_name, u.image as user_image FROM reviews r JOIN users u ON r.user_id = u.id WHERE r.agent_id = ? AND r.status = "APPROVED" ORDER BY r.created_at DESC LIMIT 5').bind(agent.id).all(),
       DB.prepare('SELECT COUNT(*) as total_reviews, AVG(rating) as average_rating, SUM(CASE WHEN rating = 5 THEN 1 ELSE 0 END) as rating_5, SUM(CASE WHEN rating = 4 THEN 1 ELSE 0 END) as rating_4, SUM(CASE WHEN rating = 3 THEN 1 ELSE 0 END) as rating_3, SUM(CASE WHEN rating = 2 THEN 1 ELSE 0 END) as rating_2, SUM(CASE WHEN rating = 1 THEN 1 ELSE 0 END) as rating_1 FROM reviews WHERE agent_id = ? AND status = "APPROVED"').bind(agent.id).first()
     ]);
     

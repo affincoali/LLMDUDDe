@@ -34,7 +34,11 @@ export const modernAgentDetailPage = (slug: string) => `
         /* Main Content */
         .main { padding: 32px 0; }
         .grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
-        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { 
+            .grid { grid-template-columns: 1fr; }
+            .main { padding: 16px 0; }
+            .container { padding: 0 12px; }
+        }
         
         /* Agent Header */
         .agent-header { background: #fff; border-radius: 12px; padding: 32px; margin-bottom: 24px; }
@@ -51,6 +55,15 @@ export const modernAgentDetailPage = (slug: string) => `
         .badge-opensource { background: #d1fae5; color: #065f46; }
         .badge-verified { background: #fef3c7; color: #92400e; }
         
+        @media (max-width: 768px) {
+            .agent-header { padding: 20px; }
+            .agent-top { flex-direction: column; gap: 16px; }
+            .agent-logo { width: 80px; height: 80px; }
+            .agent-name { font-size: 24px; }
+            .agent-tagline { font-size: 14px; }
+            .stat-badge { font-size: 12px; padding: 4px 8px; }
+        }
+        
         /* Action Buttons */
         .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
         .btn { padding: 12px 24px; border-radius: 8px; font-weight: 600; text-align: center; cursor: pointer; border: none; text-decoration: none; display: inline-block; }
@@ -59,12 +72,22 @@ export const modernAgentDetailPage = (slug: string) => `
         .btn-save { background: #f3f4f6; color: #374151; }
         .btn-share { background: #f3f4f6; color: #374151; }
         
+        @media (max-width: 768px) {
+            .actions { grid-template-columns: 1fr; gap: 8px; }
+            .btn { padding: 10px 16px; font-size: 14px; }
+        }
+        
         /* Tabs */
-        .tabs { border-bottom: 2px solid #e5e7eb; margin-bottom: 24px; display: flex; gap: 32px; position: sticky; top: 73px; background: #f7f8fa; padding: 12px 0; z-index: 50; }
-        .tab { padding: 12px 0; cursor: pointer; font-weight: 600; color: #6b7280; text-decoration: none; border-bottom: 3px solid transparent; margin-bottom: -2px; }
+        .tabs { border-bottom: 2px solid #e5e7eb; margin-bottom: 24px; display: flex; gap: 32px; position: sticky; top: 73px; background: #f7f8fa; padding: 12px 0; z-index: 50; overflow-x: auto; }
+        .tab { padding: 12px 0; cursor: pointer; font-weight: 600; color: #6b7280; text-decoration: none; border-bottom: 3px solid transparent; margin-bottom: -2px; white-space: nowrap; }
         .tab:hover { color: #7c3aed; }
         .tab.active { color: #7c3aed; border-bottom-color: #7c3aed; }
         html { scroll-behavior: smooth; }
+        
+        @media (max-width: 768px) {
+            .tabs { gap: 20px; padding: 8px 0; }
+            .tab { font-size: 14px; padding: 8px 0; }
+        }
         
 
         .section { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 16px; }
@@ -79,6 +102,14 @@ export const modernAgentDetailPage = (slug: string) => `
         .sidebar { }
         .sidebar-section { background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
         .sidebar-title { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
+        
+        @media (max-width: 768px) {
+            .sidebar-section { padding: 16px; margin-bottom: 12px; }
+            .sidebar-title { font-size: 15px; margin-bottom: 12px; }
+            .section { padding: 16px; margin-bottom: 12px; }
+            .section-title { font-size: 18px; margin-bottom: 12px; }
+            .feature-item { padding: 12px; font-size: 14px; }
+        }
         
         /* YouTube Video */
         .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; }
@@ -417,13 +448,10 @@ export const modernAgentDetailPage = (slug: string) => `
             }
         });
 
-        // Load agent data - optimized for speed
+        // Load agent data - fastest method with preload
         async function loadAgent() {
             try {
-                // Hide loading immediately and show content skeleton
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('content').style.display = 'block';
-                
+                // Start fetching immediately (no delay)
                 const response = await axios.get(API_BASE + '/public/' + SLUG + '/details');
                 
                 if (!response.data.success) {
