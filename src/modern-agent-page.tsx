@@ -456,51 +456,6 @@ export const modernAgentDetailPage = (slug: string, data?: any) => `
     </div>
     ` : ''}
 
-    <!-- Related Agents Section -->
-    ${data && data.relatedAgents && data.relatedAgents.length > 0 ? `
-    <div class="container" style="margin-top: 48px; margin-bottom: 48px;">
-        <h2 style="font-size: 28px; font-weight: 700; margin-bottom: 24px; color: #1a1a1a;">
-            <i class="fas fa-link" style="margin-right: 12px; color: #7c3aed;"></i>Related Agents
-        </h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; max-width: 1000px;">
-            ${data.relatedAgents.map((agent: any) => `
-                <a href="/agents/${agent.slug}" class="related-agent-card" style="text-decoration: none; color: inherit;">
-                    <div style="background: white; border-radius: 12px; padding: 24px; transition: all 0.3s; border: 1px solid #e5e7eb; height: 100%;">
-                        <div style="display: flex; align-items: start; gap: 16px; margin-bottom: 16px;">
-                            <img src="${agent.logo_url || 'https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png'}" 
-                                 alt="${agent.name}" 
-                                 style="width: 80px; height: 80px; border-radius: 12px; object-fit: contain; background: #f9fafb; padding: 8px; flex-shrink: 0; border: 1px solid #e5e7eb;"
-                                 onerror="this.src='https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png'">
-                            <div style="flex: 1; min-width: 0;">
-                                <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 4px; color: #1a1a1a; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                    ${agent.name}
-                                </h3>
-                                <span style="display: inline-block; padding: 4px 8px; background: ${agent.pricing_model === 'FREE' ? '#dcfce7' : agent.pricing_model === 'FREEMIUM' ? '#dbeafe' : '#fef3c7'}; color: ${agent.pricing_model === 'FREE' ? '#166534' : agent.pricing_model === 'FREEMIUM' ? '#1e40af' : '#92400e'}; border-radius: 4px; font-size: 12px; font-weight: 600;">
-                                    ${agent.pricing_model || 'PAID'}
-                                </span>
-                            </div>
-                        </div>
-                        <p style="color: #6b7280; font-size: 14px; line-height: 1.5; margin-bottom: 12px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
-                            ${agent.tagline || 'Discover this AI agent'}
-                        </p>
-                        <div style="display: flex; align-items: center; gap: 16px; font-size: 13px; color: #9ca3af;">
-                            <span><i class="fas fa-eye" style="margin-right: 4px;"></i>${agent.view_count || 0}</span>
-                            <span><i class="fas fa-heart" style="margin-right: 4px;"></i>${agent.upvote_count || 0}</span>
-                        </div>
-                    </div>
-                </a>
-            `).join('')}
-        </div>
-    </div>
-    <style>
-        .related-agent-card:hover > div {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            border-color: #7c3aed;
-        }
-    </style>
-    ` : ''}
-
     ${getFooter()}
 
     <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
