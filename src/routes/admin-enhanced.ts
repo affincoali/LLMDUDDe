@@ -1104,7 +1104,8 @@ adminEnhanced.put('/agents/:id/comprehensive', async (c) => {
     });
   } catch (error) {
     console.error('Error updating comprehensive agent data:', error);
-    return c.json({ success: false, error: 'Failed to update agent' }, 500);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to update agent';
+    return c.json({ success: false, error: errorMessage }, 500);
   }
 });
 
