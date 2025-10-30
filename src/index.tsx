@@ -521,6 +521,12 @@ app.get('/admin/agents/:id/edit-full', (c) => {
   return c.html(adminComprehensiveEditPage(agentId));
 });
 
+// Alias for comprehensive edit form
+app.get('/admin/comprehensive/:id', (c) => {
+  const agentId = c.req.param('id');
+  return c.html(adminComprehensiveEditPage(agentId));
+});
+
 app.get('/admin/users', (c) => {
   return c.html(adminUsersPage());
 });
