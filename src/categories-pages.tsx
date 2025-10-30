@@ -642,10 +642,19 @@ export const categoryDetailPage = (slug: string) => `
       
       // Create Agent Card
       function createAgentCard(agent) {
+        const fallbackImage = 'https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png';
+        const logoUrl = agent.logo_url || fallbackImage;
+        
         return \`
           <div class="card agent-card border rounded-xl overflow-hidden" onclick="window.location='/agents/\${agent.slug}'">
-            <div class="h-48 bg-gradient-to-br from-purple-400 to-indigo-600 flex items-center justify-center">
-              <span class="text-7xl">\${agent.logo_url || '🤖'}</span>
+            <div class="h-48 bg-gradient-to-br from-purple-50 to-indigo-50 flex items-center justify-center p-4">
+              <img 
+                src="\${logoUrl}" 
+                alt="\${agent.name}" 
+                class="w-32 h-32 object-contain"
+                loading="lazy"
+                onerror="this.onerror=null; this.src='\${fallbackImage}';"
+              />
             </div>
             <div class="p-6">
               <h3 class="text-xl font-bold mb-2">\${agent.name}</h3>
