@@ -699,6 +699,10 @@ export const modernAgentDetailPage = (slug: string, data?: any) => `
                 }
                 document.getElementById('reviews-list').innerHTML = reviewsHTML;
                 
+                // CRITICAL: Hide loading and show content (THIS WAS MISSING!)
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+                
                 // Check save status (async, non-blocking)
                 checkSaveStatus();
                 
