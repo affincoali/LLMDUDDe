@@ -9,7 +9,43 @@ A comprehensive directory platform for discovering, submitting, and managing AI 
 - **Image CDN**: https://storage.llmdude.com (R2 Custom Domain)
 - **Local Test**: https://3000-izrhvxrc8y0zaw0u52v89-2e1b9533.sandbox.novita.ai
 
-### 🎉 LATEST - Agent Pages Now Load INSTANTLY (2025-10-29 15:00 UTC)
+### 🎉 LATEST - Agent Parameter Preservation Fix (2025-10-30 12:30 UTC)
+
+**✅ CRITICAL FIX - AGENT PARAMETERS NO LONGER DELETED WHEN USING SIMPLE EDIT FORM!**
+- ✅ **Root Cause Found**: Simple edit form (`/admin/agents/:id/edit`) was overwriting agents without parameter fields
+- ✅ **Old PUT Endpoint Fixed**: Now preserves parameter data when not included in update request
+- ✅ **Data Protection**: Parameter fields (primary_function, ideal_user, autonomy_level, etc.) are now preserved
+- ✅ **10 New Parameters Safe**: All new agent parameters safe from accidental deletion
+- ✅ **Production Live**: https://b639a479.webapp-ds7.pages.dev
+- ✅ **GitHub**: Pushed to main branch (commit 374eb45)
+
+**The Problem:**
+When editing agents through the simple form (`/admin/agents/:id/edit`), the old PUT endpoint only updated ~18 fields and didn't include the 10 new parameter fields. This caused parameters to be **overwritten to NULL** every time the simple form was saved.
+
+**Root Cause:**
+Two admin forms existed:
+1. **Simple form** (`/admin/agents/:id/edit`) - Used old PUT endpoint (`/api/admin/agents/:id`)
+2. **Comprehensive form** (`/admin/comprehensive/:id`) - Used new PUT endpoint (`/api/admin/agents/:id/comprehensive`)
+
+The old PUT endpoint's UPDATE statement only included original fields, not the new parameters added in Task 1-7.
+
+**The Fix:**
+Updated old PUT endpoint to:
+1. **Fetch current agent data** before update to get existing parameter values
+2. **Preserve parameters** if not provided in the update request (using `data.field !== undefined ? data.field : currentAgent.field`)
+3. **Update parameters** only if explicitly provided in the request
+
+**Result:**
+- **Before**: Using simple edit form would delete all parameters
+- **After**: Parameters are preserved when using either form
+- **Both forms work**: Simple form and comprehensive form both safe to use
+
+**Test Case:**
+1. Set parameters through comprehensive form → ✅ Saves correctly
+2. Edit other fields through simple form → ✅ Parameters preserved
+3. Edit parameters through comprehensive form again → ✅ Updates correctly
+
+### Previous Update - Agent Pages Now Load INSTANTLY (2025-10-29 15:00 UTC)
 
 **✅ CRITICAL PERFORMANCE FIX - NO MORE "LOADING..." DELAYS!**
 - ✅ **Instant Display**: Agent pages now show content immediately (no loading spinner)
