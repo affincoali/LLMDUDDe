@@ -9,7 +9,27 @@ A comprehensive directory platform for discovering, submitting, and managing AI 
 - **Image CDN**: https://storage.llmdude.com (R2 Custom Domain)
 - **Local Test**: https://3000-izrhvxrc8y0zaw0u52v89-2e1b9533.sandbox.novita.ai
 
-### 🎉 LATEST - Footer Visibility Fixed on Agent Pages (2025-10-29 13:00 UTC)
+### 🎉 LATEST - Agent Logo Display Fixed on Category Pages (2025-10-29 13:30 UTC)
+
+**✅ AGENT LOGOS NOW DISPLAY PROPERLY IN CARDS!**
+- ✅ **Logo Images Fixed**: Replaced emoji/text with proper `<img>` tags on category detail pages
+- ✅ **Fallback System**: Automatic fallback to default logo if agent logo fails to load
+- ✅ **Proper Sizing**: 128x128px logos with object-contain to preserve aspect ratio
+- ✅ **Light Background**: Soft purple-to-indigo gradient background (#faf5ff to #eef2ff)
+- ✅ **Lazy Loading**: Images load only when visible for better performance
+- ✅ **Error Handling**: onerror attribute handles broken image URLs gracefully
+- ✅ **Consistent Styling**: Matches the professional look of agent listing pages
+
+**What Changed:**
+- Updated `createAgentCard()` function in `src/categories-pages.tsx`
+- Replaced: `<span class="text-7xl">${agent.logo_url || '🤖'}</span>`
+- With: `<img src="${logoUrl}" class="w-32 h-32 object-contain" loading="lazy" onerror="...">`
+- Added fallback constant: `https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png`
+- Changed background from purple-400/indigo-600 to purple-50/indigo-50 for better logo visibility
+
+**Production URL**: https://b23cf5bb.webapp-ds7.pages.dev
+
+### Previous Update - Footer Visibility Fixed on Agent Pages (2025-10-29 13:00 UTC)
 
 **✅ FOOTER NOW PROPERLY STYLED AND VISIBLE!**
 - ✅ **Footer Fixed**: Added comprehensive inline CSS styles for footer on agent pages
