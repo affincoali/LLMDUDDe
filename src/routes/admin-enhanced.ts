@@ -959,8 +959,13 @@ adminEnhanced.put('/agents/:id/comprehensive', async (c) => {
     const agentId = parseInt(c.req.param('id'));
     const data = await c.req.json();
     
+    console.log('[COMPREHENSIVE PUT] Starting update for agent:', agentId);
+    console.log('[COMPREHENSIVE PUT] Data fields:', Object.keys(data));
+    console.log('[COMPREHENSIVE PUT] User:', user?.id);
+    
     // Update main agent record with ALL fields including new parameters
-    await DB.prepare(`
+    console.log('[COMPREHENSIVE PUT] About to execute UPDATE query...');
+    const updateResult = await DB.prepare(`
       UPDATE agents SET
         name = ?, slug = ?, tagline = ?, description = ?, long_description = ?,
         website_url = ?, logo_url = ?, cover_image = ?, youtube_url = ?,
@@ -1002,6 +1007,8 @@ adminEnhanced.put('/agents/:id/comprehensive', async (c) => {
       data.integrations_support || null, data.multi_agent_mode ? 1 : 0,
       user.id, agentId
     ).run();
+    
+    console.log('[COMPREHENSIVE PUT] Main UPDATE completed successfully');
     
     // Update categories
     if (data.category_ids && Array.isArray(data.category_ids)) {
