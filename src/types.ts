@@ -57,6 +57,18 @@ export type Agent = {
   created_at: string;
   updated_at: string;
   published_at?: string;
+  
+  // New agent parameters (added 2025-10-29)
+  primary_function?: string; // e.g., Task Automation, Web Research
+  ideal_user?: string; // e.g., Marketers, Developers, Sales Teams
+  free_tier_details?: string; // e.g., Yes 7-day trial, Yes 500 free actions
+  autonomy_level?: number; // 1 = Fully Autonomous, 0 = Human-in-the-Loop
+  web_browsing?: number; // 1 = Yes, 0 = No
+  file_analysis_support?: string; // Comma-separated: PDF,CSV,TXT
+  long_term_memory?: number; // 1 = Yes, 0 = No
+  code_execution_support?: string; // Comma-separated: Python,JavaScript
+  integrations_support?: string; // Comma-separated: Zapier,Slack,Gmail
+  multi_agent_mode?: number; // 1 = Yes (can spawn sub-agents), 0 = No
 }
 
 // Category types

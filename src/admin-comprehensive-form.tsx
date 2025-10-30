@@ -100,6 +100,9 @@ export const adminComprehensiveEditPage = (agentId: string) => `
                             <button class="tab-button" onclick="switchTab('technical')">
                                 <i class="fas fa-code mr-2"></i>Technical
                             </button>
+                            <button class="tab-button" onclick="switchTab('parameters')">
+                                <i class="fas fa-sliders-h mr-2"></i>Parameters
+                            </button>
                             <button class="tab-button" onclick="switchTab('features')">
                                 <i class="fas fa-star mr-2"></i>Features
                             </button>
@@ -375,7 +378,98 @@ export const adminComprehensiveEditPage = (agentId: string) => `
                             </div>
                         </div>
 
-                        <!-- TAB 5: TECHNICAL -->
+                        <!-- TAB 5: AGENT PARAMETERS -->
+                        <div id="tab-parameters" class="tab-content">
+                            <h2 class="text-2xl font-bold mb-6">Agent Parameters</h2>
+                            <p class="text-gray-600 mb-6">Detailed parameters that define the agent's capabilities and characteristics</p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="field-group">
+                                    <label class="block text-sm font-medium mb-2">Primary Function</label>
+                                    <input type="text" id="primary_function" 
+                                        placeholder="e.g., Task Automation, Web Research, Marketing Agent" 
+                                        class="w-full px-4 py-2 border rounded-lg">
+                                    <p class="text-xs text-gray-500 mt-1">Main purpose or function of this agent</p>
+                                </div>
+
+                                <div class="field-group">
+                                    <label class="block text-sm font-medium mb-2">Ideal User</label>
+                                    <input type="text" id="ideal_user" 
+                                        placeholder="e.g., Marketers, Developers, Sales Teams, Personal Use" 
+                                        class="w-full px-4 py-2 border rounded-lg">
+                                    <p class="text-xs text-gray-500 mt-1">Target user profile for this agent</p>
+                                </div>
+
+                                <div class="field-group">
+                                    <label class="block text-sm font-medium mb-2">Free Tier / Trial Details</label>
+                                    <input type="text" id="free_tier_details" 
+                                        placeholder="e.g., Yes 7-day trial, Yes 500 free actions, No free tier" 
+                                        class="w-full px-4 py-2 border rounded-lg">
+                                    <p class="text-xs text-gray-500 mt-1">Details about free trial or free tier availability</p>
+                                </div>
+
+                                <div class="field-group">
+                                    <label class="block text-sm font-medium mb-2">File/Document Analysis Support</label>
+                                    <input type="text" id="file_analysis_support" 
+                                        placeholder="PDF,CSV,TXT,DOCX" 
+                                        class="w-full px-4 py-2 border rounded-lg">
+                                    <p class="text-xs text-gray-500 mt-1">Comma-separated list of supported file formats</p>
+                                </div>
+
+                                <div class="field-group">
+                                    <label class="block text-sm font-medium mb-2">Code Execution Support</label>
+                                    <input type="text" id="code_execution_support" 
+                                        placeholder="Python,JavaScript,SQL" 
+                                        class="w-full px-4 py-2 border rounded-lg">
+                                    <p class="text-xs text-gray-500 mt-1">Comma-separated list of supported programming languages</p>
+                                </div>
+
+                                <div class="field-group">
+                                    <label class="block text-sm font-medium mb-2">API & Integrations Support</label>
+                                    <input type="text" id="integrations_support" 
+                                        placeholder="Zapier,Slack,Gmail,API" 
+                                        class="w-full px-4 py-2 border rounded-lg">
+                                    <p class="text-xs text-gray-500 mt-1">Comma-separated list of supported integrations</p>
+                                </div>
+                            </div>
+
+                            <h3 class="text-xl font-bold mt-8 mb-4">Agent Capabilities</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <label class="flex items-center p-4 border rounded-lg hover:bg-gray-50">
+                                    <input type="checkbox" id="autonomy_level" class="mr-3">
+                                    <div>
+                                        <span class="text-sm font-medium block">Fully Autonomous</span>
+                                        <span class="text-xs text-gray-500">Can operate independently without human intervention</span>
+                                    </div>
+                                </label>
+
+                                <label class="flex items-center p-4 border rounded-lg hover:bg-gray-50">
+                                    <input type="checkbox" id="web_browsing" class="mr-3">
+                                    <div>
+                                        <span class="text-sm font-medium block">Web Browsing</span>
+                                        <span class="text-xs text-gray-500">Can browse and search the web for information</span>
+                                    </div>
+                                </label>
+
+                                <label class="flex items-center p-4 border rounded-lg hover:bg-gray-50">
+                                    <input type="checkbox" id="long_term_memory" class="mr-3">
+                                    <div>
+                                        <span class="text-sm font-medium block">Long-Term Memory</span>
+                                        <span class="text-xs text-gray-500">Remembers past conversations and context</span>
+                                    </div>
+                                </label>
+
+                                <label class="flex items-center p-4 border rounded-lg hover:bg-gray-50">
+                                    <input type="checkbox" id="multi_agent_mode" class="mr-3">
+                                    <div>
+                                        <span class="text-sm font-medium block">Multi-Agent Mode</span>
+                                        <span class="text-xs text-gray-500">Can spawn and coordinate multiple sub-agents</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- TAB 6: TECHNICAL -->
                         <div id="tab-technical" class="tab-content">
                             <h2 class="text-2xl font-bold mb-6">Technical Details</h2>
                             
@@ -429,7 +523,7 @@ export const adminComprehensiveEditPage = (agentId: string) => `
                             </div>
                         </div>
 
-                        <!-- TAB 6: FEATURES -->
+                        <!-- TAB 7: FEATURES -->
                         <div id="tab-features" class="tab-content">
                             <h2 class="text-2xl font-bold mb-6">Features</h2>
                             <p class="text-gray-600 mb-4">Add the key features of this AI agent</p>
@@ -440,7 +534,7 @@ export const adminComprehensiveEditPage = (agentId: string) => `
                             </button>
                         </div>
 
-                        <!-- TAB 7: USE CASES -->
+                        <!-- TAB 8: USE CASES -->
                         <div id="tab-usecases" class="tab-content">
                             <h2 class="text-2xl font-bold mb-6">Use Cases</h2>
                             <p class="text-gray-600 mb-4">Describe practical applications of this AI agent</p>
@@ -451,7 +545,7 @@ export const adminComprehensiveEditPage = (agentId: string) => `
                             </button>
                         </div>
 
-                        <!-- TAB 8: FAQs -->
+                        <!-- TAB 9: FAQs -->
                         <div id="tab-faqs" class="tab-content">
                             <h2 class="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
                             <p class="text-gray-600 mb-4">Add common questions and answers</p>
@@ -462,7 +556,7 @@ export const adminComprehensiveEditPage = (agentId: string) => `
                             </button>
                         </div>
 
-                        <!-- TAB 9: PROS & CONS -->
+                        <!-- TAB 10: PROS & CONS -->
                         <div id="tab-proscons" class="tab-content">
                             <h2 class="text-2xl font-bold mb-6">Pros & Cons</h2>
                             
@@ -485,7 +579,7 @@ export const adminComprehensiveEditPage = (agentId: string) => `
                             </div>
                         </div>
 
-                        <!-- TAB 10: SCREENSHOTS -->
+                        <!-- TAB 11: SCREENSHOTS -->
                         <div id="tab-screenshots" class="tab-content">
                             <h2 class="text-2xl font-bold mb-6">Screenshots Gallery</h2>
                             <p class="text-gray-600 mb-4">Add and manage screenshots to showcase the agent. Drag to reorder.</p>
@@ -532,7 +626,7 @@ export const adminComprehensiveEditPage = (agentId: string) => `
                             </details>
                         </div>
 
-                        <!-- TAB 11: ADMIN SETTINGS -->
+                        <!-- TAB 12: ADMIN SETTINGS -->
                         <div id="tab-admin" class="tab-content">
                             <h2 class="text-2xl font-bold mb-6">Admin Settings</h2>
                             
@@ -856,6 +950,18 @@ export const adminComprehensiveEditPage = (agentId: string) => `
             document.getElementById('founded_year').value = agent.founded_year || '';
             document.getElementById('company_size').value = agent.company_size || '';
             document.getElementById('headquarters').value = agent.headquarters || '';
+            
+            // Agent Parameters (new fields)
+            document.getElementById('primary_function').value = agent.primary_function || '';
+            document.getElementById('ideal_user').value = agent.ideal_user || '';
+            document.getElementById('free_tier_details').value = agent.free_tier_details || '';
+            document.getElementById('autonomy_level').checked = agent.autonomy_level || false;
+            document.getElementById('web_browsing').checked = agent.web_browsing || false;
+            document.getElementById('file_analysis_support').value = agent.file_analysis_support || '';
+            document.getElementById('long_term_memory').checked = agent.long_term_memory || false;
+            document.getElementById('code_execution_support').value = agent.code_execution_support || '';
+            document.getElementById('integrations_support').value = agent.integrations_support || '';
+            document.getElementById('multi_agent_mode').checked = agent.multi_agent_mode || false;
             
             // Technical
             document.getElementById('api_available').checked = agent.api_available || false;
@@ -1280,6 +1386,18 @@ export const adminComprehensiveEditPage = (agentId: string) => `
                 free_trial_available: document.getElementById('free_trial_available').checked,
                 is_open_source: document.getElementById('is_open_source').checked,
                 free_trial_days: parseInt(document.getElementById('free_trial_days').value) || null,
+                
+                // Agent Parameters (new fields)
+                primary_function: document.getElementById('primary_function').value || null,
+                ideal_user: document.getElementById('ideal_user').value || null,
+                free_tier_details: document.getElementById('free_tier_details').value || null,
+                autonomy_level: document.getElementById('autonomy_level').checked,
+                web_browsing: document.getElementById('web_browsing').checked,
+                file_analysis_support: document.getElementById('file_analysis_support').value || null,
+                long_term_memory: document.getElementById('long_term_memory').checked,
+                code_execution_support: document.getElementById('code_execution_support').value || null,
+                integrations_support: document.getElementById('integrations_support').value || null,
+                multi_agent_mode: document.getElementById('multi_agent_mode').checked,
                 
                 // Company
                 company_name: document.getElementById('company_name').value || null,

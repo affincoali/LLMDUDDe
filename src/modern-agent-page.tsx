@@ -333,6 +333,7 @@ export const modernAgentDetailPage = (slug: string, data?: any) => `
                         <!-- Jump Links -->
                         <div class="tabs">
                             <a href="#overview" class="tab active">Overview</a>
+                            <a href="#parameters" class="tab">Parameters</a>
                             <a href="#features" class="tab">Features</a>
                             <a href="#usecases" class="tab">Use Cases</a>
                             <a href="#pricing" class="tab">Pricing</a>
@@ -343,6 +344,11 @@ export const modernAgentDetailPage = (slug: string, data?: any) => `
                         <div id="overview" class="section">
                             <h2 class="section-title">Overview</h2>
                             <div id="agent-description">Loading...</div>
+                        </div>
+
+                        <div id="parameters" class="section">
+                            <h2 class="section-title">Agent Parameters</h2>
+                            <div id="parameters-info" class="feature-list"></div>
                         </div>
 
                         <div id="features" class="section">
@@ -585,6 +591,56 @@ export const modernAgentDetailPage = (slug: string, data?: any) => `
                 
                 // Description
                 document.getElementById('agent-description').innerHTML = currentAgent.long_description || currentAgent.description || 'No description available.';
+                
+                // Agent Parameters
+                let parametersHTML = '';
+                const params = [];
+                
+                // Text parameters
+                if (currentAgent.primary_function) {
+                    params.push({icon: 'fa-bullseye', title: 'Primary Function', value: currentAgent.primary_function});
+                }
+                if (currentAgent.ideal_user) {
+                    params.push({icon: 'fa-users', title: 'Ideal User', value: currentAgent.ideal_user});
+                }
+                if (currentAgent.free_tier_details) {
+                    params.push({icon: 'fa-gift', title: 'Free Tier / Trial', value: currentAgent.free_tier_details});
+                }
+                if (currentAgent.file_analysis_support) {
+                    params.push({icon: 'fa-file-alt', title: 'File Analysis', value: currentAgent.file_analysis_support});
+                }
+                if (currentAgent.code_execution_support) {
+                    params.push({icon: 'fa-code', title: 'Code Execution', value: currentAgent.code_execution_support});
+                }
+                if (currentAgent.integrations_support) {
+                    params.push({icon: 'fa-plug', title: 'Integrations', value: currentAgent.integrations_support});
+                }
+                
+                // Boolean parameters
+                const capabilities = [];
+                if (currentAgent.autonomy_level) capabilities.push('Fully Autonomous');
+                if (currentAgent.web_browsing) capabilities.push('Web Browsing');
+                if (currentAgent.long_term_memory) capabilities.push('Long-Term Memory');
+                if (currentAgent.multi_agent_mode) capabilities.push('Multi-Agent Mode');
+                
+                if (capabilities.length > 0) {
+                    params.push({icon: 'fa-star', title: 'Capabilities', value: capabilities.join(', ')});
+                }
+                
+                // Render parameters
+                if (params.length > 0) {
+                    params.forEach(p => {
+                        parametersHTML += '<div class="feature-item">' +
+                            '<div class="feature-icon"><i class="fas ' + p.icon + '"></i></div>' +
+                            '<div class="feature-content">' +
+                            '<h4>' + p.title + '</h4>' +
+                            '<p>' + p.value + '</p>' +
+                            '</div></div>';
+                    });
+                    document.getElementById('parameters-info').innerHTML = parametersHTML;
+                } else {
+                    document.getElementById('parameters').style.display = 'none';
+                }
                 
                 // Features
                 const features = data.features || [];

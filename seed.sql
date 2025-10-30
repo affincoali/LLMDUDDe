@@ -26,7 +26,9 @@ INSERT OR IGNORE INTO tags (id, name, slug) VALUES
 INSERT OR IGNORE INTO agents (
   id, name, slug, tagline, description, website_url, logo_url,
   pricing_model, is_open_source, status, submitted_by_id, approved_at, approved_by_id,
-  view_count, upvote_count, published_at
+  view_count, upvote_count, published_at,
+  primary_function, ideal_user, free_tier_details, autonomy_level, web_browsing,
+  file_analysis_support, long_term_memory, code_execution_support, integrations_support, multi_agent_mode
 ) VALUES 
   (
     1, 
@@ -44,7 +46,17 @@ INSERT OR IGNORE INTO agents (
     1,
     1250,
     89,
-    datetime('now')
+    datetime('now'),
+    'Conversational AI & Task Automation',
+    'Marketers, Developers, Students, Personal Use',
+    'Yes - Free tier with GPT-3.5, 7-day trial for Plus',
+    0,
+    1,
+    'PDF,TXT,DOCX,CSV,Images',
+    1,
+    'Python,JavaScript',
+    'Zapier,Slack,API',
+    0
   ),
   (
     2,
@@ -62,7 +74,17 @@ INSERT OR IGNORE INTO agents (
     1,
     980,
     76,
-    datetime('now')
+    datetime('now'),
+    'Document Analysis & Coding Assistant',
+    'Developers, Researchers, Content Creators',
+    'Yes - Free tier available with rate limits',
+    0,
+    1,
+    'PDF,TXT,DOCX,CSV,Code Files',
+    1,
+    'Python,JavaScript,SQL,HTML,CSS',
+    'API',
+    0
   ),
   (
     3,
@@ -80,7 +102,17 @@ INSERT OR IGNORE INTO agents (
     1,
     1450,
     112,
-    datetime('now')
+    datetime('now'),
+    'Code Generation & Autocomplete',
+    'Developers, Software Engineers',
+    'Yes - 30-day free trial',
+    0,
+    0,
+    'Code Files',
+    0,
+    'Python,JavaScript,TypeScript,Java,C++,Ruby,PHP,Go',
+    'GitHub,VS Code,JetBrains IDEs',
+    0
   ),
   (
     4,
@@ -98,7 +130,17 @@ INSERT OR IGNORE INTO agents (
     1,
     2100,
     156,
-    datetime('now')
+    datetime('now'),
+    'Image Generation',
+    'Designers, Artists, Marketers',
+    'No free tier - Starting at $10/month',
+    1,
+    0,
+    NULL,
+    0,
+    NULL,
+    'Discord',
+    0
   ),
   (
     5,
@@ -116,7 +158,17 @@ INSERT OR IGNORE INTO agents (
     1,
     890,
     67,
-    datetime('now')
+    datetime('now'),
+    'Web Research & Information Retrieval',
+    'Researchers, Students, Professionals',
+    'Yes - Free tier with 5 searches per day',
+    1,
+    1,
+    NULL,
+    0,
+    NULL,
+    'API',
+    0
   ),
   (
     6,
@@ -134,7 +186,8 @@ INSERT OR IGNORE INTO agents (
     NULL,
     0,
     0,
-    NULL
+    NULL,
+    NULL,NULL,NULL,0,0,NULL,0,NULL,NULL,0
   ),
   (
     7,
@@ -152,7 +205,8 @@ INSERT OR IGNORE INTO agents (
     1,
     1850,
     132,
-    datetime('now')
+    datetime('now'),
+    NULL,NULL,NULL,0,0,NULL,0,NULL,NULL,0
   ),
   (
     8,
@@ -170,7 +224,8 @@ INSERT OR IGNORE INTO agents (
     1,
     2300,
     198,
-    datetime('now')
+    datetime('now'),
+    NULL,NULL,NULL,0,0,NULL,0,NULL,NULL,0
   ),
   (
     9,
@@ -188,7 +243,8 @@ INSERT OR IGNORE INTO agents (
     1,
     1420,
     95,
-    datetime('now')
+    datetime('now'),
+    NULL,NULL,NULL,0,0,NULL,0,NULL,NULL,0
   ),
   (
     10,
@@ -206,7 +262,8 @@ INSERT OR IGNORE INTO agents (
     1,
     1680,
     121,
-    datetime('now')
+    datetime('now'),
+    NULL,NULL,NULL,0,0,NULL,0,NULL,NULL,0
   ),
   (
     11,
@@ -224,7 +281,8 @@ INSERT OR IGNORE INTO agents (
     1,
     3200,
     245,
-    datetime('now')
+    datetime('now'),
+    NULL,NULL,NULL,0,0,NULL,0,NULL,NULL,0
   ),
   (
     12,
@@ -242,7 +300,8 @@ INSERT OR IGNORE INTO agents (
     1,
     1540,
     108,
-    datetime('now')
+    datetime('now'),
+    NULL,NULL,NULL,0,0,NULL,0,NULL,NULL,0
   ),
   (
     13,
@@ -260,7 +319,8 @@ INSERT OR IGNORE INTO agents (
     1,
     1920,
     156,
-    datetime('now')
+    datetime('now'),
+    NULL,NULL,NULL,0,0,NULL,0,NULL,NULL,0
   );
 
 -- Link agents to categories
