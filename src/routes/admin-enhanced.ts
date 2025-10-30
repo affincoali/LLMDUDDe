@@ -731,7 +731,16 @@ adminEnhanced.put('/agents/:id', requireAdmin, async (c) => {
     const agentId = c.req.param('id');
     const data = await c.req.json();
     
-    // Update agent
+    // Get current agent data to preserve parameters if not provided
+    const currentAgent = await DB.prepare('SELECT * FROM agents WHERE id = ?')
+      .bind(agentId)
+      .first<any>();
+    
+    if (!currentAgent) {
+      return c.json({ success: false, error: 'Agent not found' }, 404);
+    }
+    
+    // Update agent - preserve parameters if not in request
     await DB.prepare(`
       UPDATE agents SET
         name = ?,
@@ -754,6 +763,16 @@ adminEnhanced.put('/agents/:id', requireAdmin, async (c) => {
         rejection_reason = ?,
         is_featured = ?,
         submitter_email = ?,
+        primary_function = ?,
+        ideal_user = ?,
+        free_tier_details = ?,
+        autonomy_level = ?,
+        web_browsing = ?,
+        file_analysis_support = ?,
+        long_term_memory = ?,
+        code_execution_support = ?,
+        integrations_support = ?,
+        multi_agent_mode = ?,
         last_edited_by = ?,
         last_edited_at = CURRENT_TIMESTAMP
       WHERE id = ?
@@ -778,6 +797,17 @@ adminEnhanced.put('/agents/:id', requireAdmin, async (c) => {
       data.rejection_reason || null,
       data.is_featured ? 1 : 0,
       data.submitter_email || null,
+      // Preserve parameters if not provided in request
+      data.primary_function !== undefined ? data.primary_function : currentAgent.primary_function,
+      data.ideal_user !== undefined ? data.ideal_user : currentAgent.ideal_user,
+      data.free_tier_details !== undefined ? data.free_tier_details : currentAgent.free_tier_details,
+      data.autonomy_level !== undefined ? (data.autonomy_level ? 1 : 0) : currentAgent.autonomy_level,
+      data.web_browsing !== undefined ? (data.web_browsing ? 1 : 0) : currentAgent.web_browsing,
+      data.file_analysis_support !== undefined ? data.file_analysis_support : currentAgent.file_analysis_support,
+      data.long_term_memory !== undefined ? (data.long_term_memory ? 1 : 0) : currentAgent.long_term_memory,
+      data.code_execution_support !== undefined ? data.code_execution_support : currentAgent.code_execution_support,
+      data.integrations_support !== undefined ? data.integrations_support : currentAgent.integrations_support,
+      data.multi_agent_mode !== undefined ? (data.multi_agent_mode ? 1 : 0) : currentAgent.multi_agent_mode,
       user.id,
       agentId
     ).run();
