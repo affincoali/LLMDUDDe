@@ -459,7 +459,15 @@ export const comprehensiveStatsPage = () => `
         function renderRecentAgents(agents) {
             document.getElementById('recent-agents').innerHTML = agents.map(agent => \`
                 <a href="/agents/\${agent.slug}" class="block p-4 bg-white border rounded-lg hover:shadow-lg transition">
-                    <div class="text-4xl mb-3">\${agent.logo_url || '🤖'}</div>
+                    <div class="w-16 h-16 mb-3 bg-gradient-to-br from-purple-50 to-indigo-50 rounded-lg flex items-center justify-center p-2">
+                        <img 
+                            src="\${agent.logo_url || 'https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png'}" 
+                            alt="\${agent.name}" 
+                            class="w-full h-full object-contain"
+                            loading="lazy"
+                            onerror="this.onerror=null; this.src='https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png';"
+                        />
+                    </div>
                     <h3 class="font-bold text-lg mb-1">\${agent.name}</h3>
                     <p class="text-sm text-gray-600 line-clamp-2">\${agent.tagline || agent.description}</p>
                     <div class="mt-3 flex items-center justify-between text-sm">

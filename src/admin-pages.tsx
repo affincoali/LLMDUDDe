@@ -887,8 +887,14 @@ export const adminAllAgentsPage = () => `
 
             grid.innerHTML = agents.map(agent => \`
                 <div class="bg-white rounded-lg shadow overflow-hidden hover:shadow-xl transition">
-                    <div class="h-40 bg-gradient-to-br from-purple-400 to-indigo-600 flex items-center justify-center">
-                        <span class="text-6xl">\${agent.logo_url || '🤖'}</span>
+                    <div class="h-40 bg-gradient-to-br from-purple-50 to-indigo-50 flex items-center justify-center p-4">
+                        <img 
+                            src="\${agent.logo_url || 'https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png'}" 
+                            alt="\${agent.name}" 
+                            class="w-32 h-32 object-contain"
+                            loading="lazy"
+                            onerror="this.onerror=null; this.src='https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png';"
+                        />
                     </div>
                     <div class="p-4">
                         <div class="flex items-center justify-between mb-2">

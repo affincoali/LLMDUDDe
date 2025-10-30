@@ -264,8 +264,14 @@ app.get('/old', (c) => {
                 const grid = document.getElementById('agents-grid');
                 grid.innerHTML = agents.map(agent => \`
                   <div class="bg-white rounded-lg shadow-md overflow-hidden card-hover cursor-pointer" onclick="window.location='/agents/\${agent.slug}'">
-                    <div class="h-48 bg-gradient-to-br from-purple-400 to-indigo-600 flex items-center justify-center">
-                      <span class="text-6xl">\${agent.logo_url || '🤖'}</span>
+                    <div class="h-48 bg-gradient-to-br from-purple-50 to-indigo-50 flex items-center justify-center p-4">
+                      <img 
+                        src="\${agent.logo_url || 'https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png'}" 
+                        alt="\${agent.name}" 
+                        class="w-32 h-32 object-contain"
+                        loading="lazy"
+                        onerror="this.onerror=null; this.src='https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png';"
+                      />
                     </div>
                     <div class="p-6">
                       <h3 class="text-xl font-bold text-gray-900 mb-2">\${agent.name}</h3>

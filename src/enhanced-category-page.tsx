@@ -542,7 +542,13 @@ export const enhancedCategoryDetailPage = (slug: string) => `
             grid.innerHTML = filteredAgents.map(agent => \`
                 <div class="enhanced-agent-card" onclick="window.location='/agents/\${agent.slug}'">
                     <div class="agent-logo">
-                        <span>\${agent.logo_url || '🤖'}</span>
+                        <img 
+                            src="\${agent.logo_url || 'https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png'}" 
+                            alt="\${agent.name}" 
+                            class="w-full h-full object-contain"
+                            loading="lazy"
+                            onerror="this.onerror=null; this.src='https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png';"
+                        />
                     </div>
                     
                     <h3 class="text-xl font-bold mb-2">\${agent.name}</h3>

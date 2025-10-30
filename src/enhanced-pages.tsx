@@ -914,8 +914,14 @@ export const leaderboardPage = () => `
                 \${medal || rank}
               </div>
               
-              <div class="w-16 h-16 flex items-center justify-center text-4xl bg-gradient-to-br from-purple-400 to-indigo-600 rounded-lg">
-                \${agent.logo_url || '🤖'}
+              <div class="w-16 h-16 flex items-center justify-center bg-gradient-to-br from-purple-50 to-indigo-50 rounded-lg p-2">
+                <img 
+                  src="\${agent.logo_url || 'https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png'}" 
+                  alt="\${agent.name}" 
+                  class="w-full h-full object-contain"
+                  loading="lazy"
+                  onerror="this.onerror=null; this.src='https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png';"
+                />
               </div>
               
               <div class="flex-1 min-w-0">
@@ -1530,8 +1536,14 @@ export const landscapePage = () => `
         list.innerHTML = agents.map(agent => \`
           <div class="agent-item card border rounded-lg" onclick="window.location='/agents/\${agent.slug}'">
             <div class="flex items-center gap-3">
-              <div class="w-12 h-12 flex items-center justify-center text-2xl bg-gradient-to-br from-purple-400 to-indigo-600 rounded-lg">
-                \${agent.logo_url || '🤖'}
+              <div class="w-12 h-12 flex items-center justify-center bg-gradient-to-br from-purple-50 to-indigo-50 rounded-lg p-1">
+                <img 
+                  src="\${agent.logo_url || 'https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png'}" 
+                  alt="\${agent.name}" 
+                  class="w-full h-full object-contain"
+                  loading="lazy"
+                  onerror="this.onerror=null; this.src='https://storage.llmdude.com/uploads/1761722667625-3falg8084x7.png';"
+                />
               </div>
               <div class="flex-1 min-w-0">
                 <h4 class="font-semibold truncate">\${agent.name}</h4>
