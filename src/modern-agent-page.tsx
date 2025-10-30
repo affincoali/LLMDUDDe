@@ -198,6 +198,49 @@ export const modernAgentDetailPage = (slug: string, data?: any) => `
             .related-grid { grid-template-columns: 1fr; }
             .related-section { padding: 20px; margin: 24px 12px; }
         }
+        
+        /* Footer Styles - Replacing Tailwind Classes */
+        footer { background-color: #111827; color: #fff; padding: 48px 0; margin-top: 80px; }
+        footer .max-w-7xl { max-width: 1280px; margin: 0 auto; padding: 0 16px; }
+        footer .grid { display: grid; grid-template-columns: 1fr; gap: 32px; margin-bottom: 32px; }
+        footer .grid.grid-cols-1 { grid-template-columns: 1fr; }
+        @media (min-width: 768px) {
+            footer .grid.md\\:grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+            footer .max-w-7xl { padding: 0 24px; }
+        }
+        @media (min-width: 1024px) {
+            footer .max-w-7xl { padding: 0 32px; }
+        }
+        footer .flex { display: flex; }
+        footer .items-center { align-items: center; }
+        footer .mb-4 { margin-bottom: 16px; }
+        footer .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+        footer .text-purple-500 { color: #a855f7; }
+        footer .mr-3 { margin-right: 12px; }
+        footer .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+        footer .font-bold { font-weight: 700; }
+        footer .text-gray-400 { color: #9ca3af; }
+        footer h3 { font-weight: 700; margin-bottom: 16px; }
+        footer ul { list-style: none; }
+        footer .space-y-2 > * + * { margin-top: 8px; }
+        footer ul li a { color: #9ca3af; text-decoration: none; transition: color 0.15s; }
+        footer ul li a:hover, footer .hover\\:text-white:hover { color: #fff; }
+        footer .transition { transition-property: color, background-color, border-color, text-decoration-color, fill, stroke; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+        footer .border-t { border-top-width: 1px; }
+        footer .border-gray-800 { border-color: #1f2937; }
+        footer .pt-8 { padding-top: 32px; }
+        footer .justify-between { justify-content: space-between; }
+        footer .flex-wrap { flex-wrap: wrap; }
+        footer .gap-4 { gap: 16px; }
+        footer .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+        footer .space-x-4 > * + * { margin-left: 16px; }
+        @media (max-width: 767px) {
+            footer { padding: 32px 0; margin-top: 48px; }
+            footer .grid { gap: 24px; margin-bottom: 24px; }
+            footer h3 { font-size: 16px; margin-bottom: 12px; }
+            footer .text-xl { font-size: 18px; }
+            footer .text-3xl { font-size: 24px; }
+        }
     </style>
 </head>
 <body>

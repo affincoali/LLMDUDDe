@@ -4,7 +4,7 @@ A comprehensive directory platform for discovering, submitting, and managing AI 
 
 ## 🚀 Live Demo
 
-- **Production**: https://e82915de.webapp-ds7.pages.dev (Latest - Oct 29, 2025 - ✅ COMPLETE!)
+- **Production**: https://136ab456.webapp-ds7.pages.dev (Latest - Oct 29, 2025 - ✅ COMPLETE!)
 - **Custom Domain**: https://llmdude.com (Production site - auto-updates)
 - **Image CDN**: https://storage.llmdude.com (R2 Custom Domain)
 - **Local Test**: https://3000-izrhvxrc8y0zaw0u52v89-2e1b9533.sandbox.novita.ai
