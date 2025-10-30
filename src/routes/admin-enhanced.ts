@@ -834,4 +834,278 @@ adminEnhanced.get('/agents/:id', async (c) => {
   }
 });
 
+/**
+ * GET /api/admin/agents/:id/comprehensive
+ * Get comprehensive agent data for editing (all related data included)
+ */
+adminEnhanced.get('/agents/:id/comprehensive', async (c) => {
+  try {
+    const { DB } = c.env;
+    const agentId = parseInt(c.req.param('id'));
+    
+    // Get agent with all basic fields
+    const agent = await DB.prepare('SELECT * FROM agents WHERE id = ?')
+      .bind(agentId)
+      .first<Agent>();
+    
+    if (!agent) {
+      return c.json({ success: false, error: 'Agent not found' }, 404);
+    }
+    
+    // Get categories
+    const categories = await DB.prepare(`
+      SELECT category_id FROM agent_categories WHERE agent_id = ?
+    `).bind(agentId).all();
+    
+    agent.category_ids = categories.results?.map((c: any) => c.category_id) || [];
+    
+    // Get features
+    const features = await DB.prepare(`
+      SELECT * FROM features WHERE agent_id = ? ORDER BY display_order
+    `).bind(agentId).all();
+    
+    agent.features = features.results || [];
+    
+    // Get use cases
+    const useCases = await DB.prepare(`
+      SELECT * FROM use_cases WHERE agent_id = ? ORDER BY display_order
+    `).bind(agentId).all();
+    
+    agent.use_cases = useCases.results || [];
+    
+    // Get FAQs
+    const faqs = await DB.prepare(`
+      SELECT * FROM faqs WHERE agent_id = ? ORDER BY display_order
+    `).bind(agentId).all();
+    
+    agent.faqs = faqs.results || [];
+    
+    // Get pros
+    const pros = await DB.prepare(`
+      SELECT * FROM pros WHERE agent_id = ? ORDER BY display_order
+    `).bind(agentId).all();
+    
+    agent.pros = pros.results || [];
+    
+    // Get cons
+    const cons = await DB.prepare(`
+      SELECT * FROM cons WHERE agent_id = ? ORDER BY display_order
+    `).bind(agentId).all();
+    
+    agent.cons = cons.results || [];
+    
+    // Get screenshots
+    const screenshots = await DB.prepare(`
+      SELECT * FROM screenshots WHERE agent_id = ? ORDER BY display_order
+    `).bind(agentId).all();
+    
+    agent.screenshots = screenshots.results || [];
+    
+    // Get pricing plans
+    const pricingPlans = await DB.prepare(`
+      SELECT * FROM pricing_plans WHERE agent_id = ? ORDER BY display_order
+    `).bind(agentId).all();
+    
+    agent.pricing_plans = pricingPlans.results || [];
+    
+    return c.json({
+      success: true,
+      data: agent
+    });
+  } catch (error) {
+    console.error('Error fetching comprehensive agent data:', error);
+    return c.json({ success: false, error: 'Failed to fetch agent data' }, 500);
+  }
+});
+
+/**
+ * PUT /api/admin/agents/:id/comprehensive
+ * Update comprehensive agent data (all fields and related data)
+ */
+adminEnhanced.put('/agents/:id/comprehensive', async (c) => {
+  try {
+    const { DB } = c.env;
+    const user = c.get('user');
+    const agentId = parseInt(c.req.param('id'));
+    const data = await c.req.json();
+    
+    // Update main agent record with ALL fields including new parameters
+    await DB.prepare(`
+      UPDATE agents SET
+        name = ?, slug = ?, tagline = ?, description = ?, long_description = ?,
+        website_url = ?, logo_url = ?, cover_image = ?, youtube_url = ?,
+        demo_video_url = ?, video_thumbnail = ?,
+        twitter_url = ?, linkedin_url = ?, facebook_url = ?, discord_url = ?, github_url = ?,
+        pricing_model = ?, pricing_starts_at = ?, pricing_details = ?,
+        free_plan_available = ?, free_trial_available = ?, is_open_source = ?, free_trial_days = ?,
+        company_name = ?, company_website = ?, founded_year = ?, company_size = ?, headquarters = ?,
+        api_available = ?, api_documentation_url = ?,
+        supported_platforms = ?, supported_languages = ?, supported_integrations = ?, alternatives = ?,
+        trust_score = ?, uptime_percentage = ?, verified = ?,
+        status = ?, featured_tier = ?, admin_notes = ?, rejection_reason = ?,
+        keywords = ?, meta_title = ?, meta_description = ?,
+        primary_function = ?, ideal_user = ?, free_tier_details = ?,
+        autonomy_level = ?, web_browsing = ?, file_analysis_support = ?,
+        long_term_memory = ?, code_execution_support = ?, integrations_support = ?, multi_agent_mode = ?,
+        last_edited_by = ?, last_edited_at = CURRENT_TIMESTAMP
+      WHERE id = ?
+    `).bind(
+      data.name, data.slug, data.tagline, data.description, data.long_description || null,
+      data.website_url, data.logo_url || null, data.cover_image || null, data.youtube_url || null,
+      data.demo_video_url || null, data.video_thumbnail || null,
+      data.twitter_url || null, data.linkedin_url || null, data.facebook_url || null, 
+      data.discord_url || null, data.github_url || null,
+      data.pricing_model, data.pricing_starts_at || null, data.pricing_details || null,
+      data.free_plan_available ? 1 : 0, data.free_trial_available ? 1 : 0, 
+      data.is_open_source ? 1 : 0, data.free_trial_days || null,
+      data.company_name || null, data.company_website || null, data.founded_year || null, 
+      data.company_size || null, data.headquarters || null,
+      data.api_available ? 1 : 0, data.api_documentation_url || null,
+      data.supported_platforms || null, data.supported_languages || null, 
+      data.supported_integrations || null, data.alternatives || null,
+      data.trust_score || null, data.uptime_percentage || null, data.verified ? 1 : 0,
+      data.status, data.featured_tier, data.admin_notes || null, data.rejection_reason || null,
+      data.keywords || null, data.meta_title || null, data.meta_description || null,
+      data.primary_function || null, data.ideal_user || null, data.free_tier_details || null,
+      data.autonomy_level ? 1 : 0, data.web_browsing ? 1 : 0, data.file_analysis_support || null,
+      data.long_term_memory ? 1 : 0, data.code_execution_support || null, 
+      data.integrations_support || null, data.multi_agent_mode ? 1 : 0,
+      user.id, agentId
+    ).run();
+    
+    // Update categories
+    if (data.category_ids && Array.isArray(data.category_ids)) {
+      await DB.prepare('DELETE FROM agent_categories WHERE agent_id = ?').bind(agentId).run();
+      for (const catId of data.category_ids) {
+        await DB.prepare('INSERT INTO agent_categories (agent_id, category_id) VALUES (?, ?)')
+          .bind(agentId, catId).run();
+        await updateCategoryCount(DB, catId);
+      }
+    }
+    
+    // Update tags from comma-separated input
+    if (data.tags_input) {
+      const tags = data.tags_input.split(',').map((t: string) => t.trim()).filter((t: string) => t);
+      await DB.prepare('DELETE FROM agent_tags WHERE agent_id = ?').bind(agentId).run();
+      
+      for (const tagName of tags) {
+        const slug = tagName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        let tag = await DB.prepare('SELECT id FROM tags WHERE slug = ?').bind(slug).first<{id: number}>();
+        
+        if (!tag) {
+          const result = await DB.prepare('INSERT INTO tags (name, slug) VALUES (?, ?)').bind(tagName, slug).run();
+          tag = { id: result.meta.last_row_id as number };
+        }
+        
+        await DB.prepare('INSERT INTO agent_tags (agent_id, tag_id) VALUES (?, ?)').bind(agentId, tag.id).run();
+        await updateTagCount(DB, tag.id);
+      }
+    }
+    
+    // Update features
+    await DB.prepare('DELETE FROM features WHERE agent_id = ?').bind(agentId).run();
+    if (data.features && Array.isArray(data.features)) {
+      for (let i = 0; i < data.features.length; i++) {
+        const f = data.features[i];
+        if (f.title) {
+          await DB.prepare(
+            'INSERT INTO features (agent_id, title, description, display_order) VALUES (?, ?, ?, ?)'
+          ).bind(agentId, f.title, f.description || null, i).run();
+        }
+      }
+    }
+    
+    // Update use cases
+    await DB.prepare('DELETE FROM use_cases WHERE agent_id = ?').bind(agentId).run();
+    if (data.use_cases && Array.isArray(data.use_cases)) {
+      for (let i = 0; i < data.use_cases.length; i++) {
+        const uc = data.use_cases[i];
+        if (uc.title) {
+          await DB.prepare(
+            'INSERT INTO use_cases (agent_id, title, description, display_order) VALUES (?, ?, ?, ?)'
+          ).bind(agentId, uc.title, uc.description || null, i).run();
+        }
+      }
+    }
+    
+    // Update FAQs
+    await DB.prepare('DELETE FROM faqs WHERE agent_id = ?').bind(agentId).run();
+    if (data.faqs && Array.isArray(data.faqs)) {
+      for (let i = 0; i < data.faqs.length; i++) {
+        const faq = data.faqs[i];
+        if (faq.question && faq.answer) {
+          await DB.prepare(
+            'INSERT INTO faqs (agent_id, question, answer, display_order) VALUES (?, ?, ?, ?)'
+          ).bind(agentId, faq.question, faq.answer, i).run();
+        }
+      }
+    }
+    
+    // Update pros
+    await DB.prepare('DELETE FROM pros WHERE agent_id = ?').bind(agentId).run();
+    if (data.pros && Array.isArray(data.pros)) {
+      for (let i = 0; i < data.pros.length; i++) {
+        const pro = data.pros[i];
+        if (pro.content) {
+          await DB.prepare(
+            'INSERT INTO pros (agent_id, content, display_order) VALUES (?, ?, ?)'
+          ).bind(agentId, pro.content, i).run();
+        }
+      }
+    }
+    
+    // Update cons
+    await DB.prepare('DELETE FROM cons WHERE agent_id = ?').bind(agentId).run();
+    if (data.cons && Array.isArray(data.cons)) {
+      for (let i = 0; i < data.cons.length; i++) {
+        const con = data.cons[i];
+        if (con.content) {
+          await DB.prepare(
+            'INSERT INTO cons (agent_id, content, display_order) VALUES (?, ?, ?)'
+          ).bind(agentId, con.content, i).run();
+        }
+      }
+    }
+    
+    // Update screenshots
+    await DB.prepare('DELETE FROM screenshots WHERE agent_id = ?').bind(agentId).run();
+    if (data.screenshots && Array.isArray(data.screenshots)) {
+      for (let i = 0; i < data.screenshots.length; i++) {
+        const ss = data.screenshots[i];
+        if (ss.image_url) {
+          await DB.prepare(
+            'INSERT INTO screenshots (agent_id, image_url, title, description, display_order) VALUES (?, ?, ?, ?, ?)'
+          ).bind(agentId, ss.image_url, ss.title || null, ss.description || null, ss.display_order || i).run();
+        }
+      }
+    }
+    
+    // Update pricing plans
+    await DB.prepare('DELETE FROM pricing_plans WHERE agent_id = ?').bind(agentId).run();
+    if (data.pricing_plans && Array.isArray(data.pricing_plans)) {
+      for (let i = 0; i < data.pricing_plans.length; i++) {
+        const plan = data.pricing_plans[i];
+        if (plan.name && plan.price) {
+          await DB.prepare(
+            'INSERT INTO pricing_plans (agent_id, name, price, billing_period, features, is_popular, display_order) VALUES (?, ?, ?, ?, ?, ?, ?)'
+          ).bind(agentId, plan.name, plan.price, plan.billing_period || null, plan.features || null, plan.is_popular ? 1 : 0, i).run();
+        }
+      }
+    }
+    
+    // Log audit action
+    await logAuditAction(DB, user, 'UPDATE_AGENT_COMPREHENSIVE', 'agent', agentId, {
+      name: data.name
+    });
+    
+    return c.json({
+      success: true,
+      message: 'Agent updated successfully'
+    });
+  } catch (error) {
+    console.error('Error updating comprehensive agent data:', error);
+    return c.json({ success: false, error: 'Failed to update agent' }, 500);
+  }
+});
+
 export default adminEnhanced;
