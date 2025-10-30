@@ -1132,9 +1132,11 @@ adminEnhanced.put('/agents/:id/comprehensive', async (c) => {
       success: true,
       message: 'Agent updated successfully'
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error updating comprehensive agent data:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Failed to update agent';
+    console.error('Error type:', typeof error);
+    console.error('Error keys:', error ? Object.keys(error) : 'null');
+    const errorMessage = error?.message || error?.error || JSON.stringify(error) || 'Failed to update agent';
     return c.json({ success: false, error: errorMessage }, 500);
   }
 });
