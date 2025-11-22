@@ -959,13 +959,8 @@ adminEnhanced.put('/agents/:id/comprehensive', async (c) => {
     const agentId = parseInt(c.req.param('id'));
     const data = await c.req.json();
     
-    console.log('[COMPREHENSIVE PUT] Starting update for agent:', agentId);
-    console.log('[COMPREHENSIVE PUT] Data fields:', Object.keys(data));
-    console.log('[COMPREHENSIVE PUT] User:', user?.id);
-    
     // Update main agent record with ALL fields including new parameters
-    console.log('[COMPREHENSIVE PUT] About to execute UPDATE query...');
-    const updateResult = await DB.prepare(`
+    await DB.prepare(`
       UPDATE agents SET
         name = ?, slug = ?, tagline = ?, description = ?, long_description = ?,
         website_url = ?, logo_url = ?, cover_image = ?, youtube_url = ?,
@@ -1141,9 +1136,7 @@ adminEnhanced.put('/agents/:id/comprehensive', async (c) => {
     });
   } catch (error: any) {
     console.error('Error updating comprehensive agent data:', error);
-    console.error('Error type:', typeof error);
-    console.error('Error keys:', error ? Object.keys(error) : 'null');
-    const errorMessage = error?.message || error?.error || JSON.stringify(error) || 'Failed to update agent';
+    const errorMessage = error?.message || error?.error || 'Failed to update agent';
     return c.json({ success: false, error: errorMessage }, 500);
   }
 });

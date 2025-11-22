@@ -1472,9 +1472,7 @@ export const adminComprehensiveEditPage = (agentId: string) => `
             };
 
             try {
-                console.log('Sending data to API:', data);
                 const response = await axios.put(\`/api/admin/agents/\${agentId}/comprehensive\`, data);
-                console.log('API response:', response.data);
                 if (response.data.success) {
                     document.getElementById('success-message').classList.remove('hidden');
                     document.getElementById('error-message').classList.add('hidden');
@@ -1483,9 +1481,6 @@ export const adminComprehensiveEditPage = (agentId: string) => `
                     }, 1500);
                 }
             } catch (error) {
-                console.error('Full error object:', error);
-                console.error('Error response:', error.response);
-                console.error('Error data:', error.response?.data);
                 const errorMsg = error.response?.data?.error || error.message || 'Failed to update agent';
                 document.getElementById('error-text').textContent = errorMsg;
                 document.getElementById('error-message').classList.remove('hidden');
