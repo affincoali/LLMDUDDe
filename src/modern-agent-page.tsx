@@ -19,18 +19,18 @@ export const modernAgentDetailPage = (slug: string, data?: any) => `
         /* Header */
         .header { background: #fff; border-bottom: 1px solid #e5e7eb; padding: 16px 0; position: sticky; top: 0; z-index: 100; }
         .header-content { display: flex; justify-content: space-between; align-items: center; }
-        .logo { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 700; color: #7c3aed; text-decoration: none; }
+        .logo { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 700; color: #1e40af; text-decoration: none; }
         .nav { display: flex; gap: 32px; align-items: center; }
-        .nav a { color: #6b7280; text-decoration: none; font-weight: 500; }
-        .nav a:hover { color: #7c3aed; }
-        .btn-primary { background: #7c3aed; color: #fff; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; }
-        .btn-primary:hover { background: #6d28d9; }
+        .nav a { color: #1f2937; text-decoration: none; font-weight: 500; }
+        .nav a:hover { color: #1e40af; }
+        .btn-primary { background: #1e40af; color: #fff; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; }
+        .btn-primary:hover { background: #1e3a8a; }
         
         /* Breadcrumb */
         .breadcrumb { background: #fff; border-bottom: 1px solid #e5e7eb; padding: 12px 0; }
         .breadcrumb-list { display: flex; gap: 8px; align-items: center; font-size: 14px; color: #6b7280; }
         .breadcrumb-list a { color: #6b7280; text-decoration: none; }
-        .breadcrumb-list a:hover { color: #7c3aed; }
+        .breadcrumb-list a:hover { color: #1e40af; }
         
         /* Main Content */
         .main { padding: 32px 0; }
@@ -68,7 +68,7 @@ export const modernAgentDetailPage = (slug: string, data?: any) => `
         /* Action Buttons */
         .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
         .btn { padding: 12px 24px; border-radius: 8px; font-weight: 600; text-align: center; cursor: pointer; border: none; text-decoration: none; display: inline-block; }
-        .btn-website { background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%); color: #fff; }
+        .btn-website { background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%); color: #fff; }
         .btn-upvote { background: #f3f4f6; color: #374151; }
         .btn-save { background: #f3f4f6; color: #374151; }
         .btn-share { background: #f3f4f6; color: #374151; }
@@ -81,8 +81,8 @@ export const modernAgentDetailPage = (slug: string, data?: any) => `
         /* Tabs */
         .tabs { border-bottom: 2px solid #e5e7eb; margin-bottom: 24px; display: flex; gap: 32px; position: sticky; top: 73px; background: #f7f8fa; padding: 12px 0; z-index: 50; overflow-x: auto; }
         .tab { padding: 12px 0; cursor: pointer; font-weight: 600; color: #6b7280; text-decoration: none; border-bottom: 3px solid transparent; margin-bottom: -2px; white-space: nowrap; }
-        .tab:hover { color: #7c3aed; }
-        .tab.active { color: #7c3aed; border-bottom-color: #7c3aed; }
+        .tab:hover { color: #1e40af; }
+        .tab.active { color: #1e40af; border-bottom-color: #1e40af; }
         html { scroll-behavior: smooth; }
         
         @media (max-width: 768px) {
@@ -95,7 +95,7 @@ export const modernAgentDetailPage = (slug: string, data?: any) => `
         .section-title { font-size: 20px; font-weight: 700; margin-bottom: 16px; }
         .feature-list { display: grid; gap: 12px; }
         .feature-item { display: flex; gap: 12px; padding: 16px; background: #f9fafb; border-radius: 8px; }
-        .feature-icon { color: #7c3aed; font-size: 20px; flex-shrink: 0; }
+        .feature-icon { color: #1e40af; font-size: 20px; flex-shrink: 0; }
         .feature-content h4 { font-weight: 600; margin-bottom: 4px; }
         .feature-content p { color: #6b7280; font-size: 14px; }
         
@@ -136,7 +136,7 @@ export const modernAgentDetailPage = (slug: string, data?: any) => `
         .info-grid { display: grid; gap: 16px; }
         .info-row { display: flex; align-items: center; gap: 12px; padding: 14px; background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%); border-radius: 10px; transition: all 0.3s; }
         .info-row:hover { transform: translateX(4px); box-shadow: 0 2px 8px rgba(124, 58, 237, 0.1); }
-        .info-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%); color: #fff; border-radius: 8px; font-size: 16px; flex-shrink: 0; }
+        .info-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #1e40af 0%, #a855f7 100%); color: #fff; border-radius: 8px; font-size: 16px; flex-shrink: 0; }
         .info-content { flex: 1; }
         .info-label { color: #6b7280; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
         .info-value { font-weight: 600; font-size: 15px; color: #1f2937; }
@@ -145,7 +145,7 @@ export const modernAgentDetailPage = (slug: string, data?: any) => `
         .social-links { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 12px; }
         .social-link { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; background: #fff; border: 2px solid #e5e7eb; border-radius: 10px; color: #374151; text-decoration: none; font-size: 18px; transition: all 0.3s; position: relative; overflow: hidden; }
         .social-link:before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%); transition: left 0.3s; }
-        .social-link:hover { border-color: #7c3aed; color: #7c3aed; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2); }
+        .social-link:hover { border-color: #1e40af; color: #1e40af; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2); }
         .social-link:hover:before { left: 0; }
         .social-link i { position: relative; z-index: 1; }
         .social-link.twitter:hover { border-color: #1da1f2; color: #1da1f2; }
@@ -155,7 +155,7 @@ export const modernAgentDetailPage = (slug: string, data?: any) => `
         
         /* Rating */
         .rating-summary { text-align: center; margin-bottom: 24px; }
-        .rating-number { font-size: 48px; font-weight: 700; color: #7c3aed; }
+        .rating-number { font-size: 48px; font-weight: 700; color: #1e40af; }
         .rating-stars { color: #fbbf24; font-size: 24px; }
         .rating-bars { margin-top: 16px; }
         .rating-bar { display: flex; gap: 12px; align-items: center; margin-bottom: 8px; }
@@ -175,7 +175,7 @@ export const modernAgentDetailPage = (slug: string, data?: any) => `
         
         /* Loading */
         .loading { text-align: center; padding: 60px 20px; }
-        .spinner { width: 50px; height: 50px; border: 4px solid #f3f4f6; border-top-color: #7c3aed; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px; }
+        .spinner { width: 50px; height: 50px; border: 4px solid #f3f4f6; border-top-color: #1e40af; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px; }
         @keyframes spin { to { transform: rotate(360deg); } }
         
         /* Toast */
@@ -187,12 +187,12 @@ export const modernAgentDetailPage = (slug: string, data?: any) => `
         .related-title { font-size: 28px; font-weight: 700; margin-bottom: 24px; color: #1a1a1a; }
         .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
         .related-card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; transition: all 0.3s; cursor: pointer; text-decoration: none; color: inherit; display: block; }
-        .related-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(124, 58, 237, 0.15); border-color: #7c3aed; }
+        .related-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(124, 58, 237, 0.15); border-color: #1e40af; }
         .related-logo { width: 64px; height: 64px; border-radius: 10px; object-fit: cover; margin-bottom: 12px; }
         .related-name { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: #1a1a1a; }
         .related-tagline { font-size: 14px; color: #6b7280; margin-bottom: 12px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .related-meta { display: flex; gap: 16px; font-size: 13px; color: #6b7280; }
-        .related-badge { display: inline-block; background: #7c3aed; color: #fff; font-size: 11px; font-weight: 600; padding: 4px 8px; border-radius: 4px; margin-bottom: 8px; text-transform: uppercase; }
+        .related-badge { display: inline-block; background: #1e40af; color: #fff; font-size: 11px; font-weight: 600; padding: 4px 8px; border-radius: 4px; margin-bottom: 8px; text-transform: uppercase; }
         
         @media (max-width: 768px) {
             .related-grid { grid-template-columns: 1fr; }
@@ -215,7 +215,7 @@ export const modernAgentDetailPage = (slug: string, data?: any) => `
         footer .items-center { align-items: center; }
         footer .mb-4 { margin-bottom: 16px; }
         footer .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
-        footer .text-purple-500 { color: #a855f7; }
+        footer .text-blue-600 { color: #a855f7; }
         footer .mr-3 { margin-right: 12px; }
         footer .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
         footer .font-bold { font-weight: 700; }
@@ -395,7 +395,7 @@ export const modernAgentDetailPage = (slug: string, data?: any) => `
 
                         <!-- Company Info -->
                         <div class="sidebar-section">
-                            <h3 class="sidebar-title"><i class="fas fa-building" style="margin-right: 8px; color: #7c3aed;"></i>Company Information</h3>
+                            <h3 class="sidebar-title"><i class="fas fa-building" style="margin-right: 8px; color: #1e40af;"></i>Company Information</h3>
                             <div class="info-grid">
                                 <div class="info-row">
                                     <div class="info-icon"><i class="fas fa-briefcase"></i></div>
@@ -423,7 +423,7 @@ export const modernAgentDetailPage = (slug: string, data?: any) => `
 
                         <!-- Social Links -->
                         <div class="sidebar-section">
-                            <h3 class="sidebar-title"><i class="fas fa-share-alt" style="margin-right: 8px; color: #7c3aed;"></i>Connect</h3>
+                            <h3 class="sidebar-title"><i class="fas fa-share-alt" style="margin-right: 8px; color: #1e40af;"></i>Connect</h3>
                             <div id="social-links" class="social-links"></div>
                         </div>
 
@@ -842,7 +842,7 @@ export const modernAgentDetailPage = (slug: string, data?: any) => `
                 if (res.data.success && res.data.saved) {
                     isSaved = true;
                     document.getElementById('save-text').textContent = 'Saved';
-                    document.getElementById('save-btn').style.background = '#7c3aed';
+                    document.getElementById('save-btn').style.background = '#1e40af';
                     document.getElementById('save-btn').style.color = '#fff';
                 }
             } catch (error) {
@@ -874,7 +874,7 @@ export const modernAgentDetailPage = (slug: string, data?: any) => `
                     });
                     isSaved = true;
                     document.getElementById('save-text').textContent = 'Saved';
-                    document.getElementById('save-btn').style.background = '#7c3aed';
+                    document.getElementById('save-btn').style.background = '#1e40af';
                     document.getElementById('save-btn').style.color = '#fff';
                     showToast('Agent saved successfully!');
                 }

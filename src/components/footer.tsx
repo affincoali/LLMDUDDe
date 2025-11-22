@@ -7,7 +7,7 @@ export const getFooter = () => `
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
                 <div>
                     <div class="flex items-center mb-4">
-                        <i class="fas fa-robot text-3xl text-purple-500 mr-3"></i>
+                        <i class="fas fa-robot text-3xl text-blue-600 mr-3"></i>
                         <span class="text-xl font-bold">AI Agents Directory</span>
                     </div>
                     <p class="text-gray-400">
@@ -29,7 +29,7 @@ export const getFooter = () => `
                         <li><a href="/about" class="hover:text-white transition">About Us</a></li>
                         <li><a href="/submit" class="hover:text-white transition">Submit Agent</a></li>
                         <li>
-                            <a href="/allstats" class="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all transform hover:scale-105">
+                            <a href="/allstats" class="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-blue-700 to-indigo-600 text-white rounded-lg hover:from-blue-800 hover:to-indigo-700 transition-all transform hover:scale-105">
                                 <i class="fas fa-chart-line mr-2"></i>
                                 <span class="font-semibold">Statistics & Analytics</span>
                             </a>

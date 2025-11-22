@@ -119,17 +119,17 @@ export const enhancedCategoriesPage = () => `
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
                 <a href="/" class="flex items-center space-x-3">
-                    <i class="fas fa-robot text-3xl text-purple-600"></i>
+                    <i class="fas fa-robot text-3xl text-blue-700"></i>
                     <span class="text-xl font-bold">AI Agents Directory</span>
                 </a>
                 
                 <div class="hidden md:flex items-center space-x-6">
-                    <a href="/" class="hover:text-purple-600">Home</a>
-                    <a href="/agents" class="hover:text-purple-600">Agents</a>
-                    <a href="/categories" class="text-purple-600 font-semibold">Categories</a>
-                    <a href="/leaderboard" class="hover:text-purple-600">Leaderboard</a>
-                    <a href="/landscape" class="hover:text-purple-600">Landscape</a>
-                    <a href="/submit" class="hover:text-purple-600">Submit</a>
+                    <a href="/" class="hover:text-blue-700">Home</a>
+                    <a href="/agents" class="hover:text-blue-700">Agents</a>
+                    <a href="/categories" class="text-blue-700 font-semibold">Categories</a>
+                    <a href="/leaderboard" class="hover:text-blue-700">Leaderboard</a>
+                    <a href="/landscape" class="hover:text-blue-700">Landscape</a>
+                    <a href="/submit" class="hover:text-blue-700">Submit</a>
                     <button onclick="toggleDarkMode()" class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700">
                         <i id="theme-icon" class="fas fa-moon"></i>
                     </button>
@@ -141,12 +141,12 @@ export const enhancedCategoriesPage = () => `
             </div>
             
             <div id="mobile-menu" class="hidden md:hidden pb-4">
-                <a href="/" class="block py-2 hover:text-purple-600">Home</a>
-                <a href="/agents" class="block py-2 hover:text-purple-600">Agents</a>
-                <a href="/categories" class="block py-2 text-purple-600 font-semibold">Categories</a>
-                <a href="/leaderboard" class="block py-2 hover:text-purple-600">Leaderboard</a>
-                <a href="/landscape" class="block py-2 hover:text-purple-600">Landscape</a>
-                <a href="/submit" class="block py-2 hover:text-purple-600">Submit</a>
+                <a href="/" class="block py-2 hover:text-blue-700">Home</a>
+                <a href="/agents" class="block py-2 hover:text-blue-700">Agents</a>
+                <a href="/categories" class="block py-2 text-blue-700 font-semibold">Categories</a>
+                <a href="/leaderboard" class="block py-2 hover:text-blue-700">Leaderboard</a>
+                <a href="/landscape" class="block py-2 hover:text-blue-700">Landscape</a>
+                <a href="/submit" class="block py-2 hover:text-blue-700">Submit</a>
             </div>
         </div>
     </nav>
@@ -168,7 +168,7 @@ export const enhancedCategoriesPage = () => `
                         type="text" 
                         id="search-input" 
                         placeholder="Search categories..." 
-                        class="card w-full px-6 py-4 pl-14 rounded-xl border focus:ring-2 focus:ring-purple-600 focus:border-transparent text-lg"
+                        class="card w-full px-6 py-4 pl-14 rounded-xl border focus:ring-2 focus:ring-blue-700 focus:border-transparent text-lg"
                         style="color: var(--text-primary)"
                         oninput="searchCategories()"
                     />
@@ -211,7 +211,7 @@ export const enhancedCategoriesPage = () => `
             
             <select 
                 id="sort-select" 
-                class="card px-4 py-2 rounded-lg border focus:ring-2 focus:ring-purple-600"
+                class="card px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-700"
                 style="color: var(--text-primary)"
                 onchange="sortCategories()"
             >
@@ -236,12 +236,12 @@ export const enhancedCategoriesPage = () => `
         <!-- CTAs -->
         <div class="grid md:grid-cols-2 gap-6 mb-16">
             <div class="card border rounded-xl p-8 text-center hover:shadow-lg transition">
-                <i class="fas fa-magic text-5xl text-purple-600 mb-4"></i>
+                <i class="fas fa-magic text-5xl text-blue-700 mb-4"></i>
                 <h3 class="text-2xl font-bold mb-3">Need Custom AI Agent?</h3>
                 <p class="mb-6" style="color: var(--text-secondary)">
                     Can't find what you're looking for? Request a custom AI agent tailored to your needs.
                 </p>
-                <a href="/request" class="inline-block bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-purple-700">
+                <a href="/request" class="inline-block bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-800">
                     Request Agent
                 </a>
             </div>
@@ -298,7 +298,7 @@ export const enhancedCategoriesPage = () => `
                 
                 <div>
                     <h3 class="text-xl font-semibold mb-3">
-                        <i class="fas fa-chart-line text-purple-600 mr-2"></i>
+                        <i class="fas fa-chart-line text-blue-700 mr-2"></i>
                         Stay Updated
                     </h3>
                     <p style="color: var(--text-secondary)">
@@ -437,7 +437,7 @@ export const enhancedCategoriesPage = () => `
             </p>
             
             <div class="flex justify-center items-center gap-3 mb-3">
-              <span class="font-bold text-2xl text-purple-600">\${agentCount}</span>
+              <span class="font-bold text-2xl text-blue-700">\${agentCount}</span>
               <span class="text-sm" style="color: var(--text-secondary)">agents</span>
             </div>
             
@@ -608,17 +608,17 @@ export const leaderboardPage = () => `
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
                 <a href="/" class="flex items-center space-x-3">
-                    <i class="fas fa-robot text-3xl text-purple-600"></i>
+                    <i class="fas fa-robot text-3xl text-blue-700"></i>
                     <span class="text-xl font-bold">AI Agents Directory</span>
                 </a>
                 
                 <div class="hidden md:flex items-center space-x-6">
-                    <a href="/" class="hover:text-purple-600">Home</a>
-                    <a href="/agents" class="hover:text-purple-600">Agents</a>
-                    <a href="/categories" class="hover:text-purple-600">Categories</a>
-                    <a href="/leaderboard" class="text-purple-600 font-semibold">Leaderboard</a>
-                    <a href="/landscape" class="hover:text-purple-600">Landscape</a>
-                    <a href="/submit" class="hover:text-purple-600">Submit</a>
+                    <a href="/" class="hover:text-blue-700">Home</a>
+                    <a href="/agents" class="hover:text-blue-700">Agents</a>
+                    <a href="/categories" class="hover:text-blue-700">Categories</a>
+                    <a href="/leaderboard" class="text-blue-700 font-semibold">Leaderboard</a>
+                    <a href="/landscape" class="hover:text-blue-700">Landscape</a>
+                    <a href="/submit" class="hover:text-blue-700">Submit</a>
                     <button onclick="toggleDarkMode()" class="p-2 rounded-lg">
                         <i id="theme-icon" class="fas fa-moon"></i>
                     </button>
@@ -633,7 +633,7 @@ export const leaderboardPage = () => `
                 <a href="/" class="block py-2">Home</a>
                 <a href="/agents" class="block py-2">Agents</a>
                 <a href="/categories" class="block py-2">Categories</a>
-                <a href="/leaderboard" class="block py-2 text-purple-600 font-semibold">Leaderboard</a>
+                <a href="/leaderboard" class="block py-2 text-blue-700 font-semibold">Leaderboard</a>
                 <a href="/landscape" class="block py-2">Landscape</a>
                 <a href="/submit" class="block py-2">Submit</a>
             </div>
@@ -735,7 +735,7 @@ export const leaderboardPage = () => `
                 
                 <div>
                     <h3 class="text-xl font-semibold mb-3">
-                        <i class="fas fa-arrow-up text-purple-600 mr-2"></i>
+                        <i class="fas fa-arrow-up text-blue-700 mr-2"></i>
                         Upvote Leaders
                     </h3>
                     <p style="color: var(--text-secondary)">
@@ -890,7 +890,7 @@ export const leaderboardPage = () => `
               <div class="font-bold text-lg">\${(agent.upvote_count || 0).toLocaleString()}</div>
               <div class="text-sm" style="color: var(--text-secondary)">upvotes</div>
             </div>
-            <button onclick="upvoteAgent(\${agent.id}, event)" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+            <button onclick="upvoteAgent(\${agent.id}, event)" class="px-4 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800">
               <i class="fas fa-arrow-up"></i>
             </button>
           \`;
@@ -931,7 +931,7 @@ export const leaderboardPage = () => `
                 </p>
                 <div class="flex gap-2 mt-1">
                   \${agent.category_names ? agent.category_names.split(',').slice(0, 2).map(cat => 
-                    \`<span class="text-xs px-2 py-1 bg-purple-100 text-purple-700 rounded">\${cat.trim()}</span>\`
+                    \`<span class="text-xs px-2 py-1 bg-purple-100 text-blue-800 rounded">\${cat.trim()}</span>\`
                   ).join('') : ''}
                 </div>
               </div>
@@ -1216,7 +1216,7 @@ export const landscapePage = () => `
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         <div class="text-center mb-6 md:mb-8">
             <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 md:mb-4">
-                <i class="fas fa-project-diagram text-purple-600 mr-2 md:mr-3"></i>
+                <i class="fas fa-project-diagram text-blue-700 mr-2 md:mr-3"></i>
                 AI Agents Market Landscape
             </h1>
             <p class="text-base sm:text-lg md:text-xl lg:text-2xl mb-3 md:mb-4 px-4" style="color: var(--text-secondary)">
@@ -1243,12 +1243,12 @@ export const landscapePage = () => `
             <!-- Controls -->
             <div class="controls-panel">
                 <div class="flex flex-col gap-2">
-                    <button onclick="zoomIn()" class="px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm">
+                    <button onclick="zoomIn()" class="px-3 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800 text-sm">
                         <i class="fas fa-search-plus mr-1 md:mr-2"></i>
                         <span class="hidden sm:inline">Zoom In</span>
                         <span class="sm:hidden">+</span>
                     </button>
-                    <button onclick="zoomOut()" class="px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm">
+                    <button onclick="zoomOut()" class="px-3 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800 text-sm">
                         <i class="fas fa-search-minus mr-1 md:mr-2"></i>
                         <span class="hidden sm:inline">Zoom Out</span>
                         <span class="sm:hidden">−</span>
@@ -1276,7 +1276,7 @@ export const landscapePage = () => `
                 type="text" 
                 id="search-category" 
                 placeholder="Search categories..." 
-                class="card w-full px-6 py-4 rounded-xl border focus:ring-2 focus:ring-purple-600"
+                class="card w-full px-6 py-4 rounded-xl border focus:ring-2 focus:ring-blue-700"
                 style="color: var(--text-primary)"
                 oninput="searchCategory()"
             />
@@ -1379,7 +1379,7 @@ export const landscapePage = () => `
             <div class="mb-4">
                 <div class="flex items-center gap-4 text-sm">
                     <span>
-                        <i class="fas fa-robot text-purple-600 mr-1"></i>
+                        <i class="fas fa-robot text-blue-700 mr-1"></i>
                         <strong id="panel-agent-count">0</strong> agents
                     </span>
                     <span class="text-green-600">
@@ -1549,7 +1549,7 @@ export const landscapePage = () => `
                 <h4 class="font-semibold truncate">\${agent.name}</h4>
                 <p class="text-xs truncate" style="color: var(--text-secondary)">\${agent.tagline || ''}</p>
                 <div class="flex gap-2 mt-1">
-                  <span class="text-xs px-2 py-0.5 bg-purple-100 text-purple-700 rounded">\${agent.pricing_model}</span>
+                  <span class="text-xs px-2 py-0.5 bg-purple-100 text-blue-800 rounded">\${agent.pricing_model}</span>
                   \${agent.is_open_source ? '<span class="text-xs px-2 py-0.5 bg-green-100 text-green-700 rounded">Open Source</span>' : ''}
                 </div>
               </div>

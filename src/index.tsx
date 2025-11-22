@@ -124,15 +124,15 @@ app.get('/old', (c) => {
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16 items-center">
                     <div class="flex items-center">
-                        <i class="fas fa-robot text-3xl text-purple-600 mr-3"></i>
+                        <i class="fas fa-robot text-3xl text-blue-700 mr-3"></i>
                         <span class="text-xl font-bold text-gray-900">AI Agents Directory</span>
                     </div>
                     <div class="hidden md:flex items-center space-x-6">
-                        <a href="/" class="text-gray-700 hover:text-purple-600">Home</a>
-                        <a href="/agents" class="text-gray-700 hover:text-purple-600">Agents</a>
-                        <a href="/categories" class="text-gray-700 hover:text-purple-600">Categories</a>
-                        <a href="/submit" class="text-gray-700 hover:text-purple-600">Submit</a>
-                        <button onclick="showLogin()" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
+                        <a href="/" class="text-gray-700 hover:text-blue-700">Home</a>
+                        <a href="/agents" class="text-gray-700 hover:text-blue-700">Agents</a>
+                        <a href="/categories" class="text-gray-700 hover:text-blue-700">Categories</a>
+                        <a href="/submit" class="text-gray-700 hover:text-blue-700">Submit</a>
+                        <button onclick="showLogin()" class="bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-blue-800">
                             Login
                         </button>
                     </div>
@@ -150,7 +150,7 @@ app.get('/old', (c) => {
                     Browse, compare, and find the perfect AI tools for your needs
                 </p>
                 <div class="flex justify-center gap-4">
-                    <button onclick="loadAgents()" class="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100">
+                    <button onclick="loadAgents()" class="bg-white text-blue-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100">
                         Browse Agents
                     </button>
                     <a href="/submit" class="bg-purple-800 text-white px-8 py-3 rounded-lg font-semibold hover:bg-purple-900">
@@ -164,19 +164,19 @@ app.get('/old', (c) => {
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10">
             <div class="bg-white rounded-xl shadow-lg p-8 grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div class="text-center">
-                    <div class="text-4xl font-bold text-purple-600" id="total-agents">-</div>
+                    <div class="text-4xl font-bold text-blue-700" id="total-agents">-</div>
                     <div class="text-gray-600 mt-2">AI Agents</div>
                 </div>
                 <div class="text-center">
-                    <div class="text-4xl font-bold text-purple-600" id="total-categories">-</div>
+                    <div class="text-4xl font-bold text-blue-700" id="total-categories">-</div>
                     <div class="text-gray-600 mt-2">Categories</div>
                 </div>
                 <div class="text-center">
-                    <div class="text-4xl font-bold text-purple-600" id="total-reviews">-</div>
+                    <div class="text-4xl font-bold text-blue-700" id="total-reviews">-</div>
                     <div class="text-gray-600 mt-2">Reviews</div>
                 </div>
                 <div class="text-center">
-                    <div class="text-4xl font-bold text-purple-600" id="total-upvotes">-</div>
+                    <div class="text-4xl font-bold text-blue-700" id="total-upvotes">-</div>
                     <div class="text-gray-600 mt-2">Upvotes</div>
                 </div>
             </div>
@@ -189,7 +189,7 @@ app.get('/old', (c) => {
                 <!-- Agents will be loaded here -->
             </div>
             <div class="text-center mt-8">
-                <button onclick="loadAgents()" class="text-purple-600 font-semibold hover:text-purple-700">
+                <button onclick="loadAgents()" class="text-blue-700 font-semibold hover:text-blue-800">
                     View All Agents →
                 </button>
             </div>
@@ -217,13 +217,13 @@ app.get('/old', (c) => {
                 <form onsubmit="handleLogin(event)">
                     <div class="mb-4">
                         <label class="block text-gray-700 mb-2">Email</label>
-                        <input type="email" id="login-email" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600">
+                        <input type="email" id="login-email" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-700">
                     </div>
                     <div class="mb-6">
                         <label class="block text-gray-700 mb-2">Password</label>
-                        <input type="password" id="login-password" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600">
+                        <input type="password" id="login-password" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-700">
                     </div>
-                    <button type="submit" class="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700">
+                    <button type="submit" class="w-full bg-blue-700 text-white py-3 rounded-lg font-semibold hover:bg-blue-800">
                         Login
                     </button>
                 </form>
@@ -278,12 +278,12 @@ app.get('/old', (c) => {
                       <p class="text-gray-600 text-sm mb-4 line-clamp-2">\${agent.tagline || ''}</p>
                       <div class="flex items-center justify-between">
                         <span class="text-sm text-gray-500">
-                          <i class="fas fa-arrow-up text-purple-600"></i> \${agent.upvote_count}
+                          <i class="fas fa-arrow-up text-blue-700"></i> \${agent.upvote_count}
                         </span>
                         <span class="text-sm text-gray-500">
-                          <i class="fas fa-eye text-purple-600"></i> \${agent.view_count}
+                          <i class="fas fa-eye text-blue-700"></i> \${agent.view_count}
                         </span>
-                        <span class="px-3 py-1 bg-purple-100 text-purple-600 text-xs font-semibold rounded-full">
+                        <span class="px-3 py-1 bg-purple-100 text-blue-700 text-xs font-semibold rounded-full">
                           \${agent.pricing_model}
                         </span>
                       </div>
@@ -563,7 +563,7 @@ app.get('/admin/legacy', (c) => {
                     <h2 class="text-2xl font-bold">Admin Panel</h2>
                 </div>
                 <nav class="mt-6">
-                    <a href="/admin" class="block px-6 py-3 bg-purple-600">
+                    <a href="/admin" class="block px-6 py-3 bg-blue-700">
                         <i class="fas fa-chart-line mr-2"></i> Dashboard
                     </a>
                     <a href="/admin/agents" class="block px-6 py-3 hover:bg-gray-800">
@@ -633,7 +633,7 @@ app.get('/admin/legacy', (c) => {
                     <div class="text-gray-600">Total Users</div>
                   </div>
                   <div class="bg-purple-50 rounded-lg p-6">
-                    <div class="text-3xl font-bold text-purple-600">\${stats.total_reviews}</div>
+                    <div class="text-3xl font-bold text-blue-700">\${stats.total_reviews}</div>
                     <div class="text-gray-600">Total Reviews</div>
                   </div>
                 \`;
@@ -659,7 +659,7 @@ app.get('/admin/legacy', (c) => {
                 } else {
                   container.innerHTML = agents.map(agent => \`
                     <div class="border-b py-3">
-                      <a href="/admin/agents/\${agent.id}" class="font-semibold text-purple-600 hover:underline">
+                      <a href="/admin/agents/\${agent.id}" class="font-semibold text-blue-700 hover:underline">
                         \${agent.name}
                       </a>
                       <p class="text-sm text-gray-600">\${agent.tagline || ''}</p>

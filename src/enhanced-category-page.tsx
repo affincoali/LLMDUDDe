@@ -20,8 +20,8 @@ export const enhancedCategoryDetailPage = (slug: string) => `
             --border-color: #e5e7eb;
             --card-bg: #ffffff;
             --hover-bg: #f3f4f6;
-            --purple-600: #9333ea;
-            --purple-700: #7e22ce;
+            --blue-700: #9333ea;
+            --blue-800: #7e22ce;
         }
         
         [data-theme="dark"] {
@@ -60,7 +60,7 @@ export const enhancedCategoryDetailPage = (slug: string) => `
         .enhanced-agent-card:hover {
             transform: translateY(-4px);
             box-shadow: 0 20px 40px rgba(147, 51, 234, 0.15);
-            border-color: var(--purple-600);
+            border-color: var(--blue-700);
         }
         
         [data-theme="dark"] .enhanced-agent-card:hover {
@@ -121,13 +121,13 @@ export const enhancedCategoryDetailPage = (slug: string) => `
         }
         
         .filter-chip:hover {
-            border-color: var(--purple-600);
-            color: var(--purple-600);
+            border-color: var(--blue-700);
+            color: var(--blue-700);
         }
         
         .filter-chip.active {
-            background: var(--purple-600);
-            border-color: var(--purple-600);
+            background: var(--blue-700);
+            border-color: var(--blue-700);
             color: white;
         }
         
@@ -159,12 +159,12 @@ export const enhancedCategoryDetailPage = (slug: string) => `
         }
         
         .action-button-primary {
-            background: var(--purple-600);
+            background: var(--blue-700);
             color: white;
         }
         
         .action-button-primary:hover {
-            background: var(--purple-700);
+            background: var(--blue-800);
             transform: scale(1.05);
         }
         
@@ -215,15 +215,15 @@ export const enhancedCategoryDetailPage = (slug: string) => `
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
                 <a href="/" class="flex items-center space-x-3">
-                    <i class="fas fa-robot text-3xl text-purple-600"></i>
+                    <i class="fas fa-robot text-3xl text-blue-700"></i>
                     <span class="text-xl font-bold">AI Agents Directory</span>
                 </a>
                 
                 <div class="hidden md:flex items-center space-x-6">
-                    <a href="/" class="hover:text-purple-600">Home</a>
-                    <a href="/agents" class="hover:text-purple-600">Agents</a>
-                    <a href="/categories" class="text-purple-600 font-semibold">Categories</a>
-                    <a href="/submit" class="hover:text-purple-600">Submit</a>
+                    <a href="/" class="hover:text-blue-700">Home</a>
+                    <a href="/agents" class="hover:text-blue-700">Agents</a>
+                    <a href="/categories" class="text-blue-700 font-semibold">Categories</a>
+                    <a href="/submit" class="hover:text-blue-700">Submit</a>
                     <button onclick="toggleDarkMode()" class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700">
                         <i id="theme-icon" class="fas fa-moon"></i>
                     </button>
@@ -235,10 +235,10 @@ export const enhancedCategoryDetailPage = (slug: string) => `
             </div>
             
             <div id="mobile-menu" class="hidden md:hidden pb-4">
-                <a href="/" class="block py-2 hover:text-purple-600">Home</a>
-                <a href="/agents" class="block py-2 hover:text-purple-600">Agents</a>
-                <a href="/categories" class="block py-2 text-purple-600 font-semibold">Categories</a>
-                <a href="/submit" class="block py-2 hover:text-purple-600">Submit</a>
+                <a href="/" class="block py-2 hover:text-blue-700">Home</a>
+                <a href="/agents" class="block py-2 hover:text-blue-700">Agents</a>
+                <a href="/categories" class="block py-2 text-blue-700 font-semibold">Categories</a>
+                <a href="/submit" class="block py-2 hover:text-blue-700">Submit</a>
             </div>
         </div>
     </nav>
@@ -289,7 +289,7 @@ export const enhancedCategoryDetailPage = (slug: string) => `
                             type="text" 
                             id="search-input" 
                             placeholder="Search agents..." 
-                            class="card w-full pl-12 pr-4 py-3 rounded-xl border-2 focus:border-purple-600 focus:outline-none"
+                            class="card w-full pl-12 pr-4 py-3 rounded-xl border-2 focus:border-blue-700 focus:outline-none"
                             style="color: var(--text-primary)"
                             oninput="filterAgents()"
                         />
@@ -299,7 +299,7 @@ export const enhancedCategoryDetailPage = (slug: string) => `
                 <div class="flex flex-wrap gap-3">
                     <select 
                         id="sort-select" 
-                        class="card px-4 py-2.5 rounded-xl border-2 focus:border-purple-600 focus:outline-none"
+                        class="card px-4 py-2.5 rounded-xl border-2 focus:border-blue-700 focus:outline-none"
                         style="color: var(--text-primary)"
                         onchange="sortAgents()"
                     >
@@ -334,7 +334,7 @@ export const enhancedCategoryDetailPage = (slug: string) => `
                 <p style="color: var(--text-secondary)">
                     Showing <strong id="showing-count">0</strong> of <strong id="total-count">0</strong> agents
                 </p>
-                <button onclick="clearFilters()" class="text-purple-600 hover:text-purple-700 font-semibold text-sm">
+                <button onclick="clearFilters()" class="text-blue-700 hover:text-blue-800 font-semibold text-sm">
                     <i class="fas fa-times-circle mr-1"></i> Clear Filters
                 </button>
             </div>
@@ -375,7 +375,7 @@ export const enhancedCategoryDetailPage = (slug: string) => `
         <!-- Related Categories -->
         <div id="related-categories" class="mt-16">
             <h2 class="text-3xl font-bold mb-6">
-                <i class="fas fa-layer-group text-purple-600 mr-2"></i>
+                <i class="fas fa-layer-group text-blue-700 mr-2"></i>
                 Related Categories
             </h2>
             <div id="related-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">

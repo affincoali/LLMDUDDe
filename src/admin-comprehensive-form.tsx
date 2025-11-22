@@ -20,8 +20,8 @@ export const adminComprehensiveEditPage = (agentId: string) => `
             transition: all 0.3s;
         }
         .tab-button.active {
-            border-bottom-color: #7c3aed;
-            color: #7c3aed;
+            border-bottom-color: #1e40af;
+            color: #1e40af;
             font-weight: 600;
         }
         .tab-content {
@@ -44,7 +44,7 @@ export const adminComprehensiveEditPage = (agentId: string) => `
             transition: all 0.3s ease;
         }
         .upload-area:hover {
-            border-color: #7c3aed !important;
+            border-color: #1e40af !important;
             background-color: #f5f3ff;
         }
         .gallery-item {
@@ -77,7 +77,7 @@ export const adminComprehensiveEditPage = (agentId: string) => `
                 </div>
 
                 <div id="loading" class="text-center py-12">
-                    <i class="fas fa-spinner fa-spin text-4xl text-purple-600"></i>
+                    <i class="fas fa-spinner fa-spin text-4xl text-blue-700"></i>
                     <p class="text-gray-600 mt-4">Loading agent data...</p>
                 </div>
 
@@ -196,7 +196,7 @@ export const adminComprehensiveEditPage = (agentId: string) => `
                                 <label class="block text-sm font-medium mb-2">Logo <span class="text-red-500">*</span></label>
                                 <div class="upload-area" id="admin-logo-upload-area" onclick="document.getElementById('admin-logo-upload').click()" 
                                      style="border: 2px dashed #d1d5db; border-radius: 8px; padding: 2rem; text-align: center; cursor: pointer; transition: all 0.3s;">
-                                    <i class="fas fa-cloud-upload-alt text-4xl mb-2" style="color: #7c3aed;"></i>
+                                    <i class="fas fa-cloud-upload-alt text-4xl mb-2" style="color: #1e40af;"></i>
                                     <p style="color: #6b7280;">Drag & drop or click to upload logo</p>
                                     <p class="text-sm" style="color: #9ca3af;">Max 2MB • Square format recommended (500x500px)</p>
                                 </div>
@@ -218,7 +218,7 @@ export const adminComprehensiveEditPage = (agentId: string) => `
                                 <label class="block text-sm font-medium mb-2">Cover Image</label>
                                 <div class="upload-area" id="admin-cover-upload-area" onclick="document.getElementById('admin-cover-upload').click()" 
                                      style="border: 2px dashed #d1d5db; border-radius: 8px; padding: 2rem; text-align: center; cursor: pointer; transition: all 0.3s;">
-                                    <i class="fas fa-image text-4xl mb-2" style="color: #7c3aed;"></i>
+                                    <i class="fas fa-image text-4xl mb-2" style="color: #1e40af;"></i>
                                     <p style="color: #6b7280;">Drag & drop or click to upload cover image</p>
                                     <p class="text-sm" style="color: #9ca3af;">Max 5MB • Recommended: 1200x630px</p>
                                 </div>
@@ -333,7 +333,7 @@ export const adminComprehensiveEditPage = (agentId: string) => `
 
                             <h3 class="text-xl font-bold mt-8 mb-4">Pricing Plans</h3>
                             <div id="pricing-plans-container"></div>
-                            <button type="button" onclick="addPricingPlan()" class="mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+                            <button type="button" onclick="addPricingPlan()" class="mt-4 px-4 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800">
                                 <i class="fas fa-plus mr-2"></i>Add Pricing Plan
                             </button>
                         </div>
@@ -529,7 +529,7 @@ export const adminComprehensiveEditPage = (agentId: string) => `
                             <p class="text-gray-600 mb-4">Add the key features of this AI agent</p>
                             
                             <div id="features-container"></div>
-                            <button type="button" onclick="addFeature()" class="mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+                            <button type="button" onclick="addFeature()" class="mt-4 px-4 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800">
                                 <i class="fas fa-plus mr-2"></i>Add Feature
                             </button>
                         </div>
@@ -540,7 +540,7 @@ export const adminComprehensiveEditPage = (agentId: string) => `
                             <p class="text-gray-600 mb-4">Describe practical applications of this AI agent</p>
                             
                             <div id="usecases-container"></div>
-                            <button type="button" onclick="addUseCase()" class="mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+                            <button type="button" onclick="addUseCase()" class="mt-4 px-4 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800">
                                 <i class="fas fa-plus mr-2"></i>Add Use Case
                             </button>
                         </div>
@@ -551,7 +551,7 @@ export const adminComprehensiveEditPage = (agentId: string) => `
                             <p class="text-gray-600 mb-4">Add common questions and answers</p>
                             
                             <div id="faqs-container"></div>
-                            <button type="button" onclick="addFAQ()" class="mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+                            <button type="button" onclick="addFAQ()" class="mt-4 px-4 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800">
                                 <i class="fas fa-plus mr-2"></i>Add FAQ
                             </button>
                         </div>
@@ -589,9 +589,9 @@ export const adminComprehensiveEditPage = (agentId: string) => `
                                 <div class="upload-area" id="gallery-upload-area" 
                                      onclick="document.getElementById('gallery-upload').click()"
                                      ondrop="handleGalleryDrop(event)" 
-                                     ondragover="event.preventDefault(); event.currentTarget.style.borderColor='#7c3aed';"
+                                     ondragover="event.preventDefault(); event.currentTarget.style.borderColor='#1e40af';"
                                      ondragleave="event.currentTarget.style.borderColor='#d1d5db';">
-                                    <i class="fas fa-images text-4xl mb-2" style="color: #7c3aed;"></i>
+                                    <i class="fas fa-images text-4xl mb-2" style="color: #1e40af;"></i>
                                     <p style="color: #6b7280;">
                                         Drag & drop images here or click to upload
                                     </p>
@@ -684,7 +684,7 @@ export const adminComprehensiveEditPage = (agentId: string) => `
 
                         <!-- Action Buttons -->
                         <div class="flex space-x-4 pt-6 mt-6 border-t">
-                            <button type="submit" class="flex-1 bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700">
+                            <button type="submit" class="flex-1 bg-blue-700 text-white py-3 rounded-lg font-semibold hover:bg-blue-800">
                                 <i class="fas fa-save mr-2"></i>Save All Changes
                             </button>
                             <button type="button" onclick="window.location='/admin/agents-all'" 
@@ -1072,7 +1072,7 @@ export const adminComprehensiveEditPage = (agentId: string) => `
             // Show loading state
             document.getElementById('admin-logo-preview').innerHTML = \`
                 <div style="text-align: center; padding: 1.5rem; background: #f9fafb; border-radius: 8px;">
-                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #7c3aed;"></i>
+                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #1e40af;"></i>
                     <p style="margin-top: 0.5rem; color: #6b7280;">Uploading logo...</p>
                 </div>
             \`;
@@ -1125,7 +1125,7 @@ export const adminComprehensiveEditPage = (agentId: string) => `
             // Show loading state
             document.getElementById('admin-cover-preview').innerHTML = \`
                 <div style="text-align: center; padding: 1.5rem; background: #f9fafb; border-radius: 8px;">
-                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #7c3aed;"></i>
+                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #1e40af;"></i>
                     <p style="margin-top: 0.5rem; color: #6b7280;">Uploading cover image...</p>
                 </div>
             \`;
@@ -1496,7 +1496,7 @@ export const adminComprehensiveEditPage = (agentId: string) => `
 
                 area.addEventListener('dragover', (e) => {
                     e.preventDefault();
-                    area.style.borderColor = '#7c3aed';
+                    area.style.borderColor = '#1e40af';
                     area.style.backgroundColor = '#f5f3ff';
                 });
 

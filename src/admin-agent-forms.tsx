@@ -43,14 +43,14 @@ export const adminAgentCreatePage = () => `
                                 <div>
                                     <label class="block text-sm font-medium mb-2">Agent Name *</label>
                                     <input type="text" id="name" required 
-                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600"
+                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700"
                                         placeholder="e.g., ChatGPT">
                                 </div>
                                 
                                 <div>
                                     <label class="block text-sm font-medium mb-2">Slug (URL-friendly) *</label>
                                     <input type="text" id="slug" required 
-                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600"
+                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700"
                                         placeholder="e.g., chatgpt">
                                     <p class="text-xs text-gray-500 mt-1">Will be auto-generated if empty</p>
                                 </div>
@@ -59,14 +59,14 @@ export const adminAgentCreatePage = () => `
                             <div class="mt-6">
                                 <label class="block text-sm font-medium mb-2">Tagline *</label>
                                 <input type="text" id="tagline" required 
-                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600"
+                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700"
                                     placeholder="Brief one-line description">
                             </div>
 
                             <div class="mt-6">
                                 <label class="block text-sm font-medium mb-2">Description *</label>
                                 <textarea id="description" required rows="6" 
-                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600"
+                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700"
                                     placeholder="Detailed description of the AI agent..."></textarea>
                             </div>
                         </div>
@@ -82,19 +82,19 @@ export const adminAgentCreatePage = () => `
                                 <div>
                                     <label class="block text-sm font-medium mb-2">Website URL *</label>
                                     <input type="url" id="website_url" required 
-                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600"
+                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700"
                                         placeholder="https://example.com">
                                 </div>
                                 
                                 <div>
                                     <label class="block text-sm font-medium mb-2">Logo/Icon URL or Emoji</label>
                                     <input type="text" id="logo_url" 
-                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600"
+                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700"
                                         placeholder="🤖 or https://...">
                                     <div class="mt-2">
                                         <label class="block text-sm text-gray-600 mb-1">Or upload logo:</label>
                                         <input type="file" id="logo_upload" accept="image/*"
-                                            class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
+                                            class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-blue-800 hover:file:bg-purple-100">
                                         <div id="logo_preview" class="mt-2"></div>
                                     </div>
                                 </div>
@@ -103,12 +103,12 @@ export const adminAgentCreatePage = () => `
                             <div class="mt-6">
                                 <label class="block text-sm font-medium mb-2">Cover Image URL</label>
                                 <input type="text" id="cover_image_url" 
-                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600"
+                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700"
                                     placeholder="https://...">
                                 <div class="mt-2">
                                     <label class="block text-sm text-gray-600 mb-1">Or upload cover image:</label>
                                     <input type="file" id="cover_upload" accept="image/*"
-                                        class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
+                                        class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-blue-800 hover:file:bg-purple-100">
                                     <div id="cover_preview" class="mt-2"></div>
                                 </div>
                             </div>
@@ -117,14 +117,14 @@ export const adminAgentCreatePage = () => `
                                 <div>
                                     <label class="block text-sm font-medium mb-2">Demo URL</label>
                                     <input type="url" id="demo_url" 
-                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600"
+                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700"
                                         placeholder="https://demo.example.com">
                                 </div>
                                 
                                 <div>
                                     <label class="block text-sm font-medium mb-2">Documentation URL</label>
                                     <input type="url" id="docs_url" 
-                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600"
+                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700"
                                         placeholder="https://docs.example.com">
                                 </div>
                             </div>
@@ -141,7 +141,7 @@ export const adminAgentCreatePage = () => `
                                 <div>
                                     <label class="block text-sm font-medium mb-2">Pricing Model *</label>
                                     <select id="pricing_model" required 
-                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600">
+                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700">
                                         <option value="FREE">Free</option>
                                         <option value="FREEMIUM">Freemium</option>
                                         <option value="PAID">Paid</option>
@@ -152,7 +152,7 @@ export const adminAgentCreatePage = () => `
                                 <div>
                                     <label class="block text-sm font-medium mb-2">Pricing Details</label>
                                     <input type="text" id="pricing_details" 
-                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600"
+                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700"
                                         placeholder="e.g., $10/month or Free trial">
                                 </div>
                             </div>
@@ -175,14 +175,14 @@ export const adminAgentCreatePage = () => `
                         <!-- Categories & Tags -->
                         <div class="mb-8">
                             <h2 class="text-xl font-bold mb-4 flex items-center">
-                                <i class="fas fa-folder text-purple-600 mr-2"></i>
+                                <i class="fas fa-folder text-blue-700 mr-2"></i>
                                 Categories & Tags
                             </h2>
                             
                             <div>
                                 <label class="block text-sm font-medium mb-2">Categories * (hold Ctrl/Cmd to select multiple)</label>
                                 <select id="category_ids" multiple required size="5"
-                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600">
+                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700">
                                 </select>
                                 <p class="text-xs text-gray-500 mt-1">Hold Ctrl (Windows) or Cmd (Mac) to select multiple categories</p>
                             </div>
@@ -190,7 +190,7 @@ export const adminAgentCreatePage = () => `
                             <div class="mt-6">
                                 <label class="block text-sm font-medium mb-2">Tags (comma-separated)</label>
                                 <input type="text" id="tags" 
-                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600"
+                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700"
                                     placeholder="e.g., chatbot, ai, nlp">
                             </div>
                         </div>
@@ -205,7 +205,7 @@ export const adminAgentCreatePage = () => `
                             <div>
                                 <label class="block text-sm font-medium mb-2">Features List</label>
                                 <textarea id="features" rows="4" 
-                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600 font-mono text-sm"
+                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700 font-mono text-sm"
                                     placeholder='["Feature 1", "Feature 2", "Feature 3"]'></textarea>
                                 <p class="text-xs text-gray-500 mt-1">Enter as JSON array</p>
                             </div>
@@ -221,7 +221,7 @@ export const adminAgentCreatePage = () => `
                             <div>
                                 <label class="block text-sm font-medium mb-2">Status *</label>
                                 <select id="status" required 
-                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600">
+                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700">
                                     <option value="PENDING">Pending Review</option>
                                     <option value="APPROVED">Approved</option>
                                     <option value="REJECTED">Rejected</option>
@@ -231,7 +231,7 @@ export const adminAgentCreatePage = () => `
                             <div class="mt-6">
                                 <label class="block text-sm font-medium mb-2">Admin Notes (internal)</label>
                                 <textarea id="admin_notes" rows="3" 
-                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600"
+                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700"
                                     placeholder="Internal notes for admin team..."></textarea>
                             </div>
 
@@ -253,7 +253,7 @@ export const adminAgentCreatePage = () => `
                             <div>
                                 <label class="block text-sm font-medium mb-2">Submitter Email</label>
                                 <input type="email" id="submitter_email" 
-                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600"
+                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700"
                                     placeholder="contact@example.com">
                             </div>
                         </div>
@@ -261,7 +261,7 @@ export const adminAgentCreatePage = () => `
                         <!-- Action Buttons -->
                         <div class="flex space-x-4 pt-6 border-t">
                             <button type="submit" 
-                                class="flex-1 bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700">
+                                class="flex-1 bg-blue-700 text-white py-3 rounded-lg font-semibold hover:bg-blue-800">
                                 <i class="fas fa-plus mr-2"></i>Create Agent
                             </button>
                             <button type="button" onclick="window.location='/admin/agents-all'" 
@@ -465,7 +465,7 @@ export const adminAgentEditPage = (agentId: string) => `
                 </div>
 
                 <div id="loading" class="text-center py-12">
-                    <i class="fas fa-spinner fa-spin text-4xl text-purple-600"></i>
+                    <i class="fas fa-spinner fa-spin text-4xl text-blue-700"></i>
                     <p class="text-gray-600 mt-4">Loading agent data...</p>
                 </div>
 
@@ -482,26 +482,26 @@ export const adminAgentEditPage = (agentId: string) => `
                                 <div>
                                     <label class="block text-sm font-medium mb-2">Agent Name *</label>
                                     <input type="text" id="name" required 
-                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600">
+                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700">
                                 </div>
                                 
                                 <div>
                                     <label class="block text-sm font-medium mb-2">Slug (URL-friendly) *</label>
                                     <input type="text" id="slug" required 
-                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600">
+                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700">
                                 </div>
                             </div>
 
                             <div class="mt-6">
                                 <label class="block text-sm font-medium mb-2">Tagline *</label>
                                 <input type="text" id="tagline" required 
-                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600">
+                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700">
                             </div>
 
                             <div class="mt-6">
                                 <label class="block text-sm font-medium mb-2">Description *</label>
                                 <textarea id="description" required rows="6" 
-                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600"></textarea>
+                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700"></textarea>
                             </div>
                         </div>
 
@@ -515,17 +515,17 @@ export const adminAgentEditPage = (agentId: string) => `
                                 <div>
                                     <label class="block text-sm font-medium mb-2">Website URL *</label>
                                     <input type="url" id="website_url" required 
-                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600">
+                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700">
                                 </div>
                                 
                                 <div>
                                     <label class="block text-sm font-medium mb-2">Logo/Icon URL or Emoji</label>
                                     <input type="text" id="logo_url" 
-                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600">
+                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700">
                                     <div class="mt-2">
                                         <label class="block text-sm text-gray-600 mb-1">Or upload logo:</label>
                                         <input type="file" id="logo_upload" accept="image/*"
-                                            class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
+                                            class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-blue-800 hover:file:bg-purple-100">
                                         <div id="logo_preview" class="mt-2"></div>
                                     </div>
                                 </div>
@@ -534,11 +534,11 @@ export const adminAgentEditPage = (agentId: string) => `
                             <div class="mt-6">
                                 <label class="block text-sm font-medium mb-2">Cover Image URL</label>
                                 <input type="text" id="cover_image_url" 
-                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600">
+                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700">
                                 <div class="mt-2">
                                     <label class="block text-sm text-gray-600 mb-1">Or upload cover image:</label>
                                     <input type="file" id="cover_upload" accept="image/*"
-                                        class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
+                                        class="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-blue-800 hover:file:bg-purple-100">
                                     <div id="cover_preview" class="mt-2"></div>
                                 </div>
                             </div>
@@ -547,13 +547,13 @@ export const adminAgentEditPage = (agentId: string) => `
                                 <div>
                                     <label class="block text-sm font-medium mb-2">Demo URL</label>
                                     <input type="url" id="demo_url" 
-                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600">
+                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700">
                                 </div>
                                 
                                 <div>
                                     <label class="block text-sm font-medium mb-2">Documentation URL</label>
                                     <input type="url" id="docs_url" 
-                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600">
+                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700">
                                 </div>
                             </div>
                         </div>
@@ -568,7 +568,7 @@ export const adminAgentEditPage = (agentId: string) => `
                                 <div>
                                     <label class="block text-sm font-medium mb-2">Pricing Model *</label>
                                     <select id="pricing_model" required 
-                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600">
+                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700">
                                         <option value="FREE">Free</option>
                                         <option value="FREEMIUM">Freemium</option>
                                         <option value="PAID">Paid</option>
@@ -579,7 +579,7 @@ export const adminAgentEditPage = (agentId: string) => `
                                 <div>
                                     <label class="block text-sm font-medium mb-2">Pricing Details</label>
                                     <input type="text" id="pricing_details" 
-                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600">
+                                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700">
                                 </div>
                             </div>
 
@@ -600,14 +600,14 @@ export const adminAgentEditPage = (agentId: string) => `
 
                         <div class="mb-8">
                             <h2 class="text-xl font-bold mb-4 flex items-center">
-                                <i class="fas fa-folder text-purple-600 mr-2"></i>
+                                <i class="fas fa-folder text-blue-700 mr-2"></i>
                                 Categories & Tags
                             </h2>
                             
                             <div>
                                 <label class="block text-sm font-medium mb-2">Categories * (hold Ctrl/Cmd to select multiple)</label>
                                 <select id="category_ids" multiple required size="5"
-                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600">
+                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700">
                                 </select>
                                 <p class="text-xs text-gray-500 mt-1">Hold Ctrl (Windows) or Cmd (Mac) to select multiple categories</p>
                             </div>
@@ -615,7 +615,7 @@ export const adminAgentEditPage = (agentId: string) => `
                             <div class="mt-6">
                                 <label class="block text-sm font-medium mb-2">Tags (comma-separated)</label>
                                 <input type="text" id="tags" 
-                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600">
+                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700">
                             </div>
                         </div>
 
@@ -628,7 +628,7 @@ export const adminAgentEditPage = (agentId: string) => `
                             <div>
                                 <label class="block text-sm font-medium mb-2">Features List</label>
                                 <textarea id="features" rows="4" 
-                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600 font-mono text-sm"></textarea>
+                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700 font-mono text-sm"></textarea>
                             </div>
                         </div>
 
@@ -641,7 +641,7 @@ export const adminAgentEditPage = (agentId: string) => `
                             <div>
                                 <label class="block text-sm font-medium mb-2">Status *</label>
                                 <select id="status" required 
-                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600">
+                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700">
                                     <option value="PENDING">Pending Review</option>
                                     <option value="APPROVED">Approved</option>
                                     <option value="REJECTED">Rejected</option>
@@ -651,13 +651,13 @@ export const adminAgentEditPage = (agentId: string) => `
                             <div class="mt-6">
                                 <label class="block text-sm font-medium mb-2">Admin Notes (internal)</label>
                                 <textarea id="admin_notes" rows="3" 
-                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600"></textarea>
+                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700"></textarea>
                             </div>
 
                             <div class="mt-6">
                                 <label class="block text-sm font-medium mb-2">Rejection Reason (if rejected)</label>
                                 <textarea id="rejection_reason" rows="2" 
-                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600"></textarea>
+                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700"></textarea>
                             </div>
 
                             <div class="mt-6">
@@ -677,13 +677,13 @@ export const adminAgentEditPage = (agentId: string) => `
                             <div>
                                 <label class="block text-sm font-medium mb-2">Submitter Email</label>
                                 <input type="email" id="submitter_email" 
-                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600">
+                                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700">
                             </div>
                         </div>
 
                         <div class="flex space-x-4 pt-6 border-t">
                             <button type="submit" 
-                                class="flex-1 bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700">
+                                class="flex-1 bg-blue-700 text-white py-3 rounded-lg font-semibold hover:bg-blue-800">
                                 <i class="fas fa-save mr-2"></i>Save Changes
                             </button>
                             <button type="button" onclick="window.location='/admin/agents-all'" 

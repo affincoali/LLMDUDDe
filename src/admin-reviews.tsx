@@ -47,7 +47,7 @@ ${getHeader('admin')}
 <option value="APPROVED">Approved</option>
 <option value="REJECTED">Rejected</option>
 </select>
-<button onclick="loadReviews()" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"><i class="fas fa-sync mr-2"></i>Refresh</button>
+<button onclick="loadReviews()" class="px-4 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800"><i class="fas fa-sync mr-2"></i>Refresh</button>
 </div>
 </div>
 
@@ -98,7 +98,7 @@ ${getHeader('admin')}
 <p class="text-sm mt-1" style="color:var(--text-secondary)"><span id="char-count">0</span>/2000 characters</p>
 </div>
 <div class="flex gap-4">
-<button onclick="saveReviewEdit()" class="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Save Changes</button>
+<button onclick="saveReviewEdit()" class="flex-1 px-4 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800">Save Changes</button>
 <button onclick="closeEditModal()" class="flex-1 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700">Cancel</button>
 </div>
 </div>
@@ -142,7 +142,7 @@ async function loadReviews(page=1){
       
       tbody.innerHTML=reviews.map(r=>\`
         <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-          <td class="px-6 py-4"><a href="/agents/\${r.agent_slug}" class="text-purple-600 hover:underline font-medium">\${r.agent_name}</a></td>
+          <td class="px-6 py-4"><a href="/agents/\${r.agent_slug}" class="text-blue-700 hover:underline font-medium">\${r.agent_name}</a></td>
           <td class="px-6 py-4"><div>\${r.user_name}</div><div class="text-sm" style="color:var(--text-secondary)">\${r.user_email}</div></td>
           <td class="px-6 py-4"><div class="star-rating">\${'★'.repeat(r.rating)}\${'☆'.repeat(5-r.rating)}</div></td>
           <td class="px-6 py-4"><div class="font-medium mb-1">\${r.review_title}</div><div class="text-sm" style="color:var(--text-secondary)">\${r.review_summary.substring(0,80)}...</div></td>

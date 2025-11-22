@@ -106,7 +106,7 @@ export const loginPage = () => `
                         type="email" 
                         id="email" 
                         required 
-                        class="w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                        class="w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-blue-700 focus:border-transparent"
                         style="background-color: var(--bg-secondary); color: var(--text-primary); border-color: var(--border-color)"
                         placeholder="you@example.com"
                     />
@@ -121,7 +121,7 @@ export const loginPage = () => `
                             type="password" 
                             id="password" 
                             required 
-                            class="w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                            class="w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-blue-700 focus:border-transparent"
                             style="background-color: var(--bg-secondary); color: var(--text-primary); border-color: var(--border-color)"
                             placeholder="Enter your password"
                         />
@@ -135,10 +135,10 @@ export const loginPage = () => `
                 <!-- Remember Me & Forgot Password -->
                 <div class="flex items-center justify-between">
                     <label class="flex items-center">
-                        <input type="checkbox" id="remember" class="rounded border-gray-300 text-purple-600 focus:ring-purple-600">
+                        <input type="checkbox" id="remember" class="rounded border-gray-300 text-blue-700 focus:ring-blue-700">
                         <span class="ml-2 text-sm" style="color: var(--text-secondary)">Remember me</span>
                     </label>
-                    <a href="/forgot-password" class="text-sm text-purple-600 hover:text-purple-700 font-medium">
+                    <a href="/forgot-password" class="text-sm text-blue-700 hover:text-blue-800 font-medium">
                         Forgot password?
                     </a>
                 </div>
@@ -182,7 +182,7 @@ export const loginPage = () => `
             <!-- Sign Up Link -->
             <p class="mt-6 text-center text-sm" style="color: var(--text-secondary)">
                 Don't have an account? 
-                <a href="/signup" class="text-purple-600 hover:text-purple-700 font-semibold">Sign up</a>
+                <a href="/signup" class="text-blue-700 hover:text-blue-800 font-semibold">Sign up</a>
             </p>
         </div>
         
@@ -409,7 +409,7 @@ export const signupPage = () => `
                         id="name" 
                         required 
                         minlength="2"
-                        class="w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                        class="w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-blue-700 focus:border-transparent"
                         style="background-color: var(--bg-secondary); color: var(--text-primary); border-color: var(--border-color)"
                         placeholder="John Doe"
                     />
@@ -423,7 +423,7 @@ export const signupPage = () => `
                         type="email" 
                         id="email" 
                         required 
-                        class="w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                        class="w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-blue-700 focus:border-transparent"
                         style="background-color: var(--bg-secondary); color: var(--text-primary); border-color: var(--border-color)"
                         placeholder="you@example.com"
                     />
@@ -439,7 +439,7 @@ export const signupPage = () => `
                             id="password" 
                             required 
                             minlength="8"
-                            class="w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                            class="w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-blue-700 focus:border-transparent"
                             style="background-color: var(--bg-secondary); color: var(--text-primary); border-color: var(--border-color)"
                             placeholder="Min 8 characters"
                             oninput="checkPasswordStrength()"
@@ -465,7 +465,7 @@ export const signupPage = () => `
                             type="password" 
                             id="confirm-password" 
                             required 
-                            class="w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                            class="w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-blue-700 focus:border-transparent"
                             style="background-color: var(--bg-secondary); color: var(--text-primary); border-color: var(--border-color)"
                             placeholder="Re-enter password"
                         />
@@ -479,10 +479,10 @@ export const signupPage = () => `
                 <!-- Terms Acceptance -->
                 <div>
                     <label class="flex items-start">
-                        <input type="checkbox" id="terms" required class="mt-1 rounded border-gray-300 text-purple-600 focus:ring-purple-600">
+                        <input type="checkbox" id="terms" required class="mt-1 rounded border-gray-300 text-blue-700 focus:ring-blue-700">
                         <span class="ml-2 text-sm" style="color: var(--text-secondary)">
-                            I agree to the <a href="/terms" class="text-purple-600 hover:text-purple-700 font-medium">Terms of Service</a> 
-                            and <a href="/privacy" class="text-purple-600 hover:text-purple-700 font-medium">Privacy Policy</a>
+                            I agree to the <a href="/terms" class="text-blue-700 hover:text-blue-800 font-medium">Terms of Service</a> 
+                            and <a href="/privacy" class="text-blue-700 hover:text-blue-800 font-medium">Privacy Policy</a>
                         </span>
                     </label>
                     <span id="terms-error" class="text-red-500 text-sm hidden"></span>
@@ -527,7 +527,7 @@ export const signupPage = () => `
             <!-- Login Link -->
             <p class="mt-6 text-center text-sm" style="color: var(--text-secondary)">
                 Already have an account? 
-                <a href="/login" class="text-purple-600 hover:text-purple-700 font-semibold">Sign in</a>
+                <a href="/login" class="text-blue-700 hover:text-blue-800 font-semibold">Sign in</a>
             </p>
         </div>
     </div>
@@ -712,7 +712,7 @@ export const forgotPasswordPage = () => `
                             type="email" 
                             id="email" 
                             required 
-                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-700 focus:border-transparent"
                             placeholder="you@example.com"
                         />
                     </div>
@@ -734,13 +734,13 @@ export const forgotPasswordPage = () => `
                     We've sent a password reset link to <strong id="email-sent"></strong>
                 </p>
                 <p class="text-sm text-gray-500">
-                    Didn't receive the email? Check your spam folder or <a href="#" onclick="resetForm()" class="text-purple-600 hover:text-purple-700 font-medium">try again</a>.
+                    Didn't receive the email? Check your spam folder or <a href="#" onclick="resetForm()" class="text-blue-700 hover:text-blue-800 font-medium">try again</a>.
                 </p>
             </div>
             
             <p class="mt-6 text-center text-sm text-gray-600">
                 Remember your password? 
-                <a href="/login" class="text-purple-600 hover:text-purple-700 font-semibold">Sign in</a>
+                <a href="/login" class="text-blue-700 hover:text-blue-800 font-semibold">Sign in</a>
             </p>
         </div>
     </div>

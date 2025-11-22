@@ -37,7 +37,7 @@ export const adminUsersPage = () => `
                         <option value="MODERATOR">Moderator</option>
                         <option value="ADMIN">Admin</option>
                     </select>
-                    <button onclick="loadUsers()" class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+                    <button onclick="loadUsers()" class="px-6 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800">
                         <i class="fas fa-search mr-2"></i>Search
                     </button>
                 </div>
@@ -78,7 +78,7 @@ export const adminUsersPage = () => `
             </select>
             <div class="flex space-x-4">
                 <button onclick="hideRoleModal()" class="flex-1 px-4 py-2 border rounded-lg hover:bg-gray-50">Cancel</button>
-                <button onclick="saveRole()" class="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Save</button>
+                <button onclick="saveRole()" class="flex-1 px-4 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800">Save</button>
             </div>
         </div>
     </div>
@@ -131,7 +131,7 @@ export const adminUsersPage = () => `
                 <tr class="hover:bg-gray-50">
                     <td class="px-6 py-4">
                         <div class="flex items-center">
-                            <div class="h-10 w-10 flex-shrink-0 bg-gradient-to-br from-purple-400 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold">
+                            <div class="h-10 w-10 flex-shrink-0 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold">
                                 \${user.name.charAt(0).toUpperCase()}
                             </div>
                             <div class="ml-4">
@@ -159,7 +159,7 @@ export const adminUsersPage = () => `
                     </td>
                     <td class="px-6 py-4 text-right text-sm font-medium">
                         <button onclick="showRoleModal(\${user.id}, '\${user.name}', '\${user.role}')" 
-                            class="text-purple-600 hover:text-purple-900 mr-3">
+                            class="text-blue-700 hover:text-purple-900 mr-3">
                             <i class="fas fa-user-edit"></i> Role
                         </button>
                         <a href="/admin/users/\${user.id}" class="text-blue-600 hover:text-blue-900">
@@ -422,7 +422,7 @@ export const adminAuditLogsPage = () => `
                         <option value="category">Categories</option>
                     </select>
                     <input type="number" id="user-filter" placeholder="User ID" class="px-4 py-2 border rounded-lg">
-                    <button onclick="loadLogs()" class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+                    <button onclick="loadLogs()" class="px-6 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800">
                         <i class="fas fa-search mr-2"></i>Filter
                     </button>
                 </div>
@@ -580,7 +580,7 @@ export const adminCategoriesPage = () => `
             <div class="p-8">
                 <div class="flex justify-between items-center mb-8">
                     <h1 class="text-3xl font-bold">Categories</h1>
-                    <button onclick="showCreateModal()" class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+                    <button onclick="showCreateModal()" class="px-6 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800">
                         <i class="fas fa-plus mr-2"></i>New Category
                     </button>
                 </div>
@@ -621,7 +621,7 @@ export const adminCategoriesPage = () => `
                 </div>
                 <div class="flex space-x-4">
                     <button type="button" onclick="hideCategoryModal()" class="flex-1 px-4 py-2 border rounded-lg hover:bg-gray-50">Cancel</button>
-                    <button type="submit" class="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Save</button>
+                    <button type="submit" class="flex-1 px-4 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800">Save</button>
                 </div>
             </form>
         </div>
@@ -831,7 +831,7 @@ export const adminAllAgentsPage = () => `
                         <option value="APPROVED">Approved</option>
                         <option value="REJECTED">Rejected</option>
                     </select>
-                    <button onclick="loadAgents()" class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+                    <button onclick="loadAgents()" class="px-6 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800">
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
@@ -915,7 +915,7 @@ export const adminAllAgentsPage = () => `
                         </div>
                         <div class="flex space-x-2 mb-2">
                             <button onclick="window.location='/admin/agents/\${agent.id}/edit-full'" 
-                                class="flex-1 px-3 py-2 text-sm bg-purple-600 text-white rounded hover:bg-purple-700">
+                                class="flex-1 px-3 py-2 text-sm bg-blue-700 text-white rounded hover:bg-blue-800">
                                 <i class="fas fa-edit"></i> Edit Full
                             </button>
                             <a href="/agents/\${agent.slug}" target="_blank"

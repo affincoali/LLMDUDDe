@@ -94,7 +94,7 @@ export const advancedAgentsListing = () => `
             <div class="flex justify-between h-16 items-center">
                 <div class="flex items-center">
                     <a href="/" class="flex items-center">
-                        <i class="fas fa-robot text-3xl text-purple-600 mr-3"></i>
+                        <i class="fas fa-robot text-3xl text-blue-700 mr-3"></i>
                         <span class="text-xl font-bold">AI Agents Directory</span>
                     </a>
                 </div>
@@ -102,9 +102,9 @@ export const advancedAgentsListing = () => `
                     <button onclick="toggleDarkMode()" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition">
                         <i id="theme-icon" class="fas fa-moon text-xl"></i>
                     </button>
-                    <a href="/" class="text-gray-700 dark:text-gray-300 hover:text-purple-600">Home</a>
-                    <a href="/agents" class="text-purple-600 font-semibold">Browse</a>
-                    <a href="/categories" class="text-gray-700 dark:text-gray-300 hover:text-purple-600">Categories</a>
+                    <a href="/" class="text-gray-700 dark:text-gray-300 hover:text-blue-700">Home</a>
+                    <a href="/agents" class="text-blue-700 font-semibold">Browse</a>
+                    <a href="/categories" class="text-gray-700 dark:text-gray-300 hover:text-blue-700">Categories</a>
                 </div>
             </div>
         </div>
@@ -121,13 +121,13 @@ export const advancedAgentsListing = () => `
                             type="text" 
                             id="search-input"
                             placeholder="Search agents by name, description, or tags..." 
-                            class="w-full px-4 py-3 pr-12 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-purple-600 focus:border-transparent card"
+                            class="w-full px-4 py-3 pr-12 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-700 focus:border-transparent card"
                         >
                         <i class="fas fa-search absolute right-4 top-4 text-gray-400"></i>
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <select id="sort-select" class="px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-purple-600 card">
+                    <select id="sort-select" class="px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-700 card">
                         <option value="trending">Trending</option>
                         <option value="newest">Newest</option>
                         <option value="most-upvoted">Most Upvoted</option>
@@ -135,7 +135,7 @@ export const advancedAgentsListing = () => `
                         <option value="a-z">A-Z</option>
                     </select>
                     <div class="flex rounded-lg border border-gray-300 dark:border-gray-600 overflow-hidden">
-                        <button id="grid-view-btn" onclick="setView('grid')" class="px-4 py-3 bg-purple-600 text-white">
+                        <button id="grid-view-btn" onclick="setView('grid')" class="px-4 py-3 bg-blue-700 text-white">
                             <i class="fas fa-th"></i>
                         </button>
                         <button id="list-view-btn" onclick="setView('list')" class="px-4 py-3 card">
@@ -152,7 +152,7 @@ export const advancedAgentsListing = () => `
                 <div class="card rounded-lg p-6 filter-sidebar">
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="font-bold text-lg">Filters</h3>
-                        <button onclick="clearFilters()" class="text-sm text-purple-600 hover:text-purple-700">
+                        <button onclick="clearFilters()" class="text-sm text-blue-700 hover:text-blue-800">
                             Clear All
                         </button>
                     </div>
@@ -161,19 +161,19 @@ export const advancedAgentsListing = () => `
                     <div class="mb-6">
                         <h4 class="font-semibold mb-3">Pricing Model</h4>
                         <label class="flex items-center mb-2 cursor-pointer">
-                            <input type="checkbox" name="pricing" value="FREE" class="mr-2 w-4 h-4 text-purple-600 rounded">
+                            <input type="checkbox" name="pricing" value="FREE" class="mr-2 w-4 h-4 text-blue-700 rounded">
                             <span class="text-sm">Free</span>
                         </label>
                         <label class="flex items-center mb-2 cursor-pointer">
-                            <input type="checkbox" name="pricing" value="FREEMIUM" class="mr-2 w-4 h-4 text-purple-600 rounded">
+                            <input type="checkbox" name="pricing" value="FREEMIUM" class="mr-2 w-4 h-4 text-blue-700 rounded">
                             <span class="text-sm">Freemium</span>
                         </label>
                         <label class="flex items-center mb-2 cursor-pointer">
-                            <input type="checkbox" name="pricing" value="PAID" class="mr-2 w-4 h-4 text-purple-600 rounded">
+                            <input type="checkbox" name="pricing" value="PAID" class="mr-2 w-4 h-4 text-blue-700 rounded">
                             <span class="text-sm">Paid</span>
                         </label>
                         <label class="flex items-center mb-2 cursor-pointer">
-                            <input type="checkbox" name="pricing" value="CONTACT" class="mr-2 w-4 h-4 text-purple-600 rounded">
+                            <input type="checkbox" name="pricing" value="CONTACT" class="mr-2 w-4 h-4 text-blue-700 rounded">
                             <span class="text-sm">Contact for Pricing</span>
                         </label>
                     </div>
@@ -181,7 +181,7 @@ export const advancedAgentsListing = () => `
                     <!-- Open Source -->
                     <div class="mb-6">
                         <label class="flex items-center cursor-pointer">
-                            <input type="checkbox" id="opensource-filter" class="mr-2 w-4 h-4 text-purple-600 rounded">
+                            <input type="checkbox" id="opensource-filter" class="mr-2 w-4 h-4 text-blue-700 rounded">
                             <span class="font-semibold">Open Source Only</span>
                         </label>
                     </div>
@@ -195,7 +195,7 @@ export const advancedAgentsListing = () => `
                         </div>
                     </div>
 
-                    <button onclick="applyFilters()" class="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition">
+                    <button onclick="applyFilters()" class="w-full bg-blue-700 text-white py-3 rounded-lg font-semibold hover:bg-blue-800 transition">
                         Apply Filters
                     </button>
                 </div>
@@ -271,10 +271,10 @@ export const advancedAgentsListing = () => `
         function setView(view) {
             currentView = view;
             document.getElementById('grid-view-btn').className = view === 'grid' 
-                ? 'px-4 py-3 bg-purple-600 text-white' 
+                ? 'px-4 py-3 bg-blue-700 text-white' 
                 : 'px-4 py-3 card';
             document.getElementById('list-view-btn').className = view === 'list' 
-                ? 'px-4 py-3 bg-purple-600 text-white' 
+                ? 'px-4 py-3 bg-blue-700 text-white' 
                 : 'px-4 py-3 card';
             renderAgents();
         }
@@ -288,7 +288,7 @@ export const advancedAgentsListing = () => `
                     const container = document.getElementById('category-filters');
                     container.innerHTML = allCategories.map(cat => \`
                         <label class="flex items-center cursor-pointer">
-                            <input type="checkbox" name="category" value="\${cat.id}" class="mr-2 w-4 h-4 text-purple-600 rounded">
+                            <input type="checkbox" name="category" value="\${cat.id}" class="mr-2 w-4 h-4 text-blue-700 rounded">
                             <span class="text-sm">\${cat.icon || '📁'} \${cat.name}</span>
                         </label>
                     \`).join('');
@@ -412,13 +412,13 @@ export const advancedAgentsListing = () => `
                         <h3 class="text-xl font-bold mb-2 truncate">\${agent.name}</h3>
                         <p class="text-gray-600 dark:text-gray-400 text-sm mb-4 h-10 overflow-hidden">\${agent.tagline || ''}</p>
                         <div class="flex items-center justify-between mb-3">
-                            <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 text-xs font-semibold rounded-full">
+                            <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-blue-700 dark:text-purple-300 text-xs font-semibold rounded-full">
                                 \${agent.pricing_model}
                             </span>
                             \${agent.is_open_source ? '<span class="text-xs text-green-600"><i class="fas fa-code"></i> Open Source</span>' : ''}
                         </div>
                         <div class="flex items-center justify-between text-sm text-gray-500">
-                            <span><i class="fas fa-eye text-purple-600"></i> \${agent.view_count || 0}</span>
+                            <span><i class="fas fa-eye text-blue-700"></i> \${agent.view_count || 0}</span>
                             <button onclick="event.stopPropagation(); upvoteAgent(\${agent.id})" class="upvote-btn px-3 py-1 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900">
                                 <i class="fas fa-arrow-up"></i> \${agent.upvote_count || 0}
                             </button>
@@ -449,10 +449,10 @@ export const advancedAgentsListing = () => `
                             </div>
                             <p class="text-gray-600 dark:text-gray-400 text-sm mb-2 truncate">\${agent.tagline || ''}</p>
                             <div class="flex items-center gap-3 text-xs">
-                                <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 font-semibold rounded">
+                                <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-blue-700 dark:text-purple-300 font-semibold rounded">
                                     \${agent.pricing_model}
                                 </span>
-                                <span class="text-gray-500"><i class="fas fa-eye text-purple-600"></i> \${agent.view_count || 0}</span>
+                                <span class="text-gray-500"><i class="fas fa-eye text-blue-700"></i> \${agent.view_count || 0}</span>
                                 \${agent.is_open_source ? '<span class="text-green-600"><i class="fas fa-code"></i></span>' : ''}
                             </div>
                         </div>

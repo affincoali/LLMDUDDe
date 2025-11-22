@@ -95,7 +95,7 @@ export const enhancedHomepage = () => `
                         >
                         <button 
                             onclick="performSearch()"
-                            class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-purple-600 text-white w-10 h-10 rounded-full hover:bg-purple-700 transition flex items-center justify-center"
+                            class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-700 text-white w-10 h-10 rounded-full hover:bg-blue-800 transition flex items-center justify-center"
                         >
                             <i class="fas fa-search"></i>
                         </button>
@@ -137,10 +137,10 @@ export const enhancedHomepage = () => `
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div class="flex justify-between items-center mb-8">
             <h2 class="text-3xl font-bold text-gray-900 flex items-center">
-                <i class="fas fa-sparkles text-purple-600 mr-3"></i>
+                <i class="fas fa-sparkles text-blue-700 mr-3"></i>
                 Newly Added
             </h2>
-            <a href="/agents?sort=newest" class="text-purple-600 font-semibold hover:text-purple-700 transition">
+            <a href="/agents?sort=newest" class="text-blue-700 font-semibold hover:text-blue-800 transition">
                 View All <i class="fas fa-arrow-right ml-1"></i>
             </a>
         </div>
@@ -153,10 +153,10 @@ export const enhancedHomepage = () => `
                 <div class="scroll-item w-80 h-80 bg-gray-200 rounded-lg skeleton"></div>
             </div>
             <button onclick="scrollLeft('newly-added-container')" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-3 shadow-lg hover:bg-gray-50 transition">
-                <i class="fas fa-chevron-left text-purple-600"></i>
+                <i class="fas fa-chevron-left text-blue-700"></i>
             </button>
             <button onclick="scrollRight('newly-added-container')" class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-3 shadow-lg hover:bg-gray-50 transition">
-                <i class="fas fa-chevron-right text-purple-600"></i>
+                <i class="fas fa-chevron-right text-blue-700"></i>
             </button>
         </div>
     </div>
@@ -169,7 +169,7 @@ export const enhancedHomepage = () => `
                     <i class="fas fa-fire text-orange-500 mr-3"></i>
                     Trending This Week
                 </h2>
-                <a href="/agents?sort=trending" class="text-purple-600 font-semibold hover:text-purple-700 transition">
+                <a href="/agents?sort=trending" class="text-blue-700 font-semibold hover:text-blue-800 transition">
                     View All <i class="fas fa-arrow-right ml-1"></i>
                 </a>
             </div>
@@ -182,10 +182,10 @@ export const enhancedHomepage = () => `
                     <div class="scroll-item w-80 h-80 bg-gray-200 rounded-lg skeleton"></div>
                 </div>
                 <button onclick="scrollLeft('trending-container')" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-3 shadow-lg hover:bg-gray-50 transition">
-                    <i class="fas fa-chevron-left text-purple-600"></i>
+                    <i class="fas fa-chevron-left text-blue-700"></i>
                 </button>
                 <button onclick="scrollRight('trending-container')" class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-3 shadow-lg hover:bg-gray-50 transition">
-                    <i class="fas fa-chevron-right text-purple-600"></i>
+                    <i class="fas fa-chevron-right text-blue-700"></i>
                 </button>
             </div>
         </div>
@@ -195,7 +195,7 @@ export const enhancedHomepage = () => `
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div class="text-center mb-12">
             <h2 class="text-3xl font-bold text-gray-900 mb-3">
-                <i class="fas fa-th text-purple-600 mr-3"></i>
+                <i class="fas fa-th text-blue-700 mr-3"></i>
                 Popular Categories
             </h2>
             <p class="text-gray-600">Explore AI agents by category</p>
@@ -208,7 +208,7 @@ export const enhancedHomepage = () => `
     </div>
 
     <!-- Newsletter Section -->
-    <div class="bg-gradient-to-br from-purple-600 to-indigo-700 text-white py-16">
+    <div class="bg-gradient-to-br from-blue-700 to-indigo-700 text-white py-16">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <i class="fas fa-envelope text-5xl mb-6 opacity-90"></i>
             <h2 class="text-3xl md:text-4xl font-bold mb-4">
@@ -229,7 +229,7 @@ export const enhancedHomepage = () => `
                     >
                     <button 
                         type="submit"
-                        class="bg-white text-purple-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition whitespace-nowrap"
+                        class="bg-white text-blue-700 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition whitespace-nowrap"
                     >
                         Subscribe
                     </button>
@@ -254,13 +254,13 @@ export const enhancedHomepage = () => `
             <form onsubmit="handleLogin(event)">
                 <div class="mb-4">
                     <label class="block text-gray-700 mb-2">Email</label>
-                    <input type="email" id="login-email" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600">
+                    <input type="email" id="login-email" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-700">
                 </div>
                 <div class="mb-6">
                     <label class="block text-gray-700 mb-2">Password</label>
-                    <input type="password" id="login-password" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600">
+                    <input type="password" id="login-password" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-700">
                 </div>
-                <button type="submit" class="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700">
+                <button type="submit" class="w-full bg-blue-700 text-white py-3 rounded-lg font-semibold hover:bg-blue-800">
                     Login
                 </button>
             </form>
@@ -376,14 +376,14 @@ export const enhancedHomepage = () => `
                         <h3 class="text-xl font-bold text-gray-900 mb-2 truncate">\${agent.name}</h3>
                         <p class="text-gray-600 text-sm mb-4 h-10 overflow-hidden">\${agent.tagline || ''}</p>
                         <div class="flex items-center justify-between mb-3">
-                            <span class="px-3 py-1 bg-purple-100 text-purple-600 text-xs font-semibold rounded-full">
+                            <span class="px-3 py-1 bg-purple-100 text-blue-700 text-xs font-semibold rounded-full">
                                 \${agent.pricing_model}
                             </span>
                             \${agent.is_open_source ? '<span class="text-xs text-green-600"><i class="fas fa-code"></i> Open Source</span>' : ''}
                         </div>
                         <div class="flex items-center justify-between text-sm text-gray-500">
-                            <span><i class="fas fa-eye text-purple-600"></i> \${agent.view_count || 0}</span>
-                            <span><i class="fas fa-arrow-up text-purple-600"></i> \${agent.upvote_count || 0}</span>
+                            <span><i class="fas fa-eye text-blue-700"></i> \${agent.view_count || 0}</span>
+                            <span><i class="fas fa-arrow-up text-blue-700"></i> \${agent.upvote_count || 0}</span>
                         </div>
                     </div>
                 </div>
@@ -458,11 +458,11 @@ export const enhancedHomepage = () => `
                                     <div class="font-semibold text-gray-900 mb-1">\${agent.name}</div>
                                     <div class="text-sm text-gray-600 truncate">\${agent.tagline || 'No description available'}</div>
                                     <div class="flex items-center gap-3 mt-2 text-xs text-gray-500">
-                                        <span><i class="fas fa-eye text-purple-600"></i> \${agent.view_count || 0}</span>
-                                        <span><i class="fas fa-arrow-up text-purple-600"></i> \${agent.upvote_count || 0}</span>
+                                        <span><i class="fas fa-eye text-blue-700"></i> \${agent.view_count || 0}</span>
+                                        <span><i class="fas fa-arrow-up text-blue-700"></i> \${agent.upvote_count || 0}</span>
                                     </div>
                                 </div>
-                                <span class="text-xs bg-purple-100 text-purple-600 px-3 py-1 rounded-full font-semibold ml-3 flex-shrink-0">\${agent.pricing_model || 'N/A'}</span>
+                                <span class="text-xs bg-purple-100 text-blue-700 px-3 py-1 rounded-full font-semibold ml-3 flex-shrink-0">\${agent.pricing_model || 'N/A'}</span>
                             </a>
                         \`;
                         }).join('');

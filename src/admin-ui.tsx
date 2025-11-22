@@ -32,7 +32,7 @@ export const enhancedAdminDashboard = () => `
                 </h2>
             </div>
             <nav class="mt-6">
-                <a href="/admin" class="block px-6 py-3 bg-purple-600 border-l-4 border-purple-400">
+                <a href="/admin" class="block px-6 py-3 bg-blue-700 border-l-4 border-blue-500">
                     <i class="fas fa-chart-line mr-2"></i> Dashboard
                 </a>
                 <a href="/admin/agents-queue" class="block px-6 py-3 hover:bg-gray-800">
@@ -72,7 +72,7 @@ export const enhancedAdminDashboard = () => `
                     <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
                     <div class="flex items-center space-x-4">
                         <span class="text-sm text-gray-600" id="last-updated">Last updated: Loading...</span>
-                        <button onclick="refreshDashboard()" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+                        <button onclick="refreshDashboard()" class="px-4 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800">
                             <i class="fas fa-sync mr-2"></i>Refresh
                         </button>
                     </div>
@@ -210,7 +210,7 @@ export const enhancedAdminDashboard = () => `
                     </div>
                 </div>
 
-                <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg shadow-lg p-6 text-white stat-card">
+                <div class="bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg shadow-lg p-6 text-white stat-card">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-sm font-medium opacity-90">Community</h3>
                         <i class="fas fa-users text-2xl opacity-75"></i>
@@ -370,7 +370,7 @@ export const enhancedAdminDashboard = () => `
                         </div>
                     </div>
                     <div class="text-right">
-                        <div class="text-2xl font-bold text-purple-600">\${cat.agent_count}</div>
+                        <div class="text-2xl font-bold text-blue-700">\${cat.agent_count}</div>
                         <div class="text-xs text-gray-500">agents</div>
                     </div>
                 </div>
@@ -439,14 +439,14 @@ export const agentApprovalQueue = () => `
                 <div class="bg-white rounded-lg shadow p-4 mb-6">
                     <div class="flex space-x-4">
                         <input type="text" id="search-input" placeholder="Search agents..." 
-                            class="flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-600">
+                            class="flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-700">
                         <select id="status-filter" class="px-4 py-2 border rounded-lg">
                             <option value="PENDING">Pending</option>
                             <option value="APPROVED">Approved</option>
                             <option value="REJECTED">Rejected</option>
                             <option value="">All Status</option>
                         </select>
-                        <button onclick="loadAgents()" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+                        <button onclick="loadAgents()" class="px-4 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800">
                             <i class="fas fa-search"></i>
                         </button>
                     </div>
@@ -542,9 +542,9 @@ export const agentApprovalQueue = () => `
                         <div class="flex items-center">
                             <div class="h-10 w-10 flex-shrink-0 rounded-lg overflow-hidden">
                                 \${agent.logo_url ? \`
-                                    <img src="\${agent.logo_url}" alt="\${agent.name}" loading="lazy" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\\'bg-gradient-to-br from-purple-400 to-indigo-600 w-full h-full flex items-center justify-center text-2xl\\'>🤖</div>';">
+                                    <img src="\${agent.logo_url}" alt="\${agent.name}" loading="lazy" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\\'bg-gradient-to-br from-blue-500 to-indigo-600 w-full h-full flex items-center justify-center text-2xl\\'>🤖</div>';">
                                 \` : \`
-                                    <div class="bg-gradient-to-br from-purple-400 to-indigo-600 w-full h-full flex items-center justify-center text-2xl">📦</div>
+                                    <div class="bg-gradient-to-br from-blue-500 to-indigo-600 w-full h-full flex items-center justify-center text-2xl">📦</div>
                                 \`}
                             </div>
                             <div class="ml-4">
@@ -572,7 +572,7 @@ export const agentApprovalQueue = () => `
                         </span>
                     </td>
                     <td class="px-6 py-4 text-right text-sm font-medium space-x-2">
-                        <button onclick="viewAgent(\${agent.id})" class="text-purple-600 hover:text-purple-900">
+                        <button onclick="viewAgent(\${agent.id})" class="text-blue-700 hover:text-purple-900">
                             <i class="fas fa-eye"></i> Review
                         </button>
                         \${agent.status === 'PENDING' ? \`
@@ -779,9 +779,9 @@ export const agentApprovalQueue = () => `
                             <div class="flex items-center gap-4">
                                 \${agent.logo_url ? \`
                                     <img src="\${agent.logo_url}" alt="\${agent.name}" loading="lazy" class="w-20 h-20 rounded-lg object-cover border" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                    <div class="w-20 h-20 rounded-lg bg-gradient-to-br from-purple-400 to-indigo-600 flex items-center justify-center text-3xl" style="display:none;">🤖</div>
+                                    <div class="w-20 h-20 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-3xl" style="display:none;">🤖</div>
                                 \` : \`
-                                    <div class="w-20 h-20 rounded-lg bg-gradient-to-br from-purple-400 to-indigo-600 flex items-center justify-center text-3xl">🤖</div>
+                                    <div class="w-20 h-20 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-3xl">🤖</div>
                                 \`}
                                 <div class="text-sm text-gray-500">
                                     <p>\${agent.logo_url || 'No logo uploaded'}</p>
@@ -933,25 +933,25 @@ export function getSidebar(activePage: string) {
                 </h2>
             </div>
             <nav class="mt-6">
-                <a href="/admin" class="block px-6 py-3 ${activePage === 'dashboard' ? 'bg-purple-600 border-l-4 border-purple-400' : 'hover:bg-gray-800'}">
+                <a href="/admin" class="block px-6 py-3 ${activePage === 'dashboard' ? 'bg-blue-700 border-l-4 border-blue-500' : 'hover:bg-gray-800'}">
                     <i class="fas fa-chart-line mr-2"></i> Dashboard
                 </a>
-                <a href="/admin/agents-queue" class="block px-6 py-3 ${activePage === 'agents-queue' ? 'bg-purple-600 border-l-4 border-purple-400' : 'hover:bg-gray-800'}">
+                <a href="/admin/agents-queue" class="block px-6 py-3 ${activePage === 'agents-queue' ? 'bg-blue-700 border-l-4 border-blue-500' : 'hover:bg-gray-800'}">
                     <i class="fas fa-clock mr-2"></i> Approval Queue
                 </a>
-                <a href="/admin/agents-all" class="block px-6 py-3 ${activePage === 'agents-all' ? 'bg-purple-600 border-l-4 border-purple-400' : 'hover:bg-gray-800'}">
+                <a href="/admin/agents-all" class="block px-6 py-3 ${activePage === 'agents-all' ? 'bg-blue-700 border-l-4 border-blue-500' : 'hover:bg-gray-800'}">
                     <i class="fas fa-robot mr-2"></i> All Agents
                 </a>
-                <a href="/admin/categories" class="block px-6 py-3 ${activePage === 'categories' ? 'bg-purple-600 border-l-4 border-purple-400' : 'hover:bg-gray-800'}">
+                <a href="/admin/categories" class="block px-6 py-3 ${activePage === 'categories' ? 'bg-blue-700 border-l-4 border-blue-500' : 'hover:bg-gray-800'}">
                     <i class="fas fa-folder mr-2"></i> Categories
                 </a>
-                <a href="/admin/users" class="block px-6 py-3 ${activePage === 'users' ? 'bg-purple-600 border-l-4 border-purple-400' : 'hover:bg-gray-800'}">
+                <a href="/admin/users" class="block px-6 py-3 ${activePage === 'users' ? 'bg-blue-700 border-l-4 border-blue-500' : 'hover:bg-gray-800'}">
                     <i class="fas fa-users mr-2"></i> Users
                 </a>
-                <a href="/admin/analytics" class="block px-6 py-3 ${activePage === 'analytics' ? 'bg-purple-600 border-l-4 border-purple-400' : 'hover:bg-gray-800'}">
+                <a href="/admin/analytics" class="block px-6 py-3 ${activePage === 'analytics' ? 'bg-blue-700 border-l-4 border-blue-500' : 'hover:bg-gray-800'}">
                     <i class="fas fa-chart-bar mr-2"></i> Analytics
                 </a>
-                <a href="/admin/audit-logs" class="block px-6 py-3 ${activePage === 'audit-logs' ? 'bg-purple-600 border-l-4 border-purple-400' : 'hover:bg-gray-800'}">
+                <a href="/admin/audit-logs" class="block px-6 py-3 ${activePage === 'audit-logs' ? 'bg-blue-700 border-l-4 border-blue-500' : 'hover:bg-gray-800'}">
                     <i class="fas fa-history mr-2"></i> Audit Logs
                 </a>
                 <hr class="my-4 border-gray-700">

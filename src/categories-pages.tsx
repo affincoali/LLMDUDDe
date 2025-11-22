@@ -112,7 +112,7 @@ export const categoriesPage = () => `
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="text-center mb-12">
             <h1 class="text-5xl font-bold mb-4">
-                <i class="fas fa-folder-open text-purple-600 mr-3"></i>
+                <i class="fas fa-folder-open text-blue-700 mr-3"></i>
                 Browse Categories
             </h1>
             <p class="text-xl" style="color: var(--text-secondary)">
@@ -127,7 +127,7 @@ export const categoriesPage = () => `
                     type="text" 
                     id="search-input" 
                     placeholder="Search categories..." 
-                    class="card w-full px-6 py-4 pl-12 rounded-xl border focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                    class="card w-full px-6 py-4 pl-12 rounded-xl border focus:ring-2 focus:ring-blue-700 focus:border-transparent"
                     style="color: var(--text-primary)"
                     oninput="filterCategories()"
                 />
@@ -143,7 +143,7 @@ export const categoriesPage = () => `
             <div class="flex gap-4">
                 <select 
                     id="sort-select" 
-                    class="card px-4 py-2 rounded-lg border focus:ring-2 focus:ring-purple-600"
+                    class="card px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-700"
                     style="color: var(--text-primary)"
                     onchange="sortCategories()"
                 >
@@ -210,7 +210,7 @@ export const categoriesPage = () => `
             <div class="col-span-full text-center py-12">
               <i class="fas fa-exclamation-triangle text-6xl text-red-500 mb-4"></i>
               <p class="text-xl">Failed to load categories</p>
-              <button onclick="loadCategories()" class="mt-4 px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+              <button onclick="loadCategories()" class="mt-4 px-6 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800">
                 Try Again
               </button>
             </div>
@@ -250,7 +250,7 @@ export const categoriesPage = () => `
             </p>
             <div class="flex justify-center items-center gap-4 text-sm" style="color: var(--text-secondary)">
               <span>
-                <i class="fas fa-robot text-purple-600 mr-1"></i>
+                <i class="fas fa-robot text-blue-700 mr-1"></i>
                 \${category.agent_count || 0} agents
               </span>
             </div>
@@ -453,11 +453,11 @@ export const categoryDetailPage = (slug: string) => `
             </p>
             <div class="flex justify-center items-center gap-8 text-lg" style="color: var(--text-secondary)">
                 <span>
-                    <i class="fas fa-robot text-purple-600 mr-2"></i>
+                    <i class="fas fa-robot text-blue-700 mr-2"></i>
                     <strong id="agent-count">0</strong> Agents
                 </span>
                 <span>
-                    <i class="fas fa-calendar text-purple-600 mr-2"></i>
+                    <i class="fas fa-calendar text-blue-700 mr-2"></i>
                     Created <span id="created-date">-</span>
                 </span>
             </div>
@@ -470,7 +470,7 @@ export const categoryDetailPage = (slug: string) => `
                     type="text" 
                     id="search-input" 
                     placeholder="Search agents in this category..." 
-                    class="card flex-1 md:w-80 px-4 py-2 rounded-lg border focus:ring-2 focus:ring-purple-600"
+                    class="card flex-1 md:w-80 px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-700"
                     style="color: var(--text-primary)"
                     oninput="filterAgents()"
                 />
@@ -479,7 +479,7 @@ export const categoryDetailPage = (slug: string) => `
             <div class="flex gap-4 w-full md:w-auto">
                 <select 
                     id="pricing-filter" 
-                    class="card px-4 py-2 rounded-lg border focus:ring-2 focus:ring-purple-600"
+                    class="card px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-700"
                     style="color: var(--text-primary)"
                     onchange="filterAgents()"
                 >
@@ -492,7 +492,7 @@ export const categoryDetailPage = (slug: string) => `
                 
                 <select 
                     id="sort-select" 
-                    class="card px-4 py-2 rounded-lg border focus:ring-2 focus:ring-purple-600"
+                    class="card px-4 py-2 rounded-lg border focus:ring-2 focus:ring-blue-700"
                     style="color: var(--text-primary)"
                     onchange="sortAgents()"
                 >
@@ -525,7 +525,7 @@ export const categoryDetailPage = (slug: string) => `
         <!-- Related Categories -->
         <div class="mt-16">
             <h2 class="text-3xl font-bold mb-6">
-                <i class="fas fa-sitemap text-purple-600 mr-3"></i>
+                <i class="fas fa-sitemap text-blue-700 mr-3"></i>
                 Related Categories
             </h2>
             <div id="related-categories" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -664,13 +664,13 @@ export const categoryDetailPage = (slug: string) => `
               <div class="flex items-center justify-between">
                 <div class="flex gap-4 text-sm" style="color: var(--text-secondary)">
                   <span title="Upvotes">
-                    <i class="fas fa-arrow-up text-purple-600"></i> \${agent.upvote_count || 0}
+                    <i class="fas fa-arrow-up text-blue-700"></i> \${agent.upvote_count || 0}
                   </span>
                   <span title="Views">
-                    <i class="fas fa-eye text-purple-600"></i> \${agent.view_count || 0}
+                    <i class="fas fa-eye text-blue-700"></i> \${agent.view_count || 0}
                   </span>
                 </div>
-                <span class="px-3 py-1 bg-purple-100 text-purple-700 text-xs font-semibold rounded-full">
+                <span class="px-3 py-1 bg-purple-100 text-blue-800 text-xs font-semibold rounded-full">
                   \${agent.pricing_model}
                 </span>
               </div>

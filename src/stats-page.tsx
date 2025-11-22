@@ -102,21 +102,21 @@ export const comprehensiveStatsPage = () => `
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
                 <a href="/" class="flex items-center">
-                    <i class="fas fa-robot text-3xl text-purple-600 mr-3"></i>
+                    <i class="fas fa-robot text-3xl text-blue-700 mr-3"></i>
                     <span class="text-xl font-bold">AI Agents Directory</span>
                 </a>
                 <div class="flex items-center space-x-4">
-                    <a href="/agents" class="text-gray-700 hover:text-purple-600">Browse</a>
-                    <a href="/categories" class="text-gray-700 hover:text-purple-600">Categories</a>
-                    <a href="/submit" class="text-gray-700 hover:text-purple-600">Submit</a>
-                    <a href="/login" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Login</a>
+                    <a href="/agents" class="text-gray-700 hover:text-blue-700">Browse</a>
+                    <a href="/categories" class="text-gray-700 hover:text-blue-700">Categories</a>
+                    <a href="/submit" class="text-gray-700 hover:text-blue-700">Submit</a>
+                    <a href="/login" class="px-4 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800">Login</a>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <div class="bg-gradient-to-br from-purple-600 to-indigo-700 text-white py-16">
+    <div class="bg-gradient-to-br from-blue-700 to-indigo-700 text-white py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center">
                 <h1 class="text-5xl font-bold mb-4">AI Agents Market Statistics</h1>
@@ -135,7 +135,7 @@ export const comprehensiveStatsPage = () => `
         <!-- Quick Stats Section -->
         <div class="mb-12">
             <h2 class="text-3xl font-bold mb-6 flex items-center">
-                <i class="fas fa-chart-line text-purple-600 mr-3"></i>
+                <i class="fas fa-chart-line text-blue-700 mr-3"></i>
                 Quick Stats
                 <span class="live-badge ml-4">
                     <span class="live-dot"></span>
@@ -155,7 +155,7 @@ export const comprehensiveStatsPage = () => `
         <div class="mb-12 chart-container">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold flex items-center">
-                    <i class="fas fa-chart-area text-purple-600 mr-3"></i>
+                    <i class="fas fa-chart-area text-blue-700 mr-3"></i>
                     Monthly Growth Trend
                 </h2>
                 <div class="text-sm text-gray-600">
@@ -169,7 +169,7 @@ export const comprehensiveStatsPage = () => `
         <div class="mb-12 chart-container">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold flex items-center">
-                    <i class="fas fa-layer-group text-purple-600 mr-3"></i>
+                    <i class="fas fa-layer-group text-blue-700 mr-3"></i>
                     AI Agents by Category
                     <span class="live-badge ml-4">
                         <span class="live-dot"></span>
@@ -195,7 +195,7 @@ export const comprehensiveStatsPage = () => `
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="chart-container">
                     <h2 class="text-2xl font-bold mb-6 flex items-center">
-                        <i class="fas fa-dollar-sign text-purple-600 mr-3"></i>
+                        <i class="fas fa-dollar-sign text-blue-700 mr-3"></i>
                         Pricing Models
                     </h2>
                     <canvas id="pricing-chart"></canvas>
@@ -203,7 +203,7 @@ export const comprehensiveStatsPage = () => `
                 
                 <div class="chart-container">
                     <h2 class="text-2xl font-bold mb-6 flex items-center">
-                        <i class="fas fa-code-branch text-purple-600 mr-3"></i>
+                        <i class="fas fa-code-branch text-blue-700 mr-3"></i>
                         Open Source vs Commercial
                     </h2>
                     <canvas id="opensource-chart"></canvas>
@@ -214,7 +214,7 @@ export const comprehensiveStatsPage = () => `
         <!-- Top Categories List -->
         <div class="mb-12 chart-container">
             <h2 class="text-2xl font-bold mb-6 flex items-center">
-                <i class="fas fa-trophy text-purple-600 mr-3"></i>
+                <i class="fas fa-trophy text-blue-700 mr-3"></i>
                 Top Categories by Popularity
             </h2>
             <div id="top-categories-list" class="space-y-4">
@@ -225,7 +225,7 @@ export const comprehensiveStatsPage = () => `
         <!-- Recent Activity -->
         <div class="chart-container">
             <h2 class="text-2xl font-bold mb-6 flex items-center">
-                <i class="fas fa-clock text-purple-600 mr-3"></i>
+                <i class="fas fa-clock text-blue-700 mr-3"></i>
                 Recently Added Agents
             </h2>
             <div id="recent-agents" class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -275,7 +275,7 @@ export const comprehensiveStatsPage = () => `
 
         function renderQuickStats(stats) {
             const container = document.getElementById('quick-stats');
-            const colors = ['from-blue-500 to-blue-600', 'from-purple-500 to-purple-600', 'from-green-500 to-green-600', 'from-orange-500 to-orange-600'];
+            const colors = ['from-blue-500 to-blue-600', 'from-blue-600 to-blue-700', 'from-green-500 to-green-600', 'from-orange-500 to-orange-600'];
             
             const statCards = [
                 { label: 'Total Agents', value: stats.total_agents, icon: 'fa-robot', change: '+32 in last 7 days' },
@@ -317,7 +317,7 @@ export const comprehensiveStatsPage = () => `
                     datasets: [{
                         label: 'Total Agents',
                         data,
-                        borderColor: '#7c3aed',
+                        borderColor: '#1e40af',
                         backgroundColor: 'rgba(124, 58, 237, 0.1)',
                         fill: true,
                         tension: 0.4,
@@ -347,8 +347,8 @@ export const comprehensiveStatsPage = () => `
             });
 
             document.getElementById('growth-stats').innerHTML = \`
-                Last month growth: <span class="text-purple-600 font-bold">7%</span> | 
-                Average growth: <span class="text-purple-600 font-bold">23%</span>
+                Last month growth: <span class="text-blue-700 font-bold">7%</span> | 
+                Average growth: <span class="text-blue-700 font-bold">23%</span>
             \`;
         }
 
@@ -387,7 +387,7 @@ export const comprehensiveStatsPage = () => `
                         </div>
                     </div>
                     <div class="text-right">
-                        <div class="text-2xl font-bold text-purple-600">\${cat.agent_count}</div>
+                        <div class="text-2xl font-bold text-blue-700">\${cat.agent_count}</div>
                         <div class="text-sm text-gray-600">agents</div>
                     </div>
                 </div>
@@ -471,7 +471,7 @@ export const comprehensiveStatsPage = () => `
                     <h3 class="font-bold text-lg mb-1">\${agent.name}</h3>
                     <p class="text-sm text-gray-600 line-clamp-2">\${agent.tagline || agent.description}</p>
                     <div class="mt-3 flex items-center justify-between text-sm">
-                        <span class="px-2 py-1 bg-purple-100 text-purple-600 rounded text-xs">\${agent.pricing_model}</span>
+                        <span class="px-2 py-1 bg-purple-100 text-blue-700 rounded text-xs">\${agent.pricing_model}</span>
                         <span class="text-gray-500"><i class="fas fa-arrow-up mr-1"></i>\${agent.upvote_count}</span>
                     </div>
                 </a>
